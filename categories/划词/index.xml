@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>划词 on nonwill</title>
+    <link>/categories/%E5%88%92%E8%AF%8D/</link>
+    <description>Recent content in 划词 on nonwill</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 01 Jan 2021 00:20:53 +0800</lastBuildDate><atom:link href="/categories/%E5%88%92%E8%AF%8D/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GoldenDict&#43;&#43;OCR 「划词版」</title>
+      <link>/post/goldendict/</link>
+      <pubDate>Fri, 01 Jan 2021 00:20:53 +0800</pubDate>
+      
+      <guid>/post/goldendict/</guid>
+      <description>.notice{padding:8px 18px 6px;line-height:24px;margin-bottom:24px;border-radius:4px;color:#444;background:#e7f2fa}.notice p:last-child{margin-bottom:0}.notice-title{margin:-18px -18px 0px;padding:0px 4px;border-radius:4px 4px 0 0;font-weight:700;color:#fff;background:#6ab0de}.notice-title:before{margin-right:4px;font-weight:400}.notice.warning .notice-title{background:rgba(217,83,79,.9)}.notice.warning .notice-title:before{content:&#39;⚠&#39;}.notice.warning{background:#fae2e2}.notice.info .notice-title{background:#f0b37e}.notice.info .notice-title:before{content:&#39;✆&#39;}.notice.info{background:#fff2db}.notice.note .notice-title{background:#6ab0de}.notice.note .notice-title:before{content:&#39;✔&#39;}.notice.note{background:#e7f2fA}.notice.tip .notice-title{background:rgba(92,184,92,.8)}.notice.tip .notice-title:before{content:&#39;✉&#39;}.notice.tip{background:#e6f9e6}Built-in-OCR.Stable.Efficient.鼠标划词.稳定极速
+Demos·演示: OCR·划词 macOS Starting·启动 Gif·动画
+Greetings to GoldenDict, features special：
+ 并发索引辞书加速启动，信息全程可视 全文搜索结果可导入导出，一次搜索，随时使用 功能模块化，插件按需加载，降低内存占用 多个音频引擎插件，随切随用 多引擎OCR划词，支持自动切屏、动态划屏 依辞书根目录的自动群组，一键分组 文章切换，恢复群组/关键字/候选词等上下文信息 全局js脚本，给您自主优化查询性能的空间 支持字典别名，支持按目录+文件名排序辞书 优化mdx格式，支持flash播放和tif格式图片 文章历史总量可控，低配电脑也能顺畅运行 全优化，加速查询，解决内存泄露、崩溃等问题  This is improved build over the official. If you find it useful, please consider donating to help maintain it.「如本程序对您有所帮助，请考虑捐赠以帮助维护她，您的支持将予我以动力💖」
+ Deployment.安装部署
+声明：GoldenDict++OCR划词版不以任何售卖形式分发，仅在非盈利、非商用及帮学助教的前提下您可以下载使用与分享本程序；下载或使用本程序将视同您已知晓并同意本声明所示内容。
+Last updated date: 1 January 2021</description>
+    </item>
+    
+  </channel>
+</rss>

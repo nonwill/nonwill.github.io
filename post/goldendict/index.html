@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-language" content="zh-cn" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    
+    
+    <title>GoldenDict&#43;&#43;OCR 「划词版」</title>
+
+    
+
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+                anchors.options = {
+                visible: 'hover',
+                placement: 'left',
+                icon: "🌜"
+                };
+            anchors.add();
+            })
+        </script>
+        
+        
+
+        
+            <script src="https://cdn.bootcss.com/clipboard.js/2.0.4/clipboard.min.js"></script>
+            <link href="/css/tooltips.css" rel="stylesheet">
+            
+        
+
+        
+        
+        <style type="text/css">
+            body {background-color: #fbf6ec;}
+        </style>
+        
+
+        
+        
+            <link rel="stylesheet" href="/css/main.css">
+        
+
+        
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+    
+    <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?e9ae8a920dfd9a2a27274a47c8ed4473";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+
+</head>
+
+
+<body>
+    <script>
+        window.addEventListener("resize", resizeThrottler, false);
+
+        var resizeTimeout;
+        function resizeThrottler() {
+        
+        if ( !resizeTimeout ) {
+            resizeTimeout = setTimeout(function() {
+            resizeTimeout = null;
+            actualResizeHandler();
+        
+            
+            }, 66);
+        }
+        }
+        actualResizeHandler()
+        function actualResizeHandler() {
+                if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent))
+                {
+                    document.body.classList.add('mobile');
+                }else{
+                    document.body.classList.remove('mobile');  
+                }
+    }</script>
+
+    
+    
+
+
+    
+
+<div class="inner" style="position:relative;">
+  
+  <div class="side-btn"><a href="/" class="back">Home</a></div>
+  
+<div class="blog-post">
+  <h2>GoldenDict&#43;&#43;OCR 「划词版」</h2>
+        <style type="text/css">.notice{padding:8px 18px 6px;line-height:24px;margin-bottom:24px;border-radius:4px;color:#444;background:#e7f2fa}.notice p:last-child{margin-bottom:0}.notice-title{margin:-18px -18px 0px;padding:0px 4px;border-radius:4px 4px 0 0;font-weight:700;color:#fff;background:#6ab0de}.notice-title:before{margin-right:4px;font-weight:400}.notice.warning .notice-title{background:rgba(217,83,79,.9)}.notice.warning .notice-title:before{content:'⚠'}.notice.warning{background:#fae2e2}.notice.info .notice-title{background:#f0b37e}.notice.info .notice-title:before{content:'✆'}.notice.info{background:#fff2db}.notice.note .notice-title{background:#6ab0de}.notice.note .notice-title:before{content:'✔'}.notice.note{background:#e7f2fA}.notice.tip .notice-title{background:rgba(92,184,92,.8)}.notice.tip .notice-title:before{content:'✉'}.notice.tip{background:#e6f9e6}</style><div class="notice tip"  id="Built-in-OCR.Stable.Efficient.鼠标划词.稳定极速" >
+<p class="first notice-title">Built-in-OCR.Stable.Efficient.鼠标划词.稳定极速</p><p><img src="https://s3.ax1x.com/2020/11/12/BvhzOP.gif" alt="ocr划词"> 
+Demos·演示: <a href="https://www.bilibili.com/video/av96718018/">OCR·划词</a>  <a href="https://www.bilibili.com/video/bv1b54y1d7SU">macOS</a>  <a href="https://www.bilibili.com/video/BV1CK411W7Du/">Starting·启动</a>  <a href="https://s1.ax1x.com/2020/04/18/Jn3Um9.gif">Gif·动画</a><br>
+<em><strong>Greetings to <a href="http://www.goldendict.org/">GoldenDict</a></strong>, features special</em>：</p>
+<ul>
+<li><strong>并发索引</strong>辞书<strong>加速启动</strong>，信息全程可视</li>
+<li><strong>全文搜索</strong>结果可<strong>导入导出</strong>，一次搜索，随时使用</li>
+<li><strong>功能模块</strong>化，插件<strong>按需加载</strong>，降低内存占用</li>
+<li>多个<strong>音频引擎</strong>插件，<strong>随切随用</strong></li>
+<li>多引擎<strong>OCR划词</strong>，支持<strong>自动切屏</strong>、<strong>动态划屏</strong></li>
+<li><strong>依辞书根目录</strong>的自动群组，<strong>一键分组</strong></li>
+<li>文章切换，<strong>恢复</strong>群组/关键字/候选词等<strong>上下文信息</strong></li>
+<li><strong>全局js脚本</strong>，给您自主<strong>优化查询性能</strong>的空间</li>
+<li>支持<strong>字典别名</strong>，支持<strong>按目录+文件名排序</strong>辞书</li>
+<li>优化<strong>mdx</strong>格式，支持<strong>flash</strong>播放和<strong>tif格式</strong>图片</li>
+<li>文章历史总量可控，<strong>低配电脑也能顺畅运行</strong></li>
+<li><strong>全优化</strong>，<strong>加速查询</strong>，解决内存泄露、崩溃等问题</li>
+</ul>
+<p>This is <strong>improved</strong> build over the <strong><a href="https://github.com/goldendict/goldendict">official</a></strong>. If you find it useful, please consider <a href="/donate/">donating to help maintain it</a>.「如本程序对您有所帮助，请考虑<a href="/donate/">捐赠以帮助维护她</a>，您的支持将<a href="/donate/"><strong>予我以动力💖</strong></a>」</p></div>
+
+<div class="notice note"  id="Deployment.安装部署" >
+<p class="first notice-title">Deployment.安装部署</p><p>声明：GoldenDict++OCR划词版不以任何售卖形式分发，仅在<strong>非盈利</strong>、<strong>非商用</strong>及<strong>帮学助教</strong>的前提下您可以下载<strong>使用与分享</strong>本程序；下载或使用本程序将视同您已知晓并同意本声明所示内容。<br>
+Last updated date: <em><strong>1 January 2021</strong></em></p>
+<ol>
+<li>Download a <strong>Package</strong> from the following links「按需选取并下载<strong>程序包</strong>」</li>
+</ol>
+<ul>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/checksum.md5">checksum.md5</a> <a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/checksum.sha256">checksum.sha256</a> <a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/Dictionary.tar.bz2">Dictionary</a>「校验码，共享的辞书、样式表和字体文件」</li>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1E_20201225/GoldenDict++OCR-2020.06.22.dmg">macOS 64-bit: Qt 5.9.9, no 32-bit support, no PPC support, OS X 10.15 Catalina or later recommended, 40.2 MB</a>「适用于macOS 10.15 Catalina及以上版本」</li>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1E_20201225/GoldenDict++OCR-2A1E-macOS-10.13.6-x64-20201225.dmg">macOS 64-bit: Qt 5.9.9, no 32-bit support, no PPC support, OS X 10.13 High Sierra or later recommended, 49.6 MB</a>「适用于macOS 10.13 High Sierra及以上版本」</li>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1E_20201225/GoldenDict++OCR-2A1E-macOS-11.1-x64-20201225.dmg">macOS 64-bit: Qt 5.9.9, no 32-bit support, no PPC support, OS X 11.1 Big Sur or later recommended, 41.6 MB</a>「适用于macOS 11.1 Big Sur及以上版本」</li>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1E_20201225/GoldenDict++OCR-2A1E-ubuntu-20.04-x64-20201225.tar.gz">Linux 64-bit: Qt 5.12.8, Portable build, Ubuntu 20.04/Manjaro 20.1 x64 or later recommended, 103 MB</a>「适用于Ubuntu 20.04/Manjaro 20.1及以上版本」</li>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/GoldenDict++OCR-2A1F-Qt-5.9.9-msvc-16.8.3-x64-20210101.bz2">Windows 64-bit: Qt 5.9.9, msvc2019, Portable build, Windows 7 sp1 x64 or later recommended, 77.7 MB</a>「适用于Windows 7 sp1 x64及以上版本」</li>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/GoldenDict++OCR-2A1F-Qt-5.9.9-mingw-gcc10-x86-20210101.bz2">Windows 32-bit: Qt 5.9.9, mingw32-gcc10, Portable build, Windows 7 sp1 or later recommended, 74.9 MB</a>「适用于Windows 7 sp1及以上版本」</li>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/GoldenDict++OCR-2A1F-Qt-4.8.7-msvc-16.8.3-x86-20210101.bz2">Windows 32-bit: Qt 4.8.7, msvc2019, Portable build, Windows 7 sp1 or later recommended, 50.3 MB</a>「适用于Windows 7 sp1及以上版本」</li>
+</ul>
+<ol start="2">
+<li>
+<p>Install or unpack the <strong>Package</strong>: macOS &mdash; just pick up GoldenDict(.app), Linux &mdash; start a terminal and execute goldendict from the dir which GoldenDict is in, Windows &mdash; double click on GoldenDict(.exe) 「安装或解压<strong>程序包</strong>：macOS系统直接执行GoldenDict(.app)，Linux版本需要通过终端执行GoldenDict同目录下的goldendict脚本文件，Windows中执行解压出的GoldenDict(.exe)」</p>
+</li>
+<li>
+<p>Optional:  If you need OCR supporting other languages, extra language-pack of the ocr-engine is needed and the data-path which is used by ocr-engine for loading language data should be reset to your language-pack dir &mdash; download and unpack the following package, open GoldenDIct&rsquo;s <strong>Preference</strong> dialog and swich to <strong>OCR Popup</strong>, select an OCR-Engine and set the data path by clicking the button next to the Engines' List, then select module language(s) for the engine 「可选：如需OCR支持其它语言，请下载下列OCR支持库，解压后到<strong>首选项</strong>对话框的<strong>划词</strong>页，针对OCR引擎重设其识别库目录后选择需要识别的语言」</p>
+</li>
+</ol>
+<ul>
+<li><a href="https://www.nicomsoft.com/"><strong>Nicomsoft</strong> OCR</a> Full (84 MB)  <a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/ns_ocr_x64.7z">x64</a> or <a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/ns_ocr_x86.7z">x86</a>, only supports Windows.</li>
+<li><a href="https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A1F_20210101/tessdata_fast.7z">Google <strong>Tessdata Fast</strong></a> (273 MB), or others from the <a href="https://github.com/tesseract-ocr">Official</a>.</li>
+</ul>
+<p>This is <strong>FULL</strong> distribution with all required files, libraries(includes QT libs) and localizations except that VC redist <a href="https://aka.ms/vs/16/release/vc_redist.x64.exe">x64</a> or <a href="https://aka.ms/vs/16/release/vc_redist.x86.exe">x86</a> is required by <a href="https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads">msvc2019</a> versions and should be installed first. If <a href="https://github.com/nonwill/nwDeployed/releases">GitHub</a> is not accessible, all the packages are available at <a href="https://1drv.ms/u/s!AllBS8YFxXjJbFGwCu3UQ6k4Ft4?e=4d8nbd">OneDrive</a> or <a href="https://pan.baidu.com/s/1cFY0CHnezl7AoYewrie_pg">Baidu Netdisk(:ranu)</a> 「除<a href="https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads">msvc2019版</a>需先下载并安装运行时库<a href="https://aka.ms/vs/16/release/vc_redist.x64.exe">x64</a>或<a href="https://aka.ms/vs/16/release/vc_redist.x86.exe">x86</a>外，发行包中已含运行GoldenDict++所需的所有文件。如果<a href="https://github.com/nonwill/nwDeployed/releases">GitHub</a>不可用，请从<a href="https://1drv.ms/u/s!AllBS8YFxXjJbFGwCu3UQ6k4Ft4?e=4d8nbd">微软云</a>或<a href="https://pan.baidu.com/s/1cFY0CHnezl7AoYewrie_pg">百度网盘(:ranu)</a>下载」</p></div>
+
+<div class="notice warning"  id="Notice.问题" >
+<p class="first notice-title">Notice.问题</p><p>使用问题请参阅帮助文档，发现BUG或改进建议请<a href="mailto:nonwill@hotmail.com">点此反馈</a> 。
+强烈推荐<a href="https://702pr1.coding-pages.com/">安装使用 GoldenDict 查词神器</a> &mdash; 文章大，内容全，阅后无论是一般使用还是奇淫技巧，您对GoldenDict都将刮目相看。<br>
+注意：从低版本升级上来或全新部署后遇到程序闪退及ocr划词或音频播放问题，请检查核对（或重新选择）ocr划词和音频引擎（如还不能解决问题，请备份并删除配置目录下的config.nwx再试）。 如为全新部署则解压可用，升级安装 请 1. 备份好运行目录（安装目录）下的配置文件（绿色运行模式下的portable目录，content文件夹等），2. 删除运行目录下的所有程序文件，3. 解压整包中的所有文件到运行目录下，4. 还原配置文件到原来的位置，5. 启用程序并修改配置参数。另，鉴于部分资源分享站点有改包并可能添加私有程序/功能的行为，不建议从任何第三方资源网站下载本改版的整包和升级文件，当前在github release发布的压缩包已整合了整包，亦或从部署说明中链接的百度或微软的云盘下载均可。</p></div>
+
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<div class="notice info"  id="Logs.更新日志" >
+<p class="first notice-title">Logs.更新日志</p><h5 id="202111-2a1f2a1终版">2021.1.1 2A1F：2A1终版。</h5>
+<h5 id="20201228-2a1f为音频播放增加停止功能">2020.12.28 2A1F：为音频播放增加停止功能。</h5>
+<blockquote>
+<p>点击工具栏的<strong>朗读词条</strong>按钮：当前有音频正在播放时，则停止播放，否则执行词条朗读功能。鉴于词条朗读一般情况下时长较短，忽略增加停播后的恢复播放功能的需求。</p>
+</blockquote>
+<h5 id="20201220-2a1e修正多屏时在非主屏上划词或取词的popup窗口位置问题确保popup窗体出现在鼠标所在的屏幕上及在非主屏上划词幕布可能出现不会铺满屏幕的问题修正主窗口最大化后从最大化状态恢复时窗体位置错误的问题">2020.12.20 2A1E：修正多屏时，在非主屏上划词或取词的Popup窗口位置问题（确保Popup窗体出现在鼠标所在的屏幕上），及在非主屏上划词幕布可能出现不会铺满屏幕的问题；修正主窗口最大化后，从最大化状态恢复时窗体位置错误的问题。</h5>
+<h5 id="20201218-2a1dqt599-backport-commonimportant-fixes-from-source-branch-of-qt-515and-other-securitystability-updates-with-qtbase-modules">2020.12.18 2A1D：Qt5(.9.9): Backport common&amp;important fixes from source-branch of Qt-5.15，and other Security&amp;Stability Updates with qtbase modules.</h5>
+<h5 id="20201214-2a1cqt599-backport-commonimportant-fixes-from-source-branch-of-qt-5123rdparty-updated-to-newestunicode-cldrcommon-locale-data-repository-updated-to-v351network-module-now-supports-openssl-11dtls-and-new-feathersand-other-securitystability-updates-with-qtbase-modules">2020.12.14 2A1C：Qt5(.9.9): Backport common&amp;important fixes from source-branch of Qt-5.12，3rdParty updated to newest，unicode CLDR(Common Locale Data Repository) updated to v35.1，network module now supports openssl-1.1&amp;dtls and new feathers，and other Security&amp;Stability Updates with qtbase modules.</h5>
+<blockquote>
+<p>Qt5(.9.9) will be long supported and never updated until <a href="https://bugreports.qt.io/browse/QTBUG-87774">QTBUG-87774</a> is fixed for that Qt(Version&gt;=5.12) leads to serious memory leaks.<br>
+For Security&amp;Stability&amp;Speed, Webkit is now extra feathered with css3 text, css3 text-line-break, mathml, xslt, netscape-plugin-api, modules, custom elements, custom scheme handle, no accelerated-2d canvas, no geolocation, no quota, no media source, no media capture, and no video &mdash; but embed video with flashplayer is still supported.</p>
+</blockquote>
+<h5 id="2020129-2a1bqt4-backport-some-commonimportant-fixescve-2013-4549-cve-2015-0295-cve-2015-1860-cve-2015-1859-cve-2015-1858-cve-2016-1004-cve-2018-19872-cve-2020-17507-from-fedora-review">2020.12.9 2A1B：Qt4: Backport some common&amp;important fixes(CVE-2013-4549, CVE-2015-0295, CVE-2015-1860, CVE-2015-1859, CVE-2015-1858, CVE-2016-1004, CVE-2018-19872, CVE-2020-17507&hellip;) from Fedora Review。</h5>
+<h5 id="2020128-2a1a修正缩放比例不为1时作为链接的网站web类型辞书的页面内容显示高度错误的问题修正文章视图中水平滑动条与垂直滑动条样式表不一致的问题修正qt4版本关于对话框中版本信息中文乱码的问题修正全新部署或升级前未删除旧的参数文件参数的默认值可能不生效的问题修正因部署目录变动导致的ocr划屏和音频引擎失效而必须在首选项对话框中重新配置的问题2a18引入">2020.12.8 2A1A：修正缩放比例不为1时作为链接的网站（Web）类型辞书的页面内容（显示）高度错误的问题；修正文章视图中水平滑动条与垂直滑动条样式表不一致的问题；修正Qt4版本关于对话框中版本信息中文乱码的问题；修正全新部署（或升级前未删除旧的参数文件）参数的默认值可能不生效的问题，修正因部署目录变动导致的ocr、划屏和音频引擎失效而必须在首选项对话框中重新配置的问题（2A18引入）。</h5>
+<blockquote>
+<p>无需重置配置文件既可从旧版本无缝顺滑的升级到新版本啦；配置文件中仅保存插件文件名 &mdash; 程序从与其同目录的gdp文件夹下寻找并加载同名插件；针对OCR的数据目录设置，如果目录不再存在或没有手动重置过，则默认从程序所在目录下的tessdata或nsocr文件夹加载语言识别文件。</p>
+</blockquote>
+<h5 id="20201128-2a19优化辞书列表的刷新机制提交查询后秒内如页面未完成加载渲染则主动更新辞书列表辞书列表做到秒出修正因开发语言多态特性使用不当引发的多处内存泄露问题修正索引文件创建后文件的写缓存可能不被释放内存泄露的问题优化一处创建索引文件时影响性能的实现修正词头索引关键字超过特定长度默认256时查询不到对应记录的问题">2020.11.28 2A19：优化辞书列表的刷新机制（提交查询后秒内如页面未完成加载（渲染）则主动更新辞书列表，辞书列表做到秒出）；修正因开发语言多态特性使用不当引发的多处内存泄露问题；修正索引文件创建后文件的写缓存可能不被释放（内存泄露）的问题；优化一处创建索引文件时影响性能的实现；修正词头（索引关键字）超过特定长度（默认256）时查询不到对应记录的问题。</h5>
+<blockquote>
+<p>一本离线辞书中，关键字（长度）超256个字符的记录应该不多，即便有较多的存在，这种情况下以前256个字符做索引关键字，关键字相同的概率应该也是较小的 &mdash; 即便有冲突比着野蛮的丢弃以至无法查询到对应词头的内容的影响也是好的。</p>
+</blockquote>
+<h5 id="20201122-2a18修正linux版本缺失tts引擎相关动态库的问题windows版本删除原版中带有的取词功能这个功能模块使用的技术容易被杀毒软件报毒-----详细原因见前述优化辞书索引和全文索引处理规范web和辞书epwing和mdx缓存目录以便于管理为mdx格式辞书提速-----优化查询处理优化重复访问含有视频内容的词条的访问处理避免重复刷新缓存文件为qt4版本mdx增加视频支持对频繁访问的网络资源进行加速-----使用缓存参考httpsgithubcomgoldendictgoldendictpull1310字符转码效率优化类xml辞书内容加载到xml文档中既已转码成utf8无需再次强制转换修正在dictionarybar上快速频繁的点击辞书标签时导致程序崩溃的问题重构程序类型辞书的查询处理优化wiki和web辞书的处理修正在词条列表匹配结束前关闭退出程序会导致程序崩溃的问题修正收藏夹中的文件夹的展开或收起状态可能不被保存的问题修正打开首选项对话框然后点击取消按钮或直接关闭对话框后音频引擎失效的问题">2020.11.22 2A18：修正Linux版本缺失tts引擎相关动态库的问题；Windows版本删除原版中带有的取词功能（这个功能模块使用的技术容易被杀毒软件报毒 &mdash; 详细原因见前述）；优化辞书索引和全文索引处理；规范Web和辞书（epwing和mdx）缓存目录以便于管理；为mdx格式辞书提速 &mdash; 优化查询处理，优化重复访问含有视频内容的词条的访问处理（避免重复刷新缓存文件）；为Qt4版本mdx增加视频支持；对频繁访问的网络资源进行加速 &mdash; 使用缓存（<a href="https://github.com/goldendict/goldendict/pull/1310">参考</a>）；字符转码效率优化（类xml辞书内容加载到xml文档中既已转码成utf8，无需再次强制转换）；修正在DictionaryBar上快速频繁的点击辞书标签时导致程序崩溃的问题（重构程序类型辞书的查询处理，优化Wiki和Web辞书的处理）；修正在词条列表匹配结束前关闭（退出）程序，会导致程序崩溃的问题；修正收藏夹中的文件夹的展开或收起状态可能不被保存的问题；修正打开首选项对话框然后点击取消按钮或直接关闭对话框后音频引擎失效的问题。</h5>
+<h5 id="20201115-2a17优化多处严重影响查询性能的实现仅在辞书有编辑后刷新所有文章在扫描辞书文件后仅刷新当前文章优化收藏列表和历史列表减少运行时内存占用在其中-鼠标右键-目的是弹出右键菜单而非查词点中条目时不执行查询操作增强收藏按钮与收藏列表的联动-----从列表删除当前页面的单词时会同步更新收藏按钮的状态查询单词是否已被收藏时不区分大小写修正issuehttpsgithubcomgoldendictgoldendictissues1312收藏按钮状态变化时同步更新按钮文字以反映其真实状态修正tab页标签右键菜单中收藏项文字失实的问题优化以提升页面资源下载的处理速度-修正访问web资源可能引发的内存泄漏问题重构辞书分组属性编辑功能修正打开辞书编辑对话框时卡顿及切换到分组页面时程序可能崩掉的问题-----分组越多问题越易出现修正在程序启动时程序崩掉的问题极端情况极少出现修正在查询面板和查询工具栏间切换时可能导致程序崩掉的问题有web及wiki类型辞书时易出现">2020.11.15 2A17：优化多处严重影响查询性能的实现；仅在辞书有编辑后刷新所有文章，在扫描辞书文件后仅刷新当前文章；优化收藏列表和历史列表，减少运行时内存占用，在其中 鼠标右键（ 目的是弹出右键菜单而非查词）点中条目时不执行查询操作；增强收藏按钮与收藏列表的联动 &mdash; 从列表删除当前页面的单词时会同步更新收藏按钮的状态，查询单词是否已被收藏时不区分大小写（修正<a href="https://github.com/goldendict/goldendict/issues/1312">issue</a>），收藏按钮状态变化时同步更新按钮文字以反映其真实状态（修正tab页标签右键菜单中收藏项文字失实的问题）；优化以提升页面资源下载的处理速度， 修正访问Web资源可能引发的内存泄漏问题；重构辞书分组属性编辑功能（修正打开辞书编辑对话框时卡顿及切换到分组页面时程序可能崩掉的问题 &mdash; 分组越多问题越易出现）；修正在程序启动时程序崩掉的问题（极端情况，极少出现）；修正在查询面板和查询工具栏间切换时可能导致程序崩掉的问题（有Web及Wiki类型辞书时易出现）。</h5>
+<h5 id="20201110-2a16fix-around-quote-possible-apostrophehttpsgithubcomgoldendictgoldendictpull1303commits63aeb0ef6dbe5c482fba92360e297f51389111f3and-quotes-also-need-an-escape修正网页审查员不能唤起和置为当前窗口的问题qt4版本修正开着-网页审查员-窗口关闭查词页面导致程序崩掉的问题">2020.11.10 2A16：Fix around <a href="https://github.com/goldendict/goldendict/pull/1303/commits/63aeb0ef6dbe5c482fba92360e297f51389111f3">quote possible apostrophe</a>，and quotes also need an escape；修正网页审查员不能唤起和置为当前窗口的问题；Qt4版本：修正开着 网页审查员 窗口关闭查词页面导致程序崩掉的问题。</h5>
+<h5 id="20201029-2a15qt4版本去除bgl辞书的多余换行以优化显示效果整合字体设置以支持音标等特殊字符的显示辞书样例en-en-longman_pronunciation_3rd_eddsl修正epwing辞书加载失败的问题修正右键-审查元素-导致程序崩溃的问题修正开启鼠标取词导致程序崩溃的问题修正读取xdxf辞书名称错误的问题修正-收起文章-和-展开文章-图标全黑的问题增加phononplayer音频引擎修正不支持非全英文路径名称的问题扫描不到非全英文路径下的字典文件修正欢迎页面乱码的问题修正splash窗体背景虚黑不透明的问题启用qt4的directwrite支持qt5版本回退使用qt-599该版本界面工具栏无不可逆的内存泄露修正dictionarybar的内存泄露mingwgcc版完全有效qt-512和qt-515待qt官方修正httpsbugreportsqtiobrowseqtbug-87774">2020.10.29 2A15：Qt4版本：去除bgl辞书的多余换行以优化显示效果，整合字体设置以支持音标等特殊字符的显示（辞书样例:En-En-Longman_Pronunciation_3rd_Ed.dsl），修正Epwing辞书加载失败的问题，修正右键 审查元素 导致程序崩溃的问题，修正开启鼠标取词导致程序崩溃的问题，修正读取xdxf辞书名称错误的问题，修正 收起文章 和 展开文章 图标全黑的问题，增加PhononPlayer音频引擎，修正不支持非全英文路径名称的问题（扫描不到非全英文路径下的字典文件），修正欢迎页面乱码的问题，修正Splash窗体背景虚黑（不透明）的问题；启用Qt4的directwrite支持。Qt5版本回退使用Qt-5.9.9（该版本界面工具栏无不可逆的内存泄露）；修正DictionaryBar的内存泄露（mingw+gcc版完全有效，<a href="https://bugreports.qt.io/browse/QTBUG-87774">Qt-5.12和Qt-5.15待Qt官方修正</a>）。</h5>
+<h5 id="20201021-2a14通过传递屏幕dpi参数值来提高ocr识别的精度实现截图与ocr功能分离增强插件可用性及使用的灵活性增加划屏插件增加划屏ocr助手可以配置不同的划屏方案与ocr方案的自由组合-----以便于用户实现自己的ocr插件如腾讯百度等在线接口的引入界面-大修--逻辑优化--dictionarybar中标签高度优化再也不会因为多国语言的辞书名称而导致的工具栏忽高忽低了优化辞书群组列表候选词列表搜索框文字和tab页切换的联动实现切换tab页不会丢失其上下文内容优化主窗口和popup窗口的状态栏信息显示当启用了系统托盘图标且系统支持托盘通知在主界面不可视时将状态信息输出至系统托盘尽可能早的在界面初始化结束前启动辞书扫描加载工作提高了程序启动时的速度和稳定性">2020.10.21 2A14：通过传递屏幕dpi参数值来提高ocr识别的精度；实现截图与ocr功能分离（增强插件可用性及使用的灵活性），增加划屏插件，增加划屏OCR助手，可以配置不同的划屏方案与ocr方案的自由组合 &mdash; 以便于用户实现自己的ocr插件（如腾讯、百度等在线接口的引入）；界面 <strong>大修 | 逻辑优化</strong> ： DictionaryBar中标签高度优化（再也不会因为多国语言的辞书名称而导致的工具栏忽高忽低了）；优化辞书群组列表、候选词列表、搜索框文字和Tab页切换的联动实现（切换Tab页不会丢失其上下文内容）；优化主窗口和Popup窗口的状态栏信息显示，当启用了系统托盘图标且系统支持托盘通知在主界面不可视时将状态信息输出至系统托盘；尽可能早的在界面初始化结束前启动辞书扫描加载工作，提高了程序启动时的速度和稳定性。</h5>
+<h5 id="20201011-2a13增加配置选项来设置主窗口查询页面和pop窗口的最大历史记录数量影响回退和前进以限制在低配置硬件上的内存占用-----最大数量限定为255值为0时则不使用历史记录内存占用最小优化-linuxunix系统划词体验-----使用scrot截图和xclip传递图形数据体验跟macos基本一致速度上亦有保证windows系统仍使用内置截图更换了鼠标样式提升ucs-4转utf8字符串的效率辞书群组编辑自动生成分组时保持当前分组页面优化辞书加载流程在并发线程中执行针对dsl和mdx等格式辞书的自定义初始化处理在程序启动时不中断并代理gui线程的事件处理修正重新扫描文件操作后搜索框失去输入焦点的问题tesseract划词ocr引擎增加对sseavx的检测支持">2020.10.11 2A13：增加配置选项来设置主窗口查询页面和Pop窗口的最大历史记录数量（影响回退和前进），以限制在低配置硬件上的内存占用 &mdash; 最大数量限定为255，值为0时则不使用历史记录，内存占用最小；优化 Linux/Unix系统划词体验 &mdash; 使用scrot截图和xclip传递图形数据（体验跟macOS基本一致，速度上亦有保证），windows系统仍使用内置截图（更换了鼠标样式）；提升UCS-4转utf8字符串的效率；辞书群组编辑自动生成分组时保持当前分组页面；优化辞书加载流程（在并发线程中执行针对dsl和mdx等格式辞书的自定义初始化处理，在程序启动时不中断并代理gui线程的事件处理）；修正重新扫描文件操作后搜索框失去输入焦点的问题；tesseract划词ocr引擎增加对SSE、AVX的检测支持。</h5>
+<blockquote>
+<p>划词依赖：macOS系统需要screencapture（系统内置）并启用剪切板访问权限；Unix/Linux系统需先安装scrot和xclip：<br>
+Debian：apt-get install scrot xclip<br>
+Fedora：yum install scrot xclip<br>
+Arch：pacman -S scrot xclip</p>
+</blockquote>
+<h5 id="2020929-2a12优化下拉复选列表qcombocheckbox限定选中状态的改变仅在选择框范围内点选时有效修正下拉列表不能收起的问题优化ocr识别语言配置去除了aardepwingxdxf格式辞书查询的关键字的h3显示样式不可控有点儿违和修正辞书生成的html页面源码css中错误的属性值优化内置的主题样式表简化用户样式表及脚本访问接口并将用户自定义样式表限制在配置文件夹下的styles目录下将针对金山数据的stardict辞书的样式映射文件sdct_kstyle设置到用户styles目录下解决xdxf及sdct_x格式辞书def层级显示错乱及生成多余多一个br-的问题修整xdxf预定义css-----显示更美观了清除aar格式辞书中的多余换行符解决在辞书分组设置界面从分组删除多个辞书可能导致程序崩溃的问题设置在流-io-级别同时打开的最大文件数8192支持管理更多的辞书如操作系统不支持则改为2048为linux版本增加tts引擎支持解决在不同分辨率的显示器间切换时窗口可能显示在屏幕区域以外的问题增加阅读模式">2020.9.29 2A12：优化下拉复选列表（QComboCheckBox），限定选中状态的改变仅在选择框范围内点选时有效，修正下拉列表不能收起的问题，优化ocr识别语言配置；去除了aard、epwing、xdxf格式辞书查询的关键字的h3显示（样式不可控，有点儿违和）；修正辞书生成的html页面源码css中错误的属性值；优化内置的主题样式表；简化用户样式表及脚本访问接口，并将用户自定义样式表限制在配置文件夹下的styles目录下，将针对金山数据的stardict辞书的样式映射文件sdct_k.style设置到用户styles目录下；解决xdxf及sdct_x格式辞书def层级显示错乱及生成多余（多一个）&lt;br /&gt;的问题，修整xdxf预定义css &mdash; 显示更美观了；清除aar格式辞书中的多余换行符；解决在辞书分组设置界面从分组删除多个辞书可能导致程序崩溃的问题；设置在流 I/O 级别同时打开的最大文件数8192（支持管理更多的辞书，如操作系统不支持则改为2048）；为linux版本增加tts引擎支持；解决在不同分辨率的显示器间切换时窗口可能显示在屏幕区域以外的问题；增加阅读模式。</h5>
+<blockquote>
+<p>通过ocr识别语言下拉框，选择区域则该区域下所有选中状态的语言都参与ocr识别，选择某一语言（不一定要在选中状态）则仅该语言参与ocr识别，如所有区域中都没有被选中的语言，则使用英文识别。<br>
+使能阅读模式后，文章（查询结果）页面，右键菜单增加 在悬浮窗中打开链接 和 在悬浮窗中查询&hellip; 项，鼠标中键点击链接、鼠标选择内容后右键查询，按住功能键（Ctrl或Shift）的同时鼠标双击翻译词条或鼠标单击页面链接，将使用 悬浮窗口 显示查询结果；该模式下的查词使用<strong>联合辞书分组</strong>（悬浮窗使用的辞书组+主窗口当前文章（查询结果）页面的辞书组）查询。<br>
+加载样式表的顺序是：（内建通用样式表  -+&gt; 内建主题样式表） -+&gt; styles目录下的（自定义样式表 -+&gt; 自定义主题目录下的样式表）<br>
+<img src="https://s1.ax1x.com/2020/09/16/wcQVUJ.png" alt="xdxf">
+<img src="https://s1.ax1x.com/2020/09/16/wcQZ59.png" alt="xdxf"></p>
+</blockquote>
+<h5 id="2020830-2a11解决多语言环境下epwing辞书可能不被识别问题优化ocr引擎语言列表的加载时机及初始化机制在识别库目录无效时不初始化语言列表不实例化划词引擎以避免程序崩溃优化索引加载后所占用的内存优化辞书图标的处理大幅降低内存占用添加基于辞书目录的自动群组功能">2020.8.30 2A11：解决多语言环境下epwing辞书可能不被识别问题；优化OCR引擎语言列表的加载时机及初始化机制（在识别库目录无效时，不初始化语言列表，不实例化划词引擎，以避免程序崩溃）；优化索引（加载后）所占用的内存，优化辞书图标的处理（大幅降低内存占用）；添加基于辞书目录的自动群组功能：</h5>
+<blockquote>
+<p>以<strong>辞书来源</strong>下的<strong>文件</strong>页面所添加的<strong>辞书文件所在目录</strong>为<strong>基础（根）目录</strong>，以其下级存在字典的子目录（不递归）名自动添加群组，如果基础（根）目录下存在辞书文件，自动添加以基础（根）目录名为名称的群组。</p>
+</blockquote>
+<h5 id="202077-2a10音频和ocr引擎适配插件机制查词结果的标签页view绑定辞书群组-----修改辞书群组仅对当前标签页有效多个标签页可以使用不同的辞书群组切换标签页时群组同步切换在标签页上提示其所使用的辞书群组信息及查询的词条内容启用对程序自身标签页取词的开关同-忽略程序自身的选择剪切变更-项设置">2020.7.7 2A10：音频和ocr引擎适配插件机制；查词结果的标签页（View）绑定辞书群组 &mdash; 修改辞书群组仅对当前标签页有效，多个标签页可以使用不同的辞书群组，切换标签页时群组同步切换，在标签页上提示其所使用的辞书群组信息及查询的词条内容；启用对程序自身标签页取词的开关（同 忽略程序自身的选择剪切变更 项）设置。</h5>
+<h5 id="2020622-2a0f解决linux下ffmpegao库发音引擎ao库打开设备失败的问题linux系统下取词功能修复macoswindows中取词功能按需挂载accessibility注册hook接口">2020.6.22 2A0F：解决linux下ffmpeg+ao库发音引擎（ao库打开设备失败）的问题；linux系统下取词功能修复，macOS/Windows中取词功能按需挂载Accessibility/注册Hook接口：</h5>
+<blockquote>
+<p>在启用屏幕取词，但未使能取词功能的情况下不加载对应的功能模块 &mdash; 降低了资源占用，在Windows中尽可能的规避了Hook对系统及其它程序的负面影响 &mdash; 见前述。</p>
+</blockquote>
+<h5 id="2020618-2a0e为ocr引擎设置默认识别库目录ocr划词功能适配macos和linux系统解决macos版ffmpegao发音引擎问题linux版本添加bass发音引擎为划词增加esc按键支持">2020.6.18 2A0E：为ocr引擎设置默认识别库目录；OCR划词功能适配macOS和Linux系统，解决macOS版ffmpeg+ao发音引擎问题，Linux版本添加bass发音引擎；为划词增加Esc按键支持。</h5>
+<blockquote>
+<p>划词过程中的按键：鼠标右键 - 取消划词；待划屏状态(划取屏幕前) Esc按键- 取消划词；划屏过程中(按住鼠标左键未释放) Esc按键- 取消划取范围，释放鼠标左键后恢复待划屏状态。<br>
+在macOS平台上，因为QMediaPlayer的缺陷(无法从内存buf的io设备播放音频内容)，Qt Multimedia引擎播放不了音频，故实际有效的发音引擎只有ffmpeg+ao。<br>
+此为2A0最终版了，在2A0F版本(如有)将仅解决bug，不再做任何功能改进与更新；从2A10版本开始将逐步完成插件化的处理，代码不再与2A0版本兼容。</p>
+</blockquote>
+<h5 id="202061-2a0d解决枚举不到自安装的tts引擎的问题add-zstd-compression-support-for-zim-formatby-abs62httpsgithubcomgoldendictgoldendictcommit6e85b273377b094e09d0a5a3dbad048cbfb23bd2">2020.6.1 2A0D：解决枚举不到自安装的tts引擎的问题；Add Zstd compression support for ZIM format，by <a href="https://github.com/goldendict/goldendict/commit/6e85b273377b094e09d0a5a3dbad048cbfb23bd2">Abs62</a>。</h5>
+<blockquote>
+<p>关于tts引擎：如果tts组件为32位版本的，则只能为32位版本的程序加载使用，反之，64位的tts引擎组件则只能为64位版本的程序加载使用。<br>
+ocr划词可以较好的取代鼠标取词，如确实需要，将完全以插件程序的方式实现鼠标取词功能。当前鼠标取词存在的弊端：</p>
+<ol>
+<li>功能的实现分两部分，既存在于程序内部，又需要一个外挂程序来配合，相对复杂，取词能力还受限(在很多软件中取不到词)；</li>
+<li>在程序UI(主线程)卡顿时会影响操作系统或其它应用程序的运行，表现为系统相关功能(开始菜单等)或其它应用卡顿或无响应；</li>
+<li>程序存在获取不到全局鼠标或键盘消息的可能(其它进程Hook处理后未继续传递消息)；</li>
+<li>因为使用了Hook(监控鼠标键盘及其它应用的内存信息)及共享内存(进程间通信)，会被部分严苛的杀毒软件判定为木马或病毒软件；</li>
+<li>Hook技术影响操作系统运行的稳定性。&hellip;&hellip;</li>
+</ol>
+</blockquote>
+<h5 id="202058-2a0c增加对全局js脚本文件的支持">2020.5.8 2A0C：增加对全局js脚本文件的支持:</h5>
+<blockquote>
+<p>需要在配置文件目录下新建 user.gjs 文件，在其中添加javascript代码即可，代码对查词结果页面全局有效（每个辞书都可使用其中定义的变量和方法）。例，可以在 user.gjs 中加入jQuery的代码，这样各个辞书就不需要使用单独的jQuery脚本文件了。对查词结果的内存使用会有一定的影响（降低了内存占用），同时减少了文件io操作，对结果页面的解析效率应该也会有小幅度的提升。</p>
+</blockquote>
+<h5 id="202045-2a0b解决全图片辞书mdd中图片读取错乱的bugby-last_idolhttpsforumfreemdictcomttopic1329开放trackclipboardchanges设置项监控剪切版变化取词添加tesseract-ocr划词引擎支持多国家地区语言的选配">2020.4.5 2A0B：解决全图片辞书mdd中图片读取错乱的bug，by <a href="https://forum.freemdict.com/t/topic/1329">last_idol</a>；开放trackClipboardChanges设置项（监控剪切版变化取词）；添加Tesseract OCR划词引擎，支持多国家/地区语言的选配。</h5>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h5 id="2020317-2a0a使用ebu代替eb处理epwing格式字典增加basshttpswwwun4seencombasshtml发音引擎解决程序退出时的异常问题表现为在部分机器上程序退出后不能马上再次启动可能需要等待较长时间或重启电脑后才能启动解决划取ocr到的字符串仅有无效字符标点符号等时程序异常退出的问题解决划词时选取区域为空无字符时程序异常退出的问题划词支持多国家地区语言的选配">2020.3.17 2A0A：使用ebu代替eb处理epwing格式字典；增加<a href="https://www.un4seen.com/bass.html">Bass</a>发音引擎；解决程序退出时的异常问题（表现为在部分机器上程序退出后不能马上再次启动，可能需要等待较长时间或重启电脑后才能启动）；解决划取（ocr）到的字符串仅有无效字符（标点符号等）时程序异常退出的问题，解决划词时选取区域为空（无字符）时程序异常退出的问题；划词支持多国家/地区语言的选配。</h5>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<h5 id="2020225-2a09增加鼠标划词原生内置ocr识别-支持动态划图支持划词时多屏间任意切换双多屏时划词幕布随鼠标游动自动切屏可配置划词热键">2020.2.25 2A09：增加鼠标划词（原生内置OCR）识别 ，支持动态划图，支持划词时多屏间任意切换（双/多屏时划词幕布随鼠标游动自动切屏），可配置划词热键。</h5>
+<h5 id="202026-2a08针对各种格式辞书的索引和查询做优化增加辞书按照-路径目录文件名来排序的功能剔除bgl格式辞书显示的多余换行为mdx辞书添加对-tif-格式图片的支持解决zim和slob格式辞书-tif-格式图片支持问题暂时没有对应格式的图片辞书来测试验证">2020.2.6 2A08：针对各种格式辞书的索引和查询做优化；增加辞书按照 路径（目录+文件名）来排序的功能；剔除bgl格式辞书显示的多余换行；为mdx辞书添加对 tif 格式图片的支持；解决zim和slob格式辞书 tif 格式图片支持问题（暂时没有对应格式的图片辞书来测试验证）。</h5>
+<!-- raw HTML omitted -->
+<h5 id="2020131-2a07全文搜索功能全面优化-----并发索引词头去重界面优化增加全文搜索结果的导入从已保存的文件加载导出保存为文件功能为金山数据的stardict格式辞书增加样式表支持所有该格式类型的辞书共享同一样式-----标签对应的类名称和样式都可由用户自定义">2020.1.31 2A07：全文搜索功能全面优化 &mdash; 并发索引，词头去重，界面优化；增加全文搜索结果的导入（从已保存的文件加载）导出（保存为文件）功能；为金山数据的stardict格式辞书增加样式表支持，所有该格式类型的辞书共享同一样式 &mdash; 标签对应的类名称和样式都可由用户自定义。</h5>
+<blockquote>
+<p>下载并解压<a href="/media/goldendict/sdct_k.style.7z">sdct_k.style.7z</a> (275 字节) ，将解压出的文件放到GD的配置目录下（并按需编辑其中的标签对照表），在自定义的article-style.css添加对应标签的样式属性。</p>
+</blockquote>
+<!-- raw HTML omitted -->
+<h5 id="20200118-2a06挖掘内存使用优化带来的提速潜力查询性能显著提升优化全文搜索和辞书词条对话框的部分实现避免可能出现的内存泄漏和界面假死现象消灭保存文章功能的内存泄漏重构保存文章时的进度显示优化组织查询到的辞书列表以缩短界面阻塞时间">2020.01.18 2A06：挖掘内存使用优化带来的提速潜力，查询性能显著提升；优化全文搜索和辞书词条对话框的部分实现，避免可能出现的内存泄漏和界面假死现象；消灭保存文章功能的内存泄漏；重构保存文章时的进度显示；优化组织查询到的辞书列表以缩短界面阻塞时间。</h5>
+<h5 id="20200108-2a04解决多部epwing格式辞书时创建索引导致程序异常退出的问题针对这格式的辞书创建索引同步进行以避免线程安全问题导致的异常退出版本信息中添加编译时间解决xdxf格式辞书def标签的序号错乱问题">2020.01.08 2A04：解决多部epwing格式辞书时创建索引导致程序异常退出的问题（针对这格式的辞书创建索引同步进行以避免线程安全问题导致的异常退出）；版本信息中添加编译时间；解决xdxf格式辞书def标签的序号错乱问题。</h5>
+<h5 id="20200106-2a02弃用qtxml使用效率更高的pugixml解析库受影响部分mdictxdxfstardict格式辞书和forvo在线发音的解析配置文件的读写配置收藏历史记录文件解决启动到托盘功能失效的问题">2020.01.06 2A02：弃用QtXml，使用效率更高的pugixml解析库，受影响部分：mdict/xdxf/stardict格式辞书和forvo在线发音的解析，配置文件的读写（配置、收藏、历史记录文件）；解决启动到托盘功能失效的问题。</h5>
+<blockquote>
+<p>注意：今后将仅维护2A版本；2A01及后续版本可与之前的老版本并存（同时）运行（共享运行目录和配置/辞书/索引目录），但配置文件并不兼容且并不提供转换工具，使用2A01及后续版本您的所有关于GD偏好的个人设置（编辑菜单的辞书和首选项）都必须手动重新设置。</p>
+</blockquote>
+<h5 id="20191226-2019年终版解决64位msvc2019版gd不能识别大小超2g文件的问题支持修改字典显示名称消灭一堆内存泄漏问题优化启动界面的信息提示并发初始化索引和加载辞书大大减少启动时间和重新扫描文件的耗时">2019.12.26 2019年终版：解决64位msvc2019版GD不能识别大小超2G文件的问题；支持修改字典显示名称；消灭一堆内存泄漏问题；优化启动界面的信息提示；并发初始化索引和加载辞书，大大减少启动时间和重新扫描文件的耗时。</h5>
+<!-- raw HTML omitted -->
+<h5 id="20190312-20191019httpsgithubcomnonwillgoldendictcommitsmaster第三方库更新编译器适配最新版本界面布局调整解决一些影响稳定性导致程序频繁的异常蹦掉的问题为mdx格式辞书增加flash和视频播放支持"><a href="https://github.com/nonwill/goldendict/commits/master">2019.03.12-2019.10.19</a>：第三方库更新；编译器适配最新版本；界面布局调整；解决一些影响稳定性（导致程序频繁的异常蹦掉）的问题；为mdx格式辞书增加flash和视频播放支持；&hellip;&hellip;</h5></div>
+
+
+  </div>
+
+
+  
+
+
+
+
+
+
+<script src="/js/copyCode.js"></script>
+<script src="/js/tooltips.js"></script>
+
+
+<footer>
+    <p style="float:right;margin:0 1rem;">
+        &copy; 2021 <a href="https://github.com/nonwill/nonwill.github.io/issues">nonwill.</a><a href="/donate/" style='text-decoration:none;font-family:webdings;color:red;'>Y</a> 
+        
+      </p>
+  <hr>
+  <hr>
+
+  
+
+  <ul class="tags"  style="float: left!important;">
+      
+        <span>标签:</span>
+        <li><a class="link" href="/tags/GoldenDict"> GoldenDict </a></li><li><a class="link" href="/tags/OCR"> OCR </a></li><li><a class="link" href="/tags/%e5%88%92%e8%af%8d"> 划词 </a></li>
+      
+      <span>&nbsp;&nbsp;</span>
+        
+        <span>分类:</span>
+        <li><a class="link" href="/categories/%e8%be%9e%e4%b9%a6"> 辞书 </a></li><li><a class="link" href="/categories/%e5%ad%a6%e4%b9%a0"> 学习 </a></li><li><a class="link" href="/categories/%e5%88%92%e8%af%8d"> 划词 </a></li><li><a class="link" href="/categories/Qt"> Qt </a></li>
+      
+  </ul>
+  
+  <br>
+
+
+</footer>
+</div> 
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158609417-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-158609417-1');
+</script>
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.4/dist/medium-zoom.min.js"></script>
+
+<script>
+  const zoom = mediumZoom()
+  
+  zoom.attach("p img")
+</script>
+
+
+
+
+
+
+    
+
+
+
+
+</body>
+
+</html>

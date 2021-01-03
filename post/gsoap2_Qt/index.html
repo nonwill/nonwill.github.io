@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-language" content="zh-cn" />
+    
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    
+    
+    <title>使用qt开发gsoap程序</title>
+
+    
+
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+                anchors.options = {
+                visible: 'hover',
+                placement: 'left',
+                icon: "🌜"
+                };
+            anchors.add();
+            })
+        </script>
+        
+        
+
+        
+            <script src="https://cdn.bootcss.com/clipboard.js/2.0.4/clipboard.min.js"></script>
+            <link href="/css/tooltips.css" rel="stylesheet">
+            
+        
+
+        
+        
+        <style type="text/css">
+            body {background-color: #fbf6ec;}
+        </style>
+        
+
+        
+        
+            <link rel="stylesheet" href="/css/main.css">
+        
+
+        
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+    
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    
+    
+    
+    <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?e9ae8a920dfd9a2a27274a47c8ed4473";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+
+</head>
+
+
+<body>
+    <script>
+        window.addEventListener("resize", resizeThrottler, false);
+
+        var resizeTimeout;
+        function resizeThrottler() {
+        
+        if ( !resizeTimeout ) {
+            resizeTimeout = setTimeout(function() {
+            resizeTimeout = null;
+            actualResizeHandler();
+        
+            
+            }, 66);
+        }
+        }
+        actualResizeHandler()
+        function actualResizeHandler() {
+                if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent))
+                {
+                    document.body.classList.add('mobile');
+                }else{
+                    document.body.classList.remove('mobile');  
+                }
+    }</script>
+
+    
+    
+
+
+    
+
+<div class="inner" style="position:relative;">
+  
+  <div class="side-btn"><a href="/" class="back">Home</a></div>
+  
+<div class="blog-post">
+  <h2>使用qt开发gsoap程序</h2>
+        <h2 id="1-从httpgsoap2sourceforgenet下载最新的gsoap2源码包">1. 从http://gsoap2.sourceforge.net/下载最新的gsoap2源码包。</h2>
+<blockquote>
+<p>通过http://www.cppblog.com/qiujian5628/archive/2008/10/11/54019.html(EXP1)初步了解了gsoap2的使用方法（下属示例使用了该文章的例子）。</p>
+</blockquote>
+<h2 id="2-qt项目目录结构">2. qt项目目录结构</h2>
+<blockquote>
+<p>其中add.cpp、add_client.cpp分别为服务端和客户端的例子程序， gsoap2应用项目需要放在learning目录下。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gsoap2                    <span style="color:#75715e"># gsoap2 开发文档根目录</span>
+│  gsoap.pri              <span style="color:#75715e"># 引入gsoap2开发用源码文件</span>
+│  gsoap28.pro            <span style="color:#75715e"># 根项目文件</span>
+│ 
+├─bin		        <span style="color:#75715e"># gsoap2工具链(来自于sourceforge上下载的源码包)及编译后的二进制文件</span>
+│      soapcpp2.exe
+│      wsdl2h.exe
+│
+├─gsoap                   <span style="color:#75715e"># gsoap2开发用源码文件所在目录(来自于sourceforge上下载的源码包)</span>
+│      .dirstamp
+│      dom.c
+│      dom.cpp
+│      stdsoap2.c
+│      stdsoap2.cpp
+│      stdsoap2.h
+│      typemap.dat
+│
+└─leaning                <span style="color:#75715e"># gsoap2应用程序所在根目录</span>
+    │  leaning.pri       <span style="color:#75715e"># gsoap2应用用的源码及命令头文件</span>
+    │  leaning.pro       <span style="color:#75715e"># 应用程序管理</span>
+    ├─nsmap              <span style="color:#75715e"># 接口定义文件所在目录</span>
+    │      add.h         <span style="color:#75715e"># 接口文件名字必须与gsoap2项目中GSOAP_NAME值一样</span>
+    │      calc.h
+    ├─add                <span style="color:#75715e"># 服务器应用目录</span>
+    │      add.pro       <span style="color:#75715e"># 服务器项目</span>
+    │      main.cpp      <span style="color:#75715e"># 项目源码(来自于(EXP1)所述文档)</span>
+    ├─add_client         <span style="color:#75715e"># 客户端应用目录</span>
+    │      add_client.pro <span style="color:#75715e"># 客户端项目</span>
+    │      main.cpp      <span style="color:#75715e"># 客户端源码(来自于(EXP1)所述文档)</span>
+    ├─calc
+    │      calc.pro
+    │      main.cpp
+    ├─calc_client
+           calc_client.pro
+           main.cpp
+</code></pre></div><h2 id="3-gsoap2应用程序项目">3. gsoap2应用程序项目</h2>
+<p>gsoap28.pro</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">TEMPLATE <span style="color:#f92672">=</span> subdirs
+SUBDIRS <span style="color:#f92672">+=</span> leaning
+</code></pre></div><p>gsoap.pri</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">INCLUDEPATH <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>gsoap
+ 
+HEADERS <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>gsoap<span style="color:#f92672">/</span>stdsoap2.h
+ 
+contains(CONFIG,use_c_gsoap_api) {
+    SOURCES <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>gsoap<span style="color:#f92672">/</span>stdsoap2.c \
+               <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>gsoap<span style="color:#f92672">/</span>dom.c
+} <span style="color:#66d9ef">else</span> {
+    SOURCES <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>gsoap<span style="color:#f92672">/</span>stdsoap2.cpp \
+               <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>gsoap<span style="color:#f92672">/</span>dom.cpp
+}
+ 
+LIBS <span style="color:#f92672">+=</span> <span style="color:#f92672">-</span>lws2_32
+</code></pre></div><p>leaning.pri</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">DESTDIR <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>..<span style="color:#f92672">/</span>bin
+ 
+include(<span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>..<span style="color:#f92672">/</span>gsoap.pri)
+INCLUDEPATH <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>nsmap
+ 
+<span style="color:#75715e">#contains(CONFIG,soap_server) {
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">!</span>exists(.<span style="color:#f92672">/</span>temp)<span style="color:#f92672">:</span>system(<span style="color:#e6db74">&#34;mkdir  temp&#34;</span>)
+    SOAP_GEN_DIR<span style="color:#f92672">=</span> .<span style="color:#f92672">/</span>temp<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}
+    <span style="color:#f92672">!</span>exists(<span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR})<span style="color:#f92672">:</span>system(<span style="color:#e6db74">&#34;cd temp &amp;&amp; mkdir $${GSOAP_NAME}&#34;</span>)
+    <span style="color:#f92672">!</span>exists(<span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}.wsdl) {
+        system(<span style="color:#e6db74">&#34;soapcpp2.exe -d./$${SOAP_GEN_DIR} ./nsmap/$${GSOAP_NAME}.h&#34;</span>)
+    }
+<span style="color:#75715e">#}
+</span><span style="color:#75715e"></span> 
+SOAP_GEN_DIR<span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>temp<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}
+ 
+SOAP_M_HEADERS <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapH.h \
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapStub.h
+SOAP_M_SOURCES <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapC.cpp \
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapServer.cpp
+ 
+SOAP_C_HEADERS <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapH.h\
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapStub.h
+SOAP_C_SOURCES <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapC.cpp \
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapClient.cpp
+ 
+SOAP_L_SOURCES <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapC.cpp \
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapClientLib.cpp \
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>soapServerLib.cpp
+ 
+SOAP_CP_OTHERS <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}.<span style="color:#f92672">*</span>.req.xml \
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}.<span style="color:#f92672">*</span>.res.xml \
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span>ns.xsd \
+                  <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}.nsmap
+ 
+INCLUDEPATH <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}
+contains(CONFIG,soap_server) {
+    TARGET <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}
+    HEADERS <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_M_HEADERS}
+    SOURCES <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_M_SOURCES}
+    QMAKE_CLEAN <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_GEN_DIR}<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}.wsdl \
+               <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_M_HEADERS} \
+               <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_M_SOURCES} \
+               <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_C_HEADERS} \
+               <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_C_SOURCES} \
+               <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_CP_OTHERS} \
+               <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_L_SOURCES}
+} <span style="color:#66d9ef">else</span> {
+    TARGET <span style="color:#f92672">=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}_client
+    HEADERS <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_C_HEADERS}
+    SOURCES <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{SOAP_C_SOURCES}
+}
+ 
+HEADERS <span style="color:#f92672">+=</span> <span style="color:#960050;background-color:#1e0010">$$</span>{PWD}<span style="color:#f92672">/</span>nsmap<span style="color:#f92672">/</span><span style="color:#960050;background-color:#1e0010">$$</span>{GSOAP_NAME}.h
+</code></pre></div><p>leaning.pro</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">TEMPLATE <span style="color:#f92672">=</span> subdirs
+CONFIG <span style="color:#f92672">+=</span> ordered
+SUBDIRS <span style="color:#f92672">+=</span> add \
+           add_client \
+           calc \
+           calc_client
+</code></pre></div><p>add.pro</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">GSOAP_NAME <span style="color:#f92672">=</span> add
+TEMPLATE <span style="color:#f92672">=</span> app
+CONFIG <span style="color:#f92672">+=</span> console soap_server
+ 
+include(..<span style="color:#f92672">/</span>leaning.pri)
+ 
+HEADERS <span style="color:#f92672">+=</span>
+ 
+SOURCES <span style="color:#f92672">+=</span> \
+    main.cpp
+</code></pre></div><p>add_client.pro</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-c" data-lang="c">GSOAP_NAME <span style="color:#f92672">=</span> add
+TEMPLATE <span style="color:#f92672">=</span> app
+CONFIG <span style="color:#f92672">+=</span> console
+ 
+include(..<span style="color:#f92672">/</span>leaning.pri)
+ 
+HEADERS <span style="color:#f92672">+=</span>
+ 
+SOURCES <span style="color:#f92672">+=</span> \
+    main.cpp
+</code></pre></div><h2 id="4-编译后的项目目录结构">4. 编译后的项目目录结构</h2>
+<blockquote>
+<p>nsmap下的接口文件为手动编辑所得（c的接口定义，通过它生成gsoap项目所需的源码文件）。<br>
+temp目录为编译中间产物，由编译时自动产生。</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">gsoap2
+│  gsoap.pri
+│  gsoap28.pro
+│  gsoap28.pro.user
+│  mmsys.env
+│
+├─bin
+│      add.exe
+│      add_client.exe
+│      calc.exe
+│      calc_client.exe
+│      soapcpp2.exe
+│      wsdl2h.exe
+│
+├─gsoap
+│      .dirstamp
+│      dom.c
+│      dom.cpp
+│      stdsoap2.c
+│      stdsoap2.cpp
+│      stdsoap2.h
+│      typemap.dat
+│
+└─leaning
+    │  leaning.pri
+    │  leaning.pro
+    │
+    ├─add
+    │      add.pro
+    │      main.cpp
+    │
+    ├─add_client
+    │      add_client.pro
+    │      main.cpp
+    │
+    ├─calc
+    │      calc.pro
+    │      main.cpp
+    │
+    ├─calc_client
+    │      calc_client.pro
+    │      main.cpp
+    │
+    ├─nsmap
+    │      add.h
+    │      calc.h
+    │
+    └─temp
+        ├─add
+        │      add.add.req.xml
+        │      add.add.res.xml
+        │      add.nsmap
+        │      add.wsdl
+        │      ns.xsd
+        │      soapC.cpp
+        │      soapClient.cpp
+        │      soapClientLib.cpp
+        │      soapH.h
+        │      soapServer.cpp
+        │      soapServerLib.cpp
+        │      soapStub.h
+        │
+        └─calc
+                calc.add.req.xml
+                calc.add.res.xml
+                calc.div.req.xml
+                calc.div.res.xml
+                calc.mul.req.xml
+                calc.mul.res.xml
+                calc.nsmap
+                calc.pow.req.xml
+                calc.pow.res.xml
+                calc.sub.req.xml
+                calc.sub.res.xml
+                calc.wsdl
+                ns.xsd
+                soapC.cpp
+                soapClient.cpp
+                soapClientLib.cpp
+                soapH.h
+                soapServer.cpp
+                soapServerLib.cpp
+                soapStub.h9
+</code></pre></div>
+  </div>
+
+
+  
+
+
+
+
+
+
+<script src="/js/copyCode.js"></script>
+<script src="/js/tooltips.js"></script>
+
+
+<footer>
+    <p style="float:right;margin:0 1rem;">
+        &copy; 2021 <a href="https://github.com/nonwill/nonwill.github.io/issues">nonwill.</a><a href="/donate/" style='text-decoration:none;font-family:webdings;color:red;'>Y</a> 
+        
+      </p>
+  <hr>
+  <hr>
+
+  
+
+  <ul class="tags"  style="float: left!important;">
+      
+        <span>标签:</span>
+        <li><a class="link" href="/tags/gsoap"> gsoap </a></li><li><a class="link" href="/tags/c&#43;&#43;"> c&#43;&#43; </a></li><li><a class="link" href="/tags/c"> c </a></li>
+      
+      <span>&nbsp;&nbsp;</span>
+        
+        <span>分类:</span>
+        <li><a class="link" href="/categories/soap"> soap </a></li><li><a class="link" href="/categories/Qt"> Qt </a></li><li><a class="link" href="/categories/c&#43;&#43;"> c&#43;&#43; </a></li><li><a class="link" href="/categories/c"> c </a></li>
+      
+  </ul>
+  
+  <br>
+
+
+</footer>
+</div> 
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-158609417-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-158609417-1');
+</script>
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.4/dist/medium-zoom.min.js"></script>
+
+<script>
+  const zoom = mediumZoom()
+  
+  zoom.attach("p img")
+</script>
+
+
+
+
+
+
+    
+
+
+
+
+</body>
+
+</html>

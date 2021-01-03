@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on nonwill</title>
+    <link>/post/</link>
+    <description>Recent content in Posts on nonwill</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 01 Jan 2021 00:20:53 +0800</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GoldenDict&#43;&#43;OCR 「划词版」</title>
+      <link>/post/goldendict/</link>
+      <pubDate>Fri, 01 Jan 2021 00:20:53 +0800</pubDate>
+      
+      <guid>/post/goldendict/</guid>
+      <description>.notice{padding:8px 18px 6px;line-height:24px;margin-bottom:24px;border-radius:4px;color:#444;background:#e7f2fa}.notice p:last-child{margin-bottom:0}.notice-title{margin:-18px -18px 0px;padding:0px 4px;border-radius:4px 4px 0 0;font-weight:700;color:#fff;background:#6ab0de}.notice-title:before{margin-right:4px;font-weight:400}.notice.warning .notice-title{background:rgba(217,83,79,.9)}.notice.warning .notice-title:before{content:&#39;⚠&#39;}.notice.warning{background:#fae2e2}.notice.info .notice-title{background:#f0b37e}.notice.info .notice-title:before{content:&#39;✆&#39;}.notice.info{background:#fff2db}.notice.note .notice-title{background:#6ab0de}.notice.note .notice-title:before{content:&#39;✔&#39;}.notice.note{background:#e7f2fA}.notice.tip .notice-title{background:rgba(92,184,92,.8)}.notice.tip .notice-title:before{content:&#39;✉&#39;}.notice.tip{background:#e6f9e6}Built-in-OCR.Stable.Efficient.鼠标划词.稳定极速
+Demos·演示: OCR·划词 macOS Starting·启动 Gif·动画
+Greetings to GoldenDict, features special：
+ 并发索引辞书加速启动，信息全程可视 全文搜索结果可导入导出，一次搜索，随时使用 功能模块化，插件按需加载，降低内存占用 多个音频引擎插件，随切随用 多引擎OCR划词，支持自动切屏、动态划屏 依辞书根目录的自动群组，一键分组 文章切换，恢复群组/关键字/候选词等上下文信息 全局js脚本，给您自主优化查询性能的空间 支持字典别名，支持按目录+文件名排序辞书 优化mdx格式，支持flash播放和tif格式图片 文章历史总量可控，低配电脑也能顺畅运行 全优化，加速查询，解决内存泄露、崩溃等问题  This is improved build over the official. If you find it useful, please consider donating to help maintain it.「如本程序对您有所帮助，请考虑捐赠以帮助维护她，您的支持将予我以动力💖」
+ Deployment.安装部署
+声明：GoldenDict++OCR划词版不以任何售卖形式分发，仅在非盈利、非商用及帮学助教的前提下您可以下载使用与分享本程序；下载或使用本程序将视同您已知晓并同意本声明所示内容。
+Last updated date: 1 January 2021</description>
+    </item>
+    
+    <item>
+      <title>VMWare中Manjaro永久修改分辨率</title>
+      <link>/post/vmware_manjaro/</link>
+      <pubDate>Tue, 29 Dec 2020 18:12:27 +0800</pubDate>
+      
+      <guid>/post/vmware_manjaro/</guid>
+      <description>1. 打开或创建xorg.conf： sudo nano /etc/X11/xorg.conf 2. 在文件中添加如下部分： Section &amp;#34;Monitor&amp;#34; Identifier &amp;#34;Configured Monitor&amp;#34; Modeline &amp;#34;1920x1080_60.00&amp;#34; 173.00 1920 2048 2248 2576 1080 1083 1088 1120 -hsync +vsync Option &amp;#34;PreferredMode&amp;#34; &amp;#34;1920x1080_60.00&amp;#34; EndSection Section &amp;#34;Screen&amp;#34; Identifier &amp;#34;Default Screen&amp;#34; Monitor &amp;#34;Configured Monitor&amp;#34; Device &amp;#34;Configured Video Device&amp;#34; EndSection Section &amp;#34;Device&amp;#34; Identifier &amp;#34;Configured Video Device&amp;#34; EndSection 3. 保存文件并重启系统 </description>
+    </item>
+    
+    <item>
+      <title>Qt without Xcode</title>
+      <link>/post/qt-without-xcode/</link>
+      <pubDate>Sun, 19 Apr 2020 23:20:53 +0800</pubDate>
+      
+      <guid>/post/qt-without-xcode/</guid>
+      <description>From https://gist.github.com/shoogle How to use Qt Creator for software development on macOS without having to install Xcode
+Justification Qt refuses to install on macOS unless Apple&amp;rsquo;s Xcode is installed beforehand. This is unfortunate because:
+ Xcode is huge!  The full IDE is a 5 GB download, and can occupy 20 GB+ of space on disk.   Qt doesn&amp;rsquo;t actually need the full IDE.  Only Xcode&amp;rsquo;s command line utilities are required for macOS application development¹.</description>
+    </item>
+    
+    <item>
+      <title>句聊 Lanchat 1.5.0</title>
+      <link>/post/lanchat/</link>
+      <pubDate>Thu, 10 Jan 2019 23:20:53 +0800</pubDate>
+      
+      <guid>/post/lanchat/</guid>
+      <description>Greetings to lanmessenger 下载:  lanchat-1.5.0-win64
+ 在Lan Messenger的基础上：  重构了其连接管理、消息处理和分发部分的实现。 TCP监听端口可改(UDP端口相同的用户相互可见)。 改用QJson组织消息。 内存管理做了增强，减少了程序运行时占用的内存。 复用其UI并做了改进及问题修复。  下一步：  可用性及稳定性改进，UI重构与改进  远期：  支持离线用户管理 增加插件支持扩展  </description>
+    </item>
+    
+    <item>
+      <title>你好，HUGO，开个博客</title>
+      <link>/post/hellow/</link>
+      <pubDate>Wed, 09 Jan 2019 16:12:27 +0800</pubDate>
+      
+      <guid>/post/hellow/</guid>
+      <description>博客建好了，来驶一下哈 Run&amp;hellip;&amp;hellip;</description>
+    </item>
+    
+    <item>
+      <title>使用qt开发gsoap程序</title>
+      <link>/post/gsoap2_Qt/</link>
+      <pubDate>Fri, 16 Jan 2015 11:32:32 +0800</pubDate>
+      
+      <guid>/post/gsoap2_Qt/</guid>
+      <description>1. 从http://gsoap2.sourceforge.net/下载最新的gsoap2源码包。  通过http://www.cppblog.com/qiujian5628/archive/2008/10/11/54019.html(EXP1)初步了解了gsoap2的使用方法（下属示例使用了该文章的例子）。
+ 2. qt项目目录结构  其中add.cpp、add_client.cpp分别为服务端和客户端的例子程序， gsoap2应用项目需要放在learning目录下。
+ gsoap2 # gsoap2 开发文档根目录 │ gsoap.pri # 引入gsoap2开发用源码文件 │ gsoap28.pro # 根项目文件 │ ├─bin	# gsoap2工具链(来自于sourceforge上下载的源码包)及编译后的二进制文件 │ soapcpp2.exe │ wsdl2h.exe │ ├─gsoap # gsoap2开发用源码文件所在目录(来自于sourceforge上下载的源码包) │ .dirstamp │ dom.c │ dom.cpp │ stdsoap2.c │ stdsoap2.cpp │ stdsoap2.h │ typemap.dat │ └─leaning # gsoap2应用程序所在根目录 │ leaning.pri # gsoap2应用用的源码及命令头文件 │ leaning.pro # 应用程序管理 ├─nsmap # 接口定义文件所在目录 │ add.h # 接口文件名字必须与gsoap2项目中GSOAP_NAME值一样 │ calc.h ├─add # 服务器应用目录 │ add.</description>
+    </item>
+    
+    <item>
+      <title>PostgreSQL  注册启动 及 停用卸载 批处理脚本</title>
+      <link>/post/PostgreSQL-_service/</link>
+      <pubDate>Mon, 12 Jan 2015 23:12:27 +0800</pubDate>
+      
+      <guid>/post/PostgreSQL-_service/</guid>
+      <description>注册启动 pg_install.bat
+@echo off set PGSQL_DIR=%~dp0 if not &amp;#34;%PGSQL_HOME%&amp;#34;==&amp;#34;&amp;#34; ( if not &amp;#34;%PGSQL_HOME%&amp;#34;==&amp;#34;%PGSQL_DIR%&amp;#34; ( echo PGSQL_HOME=%PGSQL_HOME% != PGSQL_DIR=%PGSQL_DIR% goto pg_ends ) ) else ( set PGSQL_HOME=%PGSQL_DIR% echo PGSQL_HOME must be set as PGSQL_DIR=%PGSQL_DIR% ) set PATH=%PGSQL_HOME%bin;%PGSQL_HOME%lib;%PATH% pg_isready -h localhost 1&amp;gt;nul 2&amp;gt;nul @if &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; ( echo PostgreSQL is running. goto pg_ends ) echo &amp;#34;PGSQL_HOME = %PGSQL_HOME%&amp;#34; echo Install and start PostgreSQL server ... @if not exist %PGSQL_HOME%data ( mkdir %PGSQL_HOME%data %PGSQL_HOME%bin/initdb --username=root --pgdata=%PGSQL_HOME%data --encoding=UTF8 --locale=chinese rem @if not &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; ( rem There ERRORLEVEL is 2, but successfully inited rem echo PostgreSQL initdb failed.</description>
+    </item>
+    
+    <item>
+      <title>MYSQL 注册启动 及 停用卸载 批处理脚本</title>
+      <link>/post/mysql_service/</link>
+      <pubDate>Mon, 12 Jan 2015 19:12:27 +0800</pubDate>
+      
+      <guid>/post/mysql_service/</guid>
+      <description>注册启动 my_install.bat
+@echo off set MYSQL_DIR=%~dp0 rem set MYSQL_DIR=%cd% if not &amp;#34;%MYSQL_HOME%&amp;#34;==&amp;#34;&amp;#34; ( if not &amp;#34;%MYSQL_HOME%&amp;#34;==&amp;#34;%MYSQL_DIR%&amp;#34; ( echo MYSQL_HOME=%MYSQL_HOME% != MYSQL_DIR=%MYSQL_DIR% goto my_ends ) ) else ( set MYSQL_HOME=%MYSQL_DIR% echo MYSQL_HOME must be set as MYSQL_DIR=%MYSQL_DIR% ) set PATH=%MYSQL_HOME%bin;%MYSQL_HOME%lib;%PATH% mysqladmin -uroot ping 1&amp;gt;nul 2&amp;gt;nul @if &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; ( echo Mysql is running. goto my_ends ) echo &amp;#34;MYSQL_HOME = %MYSQL_HOME%&amp;#34; echo Install and start mysql server ... mysqld --install mysql_srv sc config mysql_srv start= DEMAND rem sc query mysql_srv net start mysql_srv rem sc query mysql_srv mysqladmin -uroot ping 1&amp;gt;nul 2&amp;gt;nul @if &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; echo &amp;#34;Mysql started successfully&amp;#34; :my_ends cmd /K 停用卸载 my_uninstall.</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43; 的 new、delete 与 C 的 malloc、free 的区别</title>
+      <link>/post/cpp_memory/</link>
+      <pubDate>Mon, 24 Nov 2014 19:12:27 +0800</pubDate>
+      
+      <guid>/post/cpp_memory/</guid>
+      <description>小程序以验证C/C++内存管理的差异（写的不是很严谨，仅为主题，分别在redhat 5.6 x86_64 + gcc-4.9.2，windows 7 x64 + gcc-4.9.2 编译运行通过）：
+#include &amp;lt;iostream&amp;gt;#include &amp;lt;typeinfo&amp;gt;#include &amp;lt;stdlib.h&amp;gt;#include &amp;lt;stdio.h&amp;gt;void t_cpu() { #define print_type(t) std::cout &amp;lt;&amp;lt; &amp;#34;Size of &amp;#34; &amp;lt;&amp;lt; #t &amp;lt;&amp;lt; &amp;#34;: &amp;#34; &amp;lt;&amp;lt; sizeof(t) &amp;lt;&amp;lt; std::endl  print_type(char); print_type(unsigned char); print_type(short); print_type(unsigned short); print_type(int); print_type(unsigned int); print_type(size_t); print_type(long); print_type(unsigned long); print_type(long long); print_type(unsigned long long); print_type(float); print_type(double); print_type(long double); print_type(void*); } class __T { public: int _1; int _2; __T(){ _1 = 1; _2 = 2; } ~__T(){ printf(&amp;#34;~&amp;#34;); } void init() { _1 = 7; _2 = 8; } void test() { _1 += _2; } }; void t_new(size_t sl) { __T *pchar = new __T[sl]; size_t *psize = (size_t*)(((char*)pchar)-sizeof(size_t)); printf(&amp;#34;\nTest new and delete \nsize: %ld pchar: %p psize: %p *psize: %ld \n&amp;#34;, sl, pchar, psize, *psize); delete []pchar; printf(&amp;#34;\n&amp;#34;); } void t_malloc(size_t sl) { printf(&amp;#34;\nTest malloc and free \nsize of class __T: %ld \n&amp;#34;, sizeof(class __T)); __T *pchar = (__T *)malloc(sl * sizeof(class __T)); size_t *psize = (size_t*)(((char*)pchar)-sizeof(size_t)); printf(&amp;#34;size: %ld pchar: %p psize: %p *psize: %ld \n&amp;#34;, sl, pchar, psize, *psize); free(pchar); } void t_new_free(size_t sl) { __T *pchar = new __T[sl]; size_t *psize = (size_t*)(((char*)pchar)-sizeof(size_t)); printf(&amp;#34;\nTest new and free \nsize: %ld pchar: %p psize: %p *psize: %ld \n&amp;#34;, sl, pchar, psize, *psize); //delete []pchar;  for (__T *t = pchar; t &amp;lt; pchar + sl; ++t) { t-&amp;gt;~__T(); } free(psize); printf(&amp;#34;\n&amp;#34;); } void t_malloc_delete(size_t sl) { printf(&amp;#34;\nTest malloc and delete \nsize of class __T: %ld \n&amp;#34;, sizeof(class __T)); size_t *psize = (size_t *)malloc(sl * sizeof(class __T) + sizeof(size_t)); __T *pchar = (__T*)(((char*)psize)+sizeof(size_t)); *psize = sl; //for (__T *t = pchar; t &amp;lt; pchar + sl; ++t) {  // t-&amp;gt;init();  //}  printf(&amp;#34;size: %ld pchar: %p psize: %p *psize: %ld \n&amp;#34;, sl, pchar, psize, *psize); delete [] pchar; printf(&amp;#34;\n&amp;#34;); } int main() { t_cpu(); t_new(48); t_malloc(32); t_new_free(16); t_malloc_delete(8); return 0; } 输出（redhat）：</description>
+    </item>
+    
+    <item>
+      <title>使用shc简单加密后的脚本文件恢复</title>
+      <link>/post/uncomp_shc/</link>
+      <pubDate>Tue, 25 Feb 2014 16:12:27 +0800</pubDate>
+      
+      <guid>/post/uncomp_shc/</guid>
+      <description>#!/bin/sh ############################################################## # Used to unzip script files generated by shc # ############################################################## shcd_help() { echo &amp;#34; Used to unzip script file generated by shc.&amp;#34; echo &amp;#34; Usage:&amp;#34; echo &amp;#34; 0. shcd -h|?|-help ---- Current you see&amp;#34; echo &amp;#34; 1. shcd inputfile ---- 解压单个文件(输出文件inpfile.bat)&amp;#34; echo &amp;#34; 2. shcd inpfile outpfile ---- 解压单个文件(输出文件outpfile)&amp;#34; echo &amp;#34; 3. shcd -d ---- 深层目录遍历解压(输出文件*.bat)&amp;#34; echo &amp;#34; 4. shcd -a ---- 当前目录遍历解压(输出文件*.bat)&amp;#34; exit 0 } get_skip() { skip=0 while read skip_line do let &amp;#34;skip -= 1&amp;#34; skl_f=&amp;#34;none&amp;#34; skipstrlist=$(echo $skip_line|tr &amp;#34;=&amp;#34; &amp;#34;\n&amp;#34;) for xs in $skipstrlist; do if [ &amp;#34;$skl_f&amp;#34; = &amp;#34;none&amp;#34; ]; then if [ &amp;#34;$xs&amp;#34; = &amp;#34;skip&amp;#34; ]; then skl_f=&amp;#34;found&amp;#34; else break; fi elif [ &amp;#34;$skl_f&amp;#34; = &amp;#34;found&amp;#34; ]; then skip=$xs; break else break fi done if [ &amp;#34;$skl_f&amp;#34; = &amp;#34;found&amp;#34; ] || [ $skip -le -2 ]; then break fi done &amp;lt; &amp;#34;$1&amp;#34; echo $skip } ucount=0 uncomp_shc() { skipline=$(get_skip $1) if [ &amp;#34;$skipline&amp;#34; = &amp;#34;&amp;#34; ] || [ $skipline -le 1 ]; then echo &amp;#34;%&amp;gt;_&amp;lt;% Skip flag not found: $1&amp;#34; else if tail -n +&amp;#34;$skipline&amp;#34; &amp;#34;$1&amp;#34; | gzip -cd &amp;gt; &amp;#34;$2&amp;#34;; then let &amp;#34;ucount += 1&amp;#34; echo &amp;#34;^_^ $ucount.</description>
+    </item>
+    
+    <item>
+      <title>回收VMWare虚拟机占用的磁盘空间</title>
+      <link>/post/vmware_shrink/</link>
+      <pubDate>Mon, 05 Nov 2012 18:12:27 +0800</pubDate>
+      
+      <guid>/post/vmware_shrink/</guid>
+      <description>1. 开虚拟机，root，每个分区下： cat /dev/zero &amp;gt; zero.fill;sync;sleep 1;sync;rm -f zero.fill 2. 宿主机执行命令： vmware-vdiskmanager.exe -k *.vmdk 3. 以下这些情况是无法使用shrink功能的:  ★使用默认方式新建的GSX Server虚拟机。
+★使用了快照功能的虚拟机。
+★使用了物理磁盘为虚拟机磁盘。
+★虚拟磁盘保存在CD-ROM或DVD-ROM上。
+★你不能收缩预分配的磁盘。
+在进行收缩之前，需要删除创建的快照，之后，直接登录虚拟，打开VmwareTools就可能收缩磁盘了。
+ /dev/null and /dev/zero:  /dev/null，外号叫无底洞，你可以向它输出任何数据，它通吃，并且不会撑着！
+/dev/zero，是一个输入设备，你可你用它来初始化文件。
+ </description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>db on nonwill</title>
+    <link>/categories/db/</link>
+    <description>Recent content in db on nonwill</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 12 Jan 2015 23:12:27 +0800</lastBuildDate><atom:link href="/categories/db/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>PostgreSQL  注册启动 及 停用卸载 批处理脚本</title>
+      <link>/post/PostgreSQL-_service/</link>
+      <pubDate>Mon, 12 Jan 2015 23:12:27 +0800</pubDate>
+      
+      <guid>/post/PostgreSQL-_service/</guid>
+      <description>注册启动 pg_install.bat
+@echo off set PGSQL_DIR=%~dp0 if not &amp;#34;%PGSQL_HOME%&amp;#34;==&amp;#34;&amp;#34; ( if not &amp;#34;%PGSQL_HOME%&amp;#34;==&amp;#34;%PGSQL_DIR%&amp;#34; ( echo PGSQL_HOME=%PGSQL_HOME% != PGSQL_DIR=%PGSQL_DIR% goto pg_ends ) ) else ( set PGSQL_HOME=%PGSQL_DIR% echo PGSQL_HOME must be set as PGSQL_DIR=%PGSQL_DIR% ) set PATH=%PGSQL_HOME%bin;%PGSQL_HOME%lib;%PATH% pg_isready -h localhost 1&amp;gt;nul 2&amp;gt;nul @if &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; ( echo PostgreSQL is running. goto pg_ends ) echo &amp;#34;PGSQL_HOME = %PGSQL_HOME%&amp;#34; echo Install and start PostgreSQL server ... @if not exist %PGSQL_HOME%data ( mkdir %PGSQL_HOME%data %PGSQL_HOME%bin/initdb --username=root --pgdata=%PGSQL_HOME%data --encoding=UTF8 --locale=chinese rem @if not &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; ( rem There ERRORLEVEL is 2, but successfully inited rem echo PostgreSQL initdb failed.</description>
+    </item>
+    
+    <item>
+      <title>MYSQL 注册启动 及 停用卸载 批处理脚本</title>
+      <link>/post/mysql_service/</link>
+      <pubDate>Mon, 12 Jan 2015 19:12:27 +0800</pubDate>
+      
+      <guid>/post/mysql_service/</guid>
+      <description>注册启动 my_install.bat
+@echo off set MYSQL_DIR=%~dp0 rem set MYSQL_DIR=%cd% if not &amp;#34;%MYSQL_HOME%&amp;#34;==&amp;#34;&amp;#34; ( if not &amp;#34;%MYSQL_HOME%&amp;#34;==&amp;#34;%MYSQL_DIR%&amp;#34; ( echo MYSQL_HOME=%MYSQL_HOME% != MYSQL_DIR=%MYSQL_DIR% goto my_ends ) ) else ( set MYSQL_HOME=%MYSQL_DIR% echo MYSQL_HOME must be set as MYSQL_DIR=%MYSQL_DIR% ) set PATH=%MYSQL_HOME%bin;%MYSQL_HOME%lib;%PATH% mysqladmin -uroot ping 1&amp;gt;nul 2&amp;gt;nul @if &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; ( echo Mysql is running. goto my_ends ) echo &amp;#34;MYSQL_HOME = %MYSQL_HOME%&amp;#34; echo Install and start mysql server ... mysqld --install mysql_srv sc config mysql_srv start= DEMAND rem sc query mysql_srv net start mysql_srv rem sc query mysql_srv mysqladmin -uroot ping 1&amp;gt;nul 2&amp;gt;nul @if &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; echo &amp;#34;Mysql started successfully&amp;#34; :my_ends cmd /K 停用卸载 my_uninstall.</description>
+    </item>
+    
+  </channel>
+</rss>

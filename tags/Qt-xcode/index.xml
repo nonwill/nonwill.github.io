@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Qt xcode on nonwill</title>
+    <link>/tags/Qt-xcode/</link>
+    <description>Recent content in Qt xcode on nonwill</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sun, 19 Apr 2020 23:20:53 +0800</lastBuildDate><atom:link href="/tags/Qt-xcode/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Qt without Xcode</title>
+      <link>/post/qt-without-xcode/</link>
+      <pubDate>Sun, 19 Apr 2020 23:20:53 +0800</pubDate>
+      
+      <guid>/post/qt-without-xcode/</guid>
+      <description>From https://gist.github.com/shoogle How to use Qt Creator for software development on macOS without having to install Xcode
+Justification Qt refuses to install on macOS unless Apple&amp;rsquo;s Xcode is installed beforehand. This is unfortunate because:
+ Xcode is huge!  The full IDE is a 5 GB download, and can occupy 20 GB+ of space on disk.   Qt doesn&amp;rsquo;t actually need the full IDE.  Only Xcode&amp;rsquo;s command line utilities are required for macOS application development¹.</description>
+    </item>
+    
+  </channel>
+</rss>

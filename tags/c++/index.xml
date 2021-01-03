@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>c&#43;&#43; on nonwill</title>
+    <link>/tags/c&#43;&#43;/</link>
+    <description>Recent content in c&#43;&#43; on nonwill</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 16 Jan 2015 11:32:32 +0800</lastBuildDate><atom:link href="/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用qt开发gsoap程序</title>
+      <link>/post/gsoap2_Qt/</link>
+      <pubDate>Fri, 16 Jan 2015 11:32:32 +0800</pubDate>
+      
+      <guid>/post/gsoap2_Qt/</guid>
+      <description>1. 从http://gsoap2.sourceforge.net/下载最新的gsoap2源码包。  通过http://www.cppblog.com/qiujian5628/archive/2008/10/11/54019.html(EXP1)初步了解了gsoap2的使用方法（下属示例使用了该文章的例子）。
+ 2. qt项目目录结构  其中add.cpp、add_client.cpp分别为服务端和客户端的例子程序， gsoap2应用项目需要放在learning目录下。
+ gsoap2 # gsoap2 开发文档根目录 │ gsoap.pri # 引入gsoap2开发用源码文件 │ gsoap28.pro # 根项目文件 │ ├─bin	# gsoap2工具链(来自于sourceforge上下载的源码包)及编译后的二进制文件 │ soapcpp2.exe │ wsdl2h.exe │ ├─gsoap # gsoap2开发用源码文件所在目录(来自于sourceforge上下载的源码包) │ .dirstamp │ dom.c │ dom.cpp │ stdsoap2.c │ stdsoap2.cpp │ stdsoap2.h │ typemap.dat │ └─leaning # gsoap2应用程序所在根目录 │ leaning.pri # gsoap2应用用的源码及命令头文件 │ leaning.pro # 应用程序管理 ├─nsmap # 接口定义文件所在目录 │ add.h # 接口文件名字必须与gsoap2项目中GSOAP_NAME值一样 │ calc.h ├─add # 服务器应用目录 │ add.</description>
+    </item>
+    
+    <item>
+      <title>C&#43;&#43; 的 new、delete 与 C 的 malloc、free 的区别</title>
+      <link>/post/cpp_memory/</link>
+      <pubDate>Mon, 24 Nov 2014 19:12:27 +0800</pubDate>
+      
+      <guid>/post/cpp_memory/</guid>
+      <description>小程序以验证C/C++内存管理的差异（写的不是很严谨，仅为主题，分别在redhat 5.6 x86_64 + gcc-4.9.2，windows 7 x64 + gcc-4.9.2 编译运行通过）：
+#include &amp;lt;iostream&amp;gt;#include &amp;lt;typeinfo&amp;gt;#include &amp;lt;stdlib.h&amp;gt;#include &amp;lt;stdio.h&amp;gt;void t_cpu() { #define print_type(t) std::cout &amp;lt;&amp;lt; &amp;#34;Size of &amp;#34; &amp;lt;&amp;lt; #t &amp;lt;&amp;lt; &amp;#34;: &amp;#34; &amp;lt;&amp;lt; sizeof(t) &amp;lt;&amp;lt; std::endl  print_type(char); print_type(unsigned char); print_type(short); print_type(unsigned short); print_type(int); print_type(unsigned int); print_type(size_t); print_type(long); print_type(unsigned long); print_type(long long); print_type(unsigned long long); print_type(float); print_type(double); print_type(long double); print_type(void*); } class __T { public: int _1; int _2; __T(){ _1 = 1; _2 = 2; } ~__T(){ printf(&amp;#34;~&amp;#34;); } void init() { _1 = 7; _2 = 8; } void test() { _1 += _2; } }; void t_new(size_t sl) { __T *pchar = new __T[sl]; size_t *psize = (size_t*)(((char*)pchar)-sizeof(size_t)); printf(&amp;#34;\nTest new and delete \nsize: %ld pchar: %p psize: %p *psize: %ld \n&amp;#34;, sl, pchar, psize, *psize); delete []pchar; printf(&amp;#34;\n&amp;#34;); } void t_malloc(size_t sl) { printf(&amp;#34;\nTest malloc and free \nsize of class __T: %ld \n&amp;#34;, sizeof(class __T)); __T *pchar = (__T *)malloc(sl * sizeof(class __T)); size_t *psize = (size_t*)(((char*)pchar)-sizeof(size_t)); printf(&amp;#34;size: %ld pchar: %p psize: %p *psize: %ld \n&amp;#34;, sl, pchar, psize, *psize); free(pchar); } void t_new_free(size_t sl) { __T *pchar = new __T[sl]; size_t *psize = (size_t*)(((char*)pchar)-sizeof(size_t)); printf(&amp;#34;\nTest new and free \nsize: %ld pchar: %p psize: %p *psize: %ld \n&amp;#34;, sl, pchar, psize, *psize); //delete []pchar;  for (__T *t = pchar; t &amp;lt; pchar + sl; ++t) { t-&amp;gt;~__T(); } free(psize); printf(&amp;#34;\n&amp;#34;); } void t_malloc_delete(size_t sl) { printf(&amp;#34;\nTest malloc and delete \nsize of class __T: %ld \n&amp;#34;, sizeof(class __T)); size_t *psize = (size_t *)malloc(sl * sizeof(class __T) + sizeof(size_t)); __T *pchar = (__T*)(((char*)psize)+sizeof(size_t)); *psize = sl; //for (__T *t = pchar; t &amp;lt; pchar + sl; ++t) {  // t-&amp;gt;init();  //}  printf(&amp;#34;size: %ld pchar: %p psize: %p *psize: %ld \n&amp;#34;, sl, pchar, psize, *psize); delete [] pchar; printf(&amp;#34;\n&amp;#34;); } int main() { t_cpu(); t_new(48); t_malloc(32); t_new_free(16); t_malloc_delete(8); return 0; } 输出（redhat）：</description>
+    </item>
+    
+  </channel>
+</rss>

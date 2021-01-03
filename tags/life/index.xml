@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>life on nonwill</title>
+    <link>/tags/life/</link>
+    <description>Recent content in life on nonwill</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Wed, 09 Jan 2019 16:12:27 +0800</lastBuildDate><atom:link href="/tags/life/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>你好，HUGO，开个博客</title>
+      <link>/post/hellow/</link>
+      <pubDate>Wed, 09 Jan 2019 16:12:27 +0800</pubDate>
+      
+      <guid>/post/hellow/</guid>
+      <description>博客建好了，来驶一下哈 Run&amp;hellip;&amp;hellip;</description>
+    </item>
+    
+  </channel>
+</rss>
