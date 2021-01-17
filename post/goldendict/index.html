@@ -162,14 +162,14 @@ Last updated date: <em><strong>1 January 2021</strong></em></p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <div class="notice info"  id="Logs.更新日志" >
-<p class="first notice-title">Logs.更新日志</p><h5 id="2021115-2a20优化bgl格式词典的处理以提升索引及查询性能为bgl格式查询结果添加根标签以便于设置样式">2021.1.15 2A20：优化BGL格式词典的处理以提升索引及查询性能；为BGL格式查询结果添加根标签以便于设置样式。</h5>
-<h5 id="2021114-2a20修正历史记录和收藏记录中的非英文词条可能乱码的问题修正ico图标黑色背景的问题呃谨慎对待qt源码repo中的未经集成验证的commit">2021.1.14 2A20：修正历史记录和收藏记录中的非英文词条可能乱码的问题；修正ico图标黑色背景的问题（呃，谨慎对待Qt源码repo中的未经集成验证的commit）。</h5>
-<h5 id="2021113-2a20为分组编辑的操作按钮增加图标收藏菜单中的添加菜单项的图标和文字状态与工具栏的收藏按钮的图标和文字状态保持一致优化文章tab页标签的右键菜单及其行为">2021.1.13 2A20：为分组编辑的操作按钮增加图标；收藏菜单中的添加菜单项的图标和文字状态与工具栏的收藏按钮的图标和文字状态保持一致；优化文章tab页标签的右键菜单及其行为：</h5>
+<p class="first notice-title">Logs.更新日志</p><h5 id="2021118-2a21简化网络管理器对数据接收状态的转收冗余处理bgl词典索引和查询处理的细节优化以提升能效针对aarbgldslzimslobsdictxdxfdictdstardictdict_server格式无外置样式表统一处理词头和文档标签以便于样式的一致设定">2021.1.18 2A21：简化网络管理器对数据接收状态的转收（冗余）处理；bgl词典索引和查询处理的细节优化以提升能效；针对aar、bgl、dsl、zim、slob、sdict、xdxf、dictd、stardict、dict_server格式（无外置样式表）：统一处理词头和文档标签以便于样式的一致设定：</h5>
+<blockquote>
+<p>使用全局标准的css样式：定义并使用了.gd_headword和.gd_body全局类，对于xdxf、zim、slob、dictd、aard格式不添加额外的gd_headword。</p>
+</blockquote>
+<h5 id="2021114-2a20修正qt5webkit不显示tif格式图片的问题在goldendict中无需再做额外的格式转换且不再直接依赖libtiff等库文件修正历史记录和收藏记录中的非英文词条可能乱码的问题为分组编辑的操作按钮增加图标收藏菜单中的添加菜单项的图标和文字状态与工具栏的收藏按钮的图标和文字状态保持一致优化文章tab页标签的右键菜单及其行为">2021.1.14 2A20：修正Qt5WebKit不显示tif格式图片的问题（在GoldenDict中无需再做额外的格式转换且不再直接依赖libtiff等库文件）；修正历史记录和收藏记录中的非英文词条可能乱码的问题；为分组编辑的操作按钮增加图标；收藏菜单中的添加菜单项的图标和文字状态与工具栏的收藏按钮的图标和文字状态保持一致；优化文章tab页标签的右键菜单及其行为：</h5>
 <blockquote>
 <p>当右键点击到非当前文章页面的标签（简称<strong>点选文章</strong>）时，弹出菜单项的<strong>关闭当前页面</strong>描述变更为<strong>关闭页面</strong>，其行为由<strong>关闭当前文章</strong>变更为<strong>关闭点选文章</strong>，<strong>关闭其它标签页</strong>的行为由<strong>关闭当前文章除外</strong>的所有文章变更为<strong>关闭点选文章除外</strong>的所有文章。</p>
 </blockquote>
-<h5 id="202118-2a20修正qt5webkit不显示tif格式图片的问题在goldendict中无需再做额外的格式转换且不再直接依赖libtiff等库文件">2021.1.8 2A20：修正Qt5WebKit不显示tif格式图片的问题（在GoldenDict中无需再做额外的格式转换且不再直接依赖libtiff等库文件）。</h5>
-<h5 id="202111-2a1f2a1终版">2021.1.1 2A1F：2A1终版。</h5>
 <h5 id="20201228-2a1f为音频播放增加停止功能">2020.12.28 2A1F：为音频播放增加停止功能。</h5>
 <blockquote>
 <p>点击工具栏的<strong>朗读词条</strong>按钮：当前有音频正在播放时，则停止播放，否则执行词条朗读功能。鉴于词条朗读一般情况下时长较短，忽略增加停播后的恢复播放功能的需求。</p>
