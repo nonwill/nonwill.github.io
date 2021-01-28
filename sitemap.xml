@@ -4,66 +4,26 @@
   
   <url>
     <loc>/categories/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/GoldenDict/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/goldendict/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/OCR/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/Qt/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/%E5%88%92%E8%AF%8D/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/%E5%88%92%E8%AF%8D/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/%E8%BE%9E%E4%B9%A6/</loc>
-    <lastmod>2021-01-01T00:20:53+08:00</lastmod>
+    <lastmod>2020-12-29T18:12:27+08:00</lastmod>
   </url>
   
   <url>
     <loc>/tags/linux/</loc>
+    <lastmod>2020-12-29T18:12:27+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/</loc>
+    <lastmod>2020-12-29T18:12:27+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2020-12-29T18:12:27+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/</loc>
     <lastmod>2020-12-29T18:12:27+08:00</lastmod>
   </url>
   
@@ -133,6 +93,11 @@
   </url>
   
   <url>
+    <loc>/categories/Qt/</loc>
+    <lastmod>2020-04-19T23:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/post/qt-without-xcode/</loc>
     <lastmod>2020-04-19T23:20:53+08:00</lastmod>
   </url>
@@ -140,6 +105,41 @@
   <url>
     <loc>/tags/Qt-xcode/</loc>
     <lastmod>2020-04-19T23:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/GoldenDict/</loc>
+    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/goldendict/</loc>
+    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/OCR/</loc>
+    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/%E5%88%92%E8%AF%8D/</loc>
+    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/%E5%88%92%E8%AF%8D/</loc>
+    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/%E8%BE%9E%E4%B9%A6/</loc>
+    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
   </url>
   
   <url>
