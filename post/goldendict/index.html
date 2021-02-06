@@ -141,7 +141,7 @@ Last updated date: <em><strong>1 February 2021</strong></em></p>
 </ul>
 <ol start="2">
 <li>
-<p>Install or unpack the <strong>Package</strong>: macOS &mdash; just pick up GoldenDict(.app), Linux &mdash; start a terminal and execute goldendict from the dir which GoldenDict is in, Windows &mdash; double click on GoldenDict(.exe) 「安装或解压<strong>程序包</strong>：macOS系统直接执行GoldenDict(.app)，Linux版本需要通过终端执行GoldenDict同目录下的goldendict脚本文件，Windows中执行解压出的GoldenDict(.exe)」</p>
+<p>Install or unpack the <strong>Package</strong>: macOS &mdash; just pick up GoldenDict(.app), Linux &mdash; start a terminal and execute goldendict from the dir where GoldenDict is in, Windows &mdash; double click on GoldenDict(.exe) 「安装或解压<strong>程序包</strong>：macOS系统直接执行GoldenDict(.app)，Linux版本需要通过终端执行GoldenDict同目录下的goldendict脚本文件，Windows中执行解压出的GoldenDict(.exe)」</p>
 </li>
 <li>
 <p>Optional:  If you need OCR supporting other languages, extra language-pack of the ocr-engine is needed and the data-path which is used by ocr-engine for loading language data should be reset to your language-pack dir &mdash; download and unpack the following package, open GoldenDIct&rsquo;s <strong>Preference</strong> dialog and swich to <strong>OCR Popup</strong>, select an OCR-Engine and set the data path by clicking the button next to the Engines' List, then select module language(s) for the engine 「可选：如需OCR支持其它语言，请下载下列OCR支持库，解压后到<strong>首选项</strong>对话框的<strong>划词</strong>页，针对OCR引擎重设其识别库目录后选择需要识别的语言」</p>
@@ -161,7 +161,8 @@ Last updated date: <em><strong>1 February 2021</strong></em></p>
 <!-- raw HTML omitted -->
 <!-- raw HTML omitted -->
 <div class="notice info"  id="Logs.更新日志" >
-<p class="first notice-title">Logs.更新日志</p><h5 id="2021128-2a22解决zim格式打包的最新wiki词典文件信息的语言不被解析识别的问题更新语言代码兼容iso-639-235修正zim文章内的部分链接跳转无效查询失败的问题修正含有某些符号如等的词头查询不到的问题更快速更安全的读取索引数据查询效能显著提升辞书词条对话框紧凑布局加速访问同时解决词条过多时导致界面卡死的问题加速过滤条件改变后的列表刷新修正词典枚举过程中stack-overflow导致程序异常退出的问题在程序启动或重新扫描文件时偶尔出现增加gdignored魔法扫描词典或索引时忽略目录解决部分dsl格式词典文件信息的语言不被解析识别的问题进一步完善语言判据及匹配逻辑更好的支持语言全称或别称匹配语言代码">2021.1.28 2A22：解决zim格式打包的最新wiki词典文件信息的语言不被解析识别的问题（更新语言代码兼容ISO 639-2/3/5）；修正zim文章内的部分链接跳转无效（查询失败）的问题；修正含有某些符号（如%、?、&amp;等）的词头查询不到的问题；更快速更安全的读取索引数据，查询效能显著提升；辞书词条对话框：紧凑布局，加速访问同时解决词条过多时导致界面卡死的问题，加速过滤条件改变后的列表刷新；修正词典枚举过程中stack overflow导致程序异常退出的问题（在程序启动或重新扫描文件时偶尔出现）；增加.gdignored魔法（扫描词典或索引时忽略目录）；解决部分dsl格式词典文件信息的语言不被解析识别的问题；进一步完善语言判据及匹配逻辑（更好的支持语言全称或别称匹配语言代码）。</h5>
+<p class="first notice-title">Logs.更新日志</p><h5 id="202127-2a23确保索引目录存在尽可能的避免程序启动或扫描词典文件时报cant-use-index-directory-to-store-goldendict-index-files的问题">2021.2.7 2A23：确保索引目录存在（尽可能的避免程序启动或扫描词典文件时报Can&rsquo;t use index directory to store GoldenDict index files的问题）。</h5>
+<h5 id="2021128-2a22解决zim格式打包的最新wiki词典文件信息的语言不被解析识别的问题更新语言代码兼容iso-639-235修正zim文章内的部分链接跳转无效查询失败的问题修正含有某些符号如等的词头查询不到的问题更快速更安全的读取索引数据查询效能显著提升辞书词条对话框紧凑布局加速访问同时解决词条过多时导致界面卡死的问题加速过滤条件改变后的列表刷新修正词典枚举过程中stack-overflow导致程序异常退出的问题在程序启动或重新扫描文件时偶尔出现增加gdignored魔法扫描词典或索引时忽略目录解决部分dsl格式词典文件信息的语言不被解析识别的问题进一步完善语言判据及匹配逻辑更好的支持语言全称或别称匹配语言代码">2021.1.28 2A22：解决zim格式打包的最新wiki词典文件信息的语言不被解析识别的问题（更新语言代码兼容ISO 639-2/3/5）；修正zim文章内的部分链接跳转无效（查询失败）的问题；修正含有某些符号（如%、?、&amp;等）的词头查询不到的问题；更快速更安全的读取索引数据，查询效能显著提升；辞书词条对话框：紧凑布局，加速访问同时解决词条过多时导致界面卡死的问题，加速过滤条件改变后的列表刷新；修正词典枚举过程中stack overflow导致程序异常退出的问题（在程序启动或重新扫描文件时偶尔出现）；增加.gdignored魔法（扫描词典或索引时忽略目录）；解决部分dsl格式词典文件信息的语言不被解析识别的问题；进一步完善语言判据及匹配逻辑（更好的支持语言全称或别称匹配语言代码）。</h5>
 <blockquote>
 <p>.gdignored：当有大量的资源文件（数量(百)万计）存在于资源文件夹中，但这个文件夹下没有任何词典文件却在扫描目录的设定范围内，启动GoldenDict或扫描词典文件时，会在这个文件夹下耗费数十秒至数分钟。当目录中存在.gdignored文件时，该目录的所有子目录在扫描时将被忽略，可以有效的提升索引效能。
 占个坑：对语言判据信息使用自定义配置文件，来存放ISO 639-2/3/5相关的代码定义信息及对应的语言旗标，ocr也用这些个功能，需独立出来封装个库文件。</p>
