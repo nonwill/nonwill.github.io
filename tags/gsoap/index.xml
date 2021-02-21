@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 16 Jan 2015 11:32:32 +0800</lastBuildDate><atom:link href="/tags/gsoap/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>使用qt开发gsoap程序</title>
-      <link>/post/gsoap2_Qt/</link>
+      <link>/post/cpp/gsoap2_Qt/</link>
       <pubDate>Fri, 16 Jan 2015 11:32:32 +0800</pubDate>
       
-      <guid>/post/gsoap2_Qt/</guid>
+      <guid>/post/cpp/gsoap2_Qt/</guid>
       <description>1. 从http://gsoap2.sourceforge.net/下载最新的gsoap2源码包。  通过http://www.cppblog.com/qiujian5628/archive/2008/10/11/54019.html(EXP1)初步了解了gsoap2的使用方法（下属示例使用了该文章的例子）。
  2. qt项目目录结构  其中add.cpp、add_client.cpp分别为服务端和客户端的例子程序， gsoap2应用项目需要放在learning目录下。
  gsoap2 # gsoap2 开发文档根目录 │ gsoap.pri # 引入gsoap2开发用源码文件 │ gsoap28.pro # 根项目文件 │ ├─bin	# gsoap2工具链(来自于sourceforge上下载的源码包)及编译后的二进制文件 │ soapcpp2.exe │ wsdl2h.exe │ ├─gsoap # gsoap2开发用源码文件所在目录(来自于sourceforge上下载的源码包) │ .dirstamp │ dom.c │ dom.cpp │ stdsoap2.c │ stdsoap2.cpp │ stdsoap2.h │ typemap.dat │ └─leaning # gsoap2应用程序所在根目录 │ leaning.pri # gsoap2应用用的源码及命令头文件 │ leaning.pro # 应用程序管理 ├─nsmap # 接口定义文件所在目录 │ add.h # 接口文件名字必须与gsoap2项目中GSOAP_NAME值一样 │ calc.h ├─add # 服务器应用目录 │ add.</description>

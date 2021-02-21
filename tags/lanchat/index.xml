@@ -9,10 +9,10 @@
     <lastBuildDate>Thu, 10 Jan 2019 23:20:53 +0800</lastBuildDate><atom:link href="/tags/lanchat/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>句聊 Lanchat 1.5.0</title>
-      <link>/post/lanchat/</link>
+      <link>/post/cpp/lanchat/</link>
       <pubDate>Thu, 10 Jan 2019 23:20:53 +0800</pubDate>
       
-      <guid>/post/lanchat/</guid>
+      <guid>/post/cpp/lanchat/</guid>
       <description>Greetings to lanmessenger 下载:  lanchat-1.5.0-win64
  在Lan Messenger的基础上：  重构了其连接管理、消息处理和分发部分的实现。 TCP监听端口可改(UDP端口相同的用户相互可见)。 改用QJson组织消息。 内存管理做了增强，减少了程序运行时占用的内存。 复用其UI并做了改进及问题修复。  下一步：  可用性及稳定性改进，UI重构与改进  远期：  支持离线用户管理 增加插件支持扩展  </description>
     </item>

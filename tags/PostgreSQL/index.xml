@@ -9,10 +9,10 @@
     <lastBuildDate>Mon, 12 Jan 2015 23:12:27 +0800</lastBuildDate><atom:link href="/tags/PostgreSQL/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>PostgreSQL  注册启动 及 停用卸载 批处理脚本</title>
-      <link>/post/PostgreSQL-_service/</link>
+      <link>/post/script/PostgreSQL-_service/</link>
       <pubDate>Mon, 12 Jan 2015 23:12:27 +0800</pubDate>
       
-      <guid>/post/PostgreSQL-_service/</guid>
+      <guid>/post/script/PostgreSQL-_service/</guid>
       <description>注册启动 pg_install.bat
 @echo off set PGSQL_DIR=%~dp0 if not &amp;#34;%PGSQL_HOME%&amp;#34;==&amp;#34;&amp;#34; ( if not &amp;#34;%PGSQL_HOME%&amp;#34;==&amp;#34;%PGSQL_DIR%&amp;#34; ( echo PGSQL_HOME=%PGSQL_HOME% != PGSQL_DIR=%PGSQL_DIR% goto pg_ends ) ) else ( set PGSQL_HOME=%PGSQL_DIR% echo PGSQL_HOME must be set as PGSQL_DIR=%PGSQL_DIR% ) set PATH=%PGSQL_HOME%bin;%PGSQL_HOME%lib;%PATH% pg_isready -h localhost 1&amp;gt;nul 2&amp;gt;nul @if &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; ( echo PostgreSQL is running. goto pg_ends ) echo &amp;#34;PGSQL_HOME = %PGSQL_HOME%&amp;#34; echo Install and start PostgreSQL server ... @if not exist %PGSQL_HOME%data ( mkdir %PGSQL_HOME%data %PGSQL_HOME%bin/initdb --username=root --pgdata=%PGSQL_HOME%data --encoding=UTF8 --locale=chinese rem @if not &amp;#34;%ERRORLEVEL%&amp;#34; == &amp;#34;0&amp;#34; ( rem There ERRORLEVEL is 2, but successfully inited rem echo PostgreSQL initdb failed.</description>
     </item>

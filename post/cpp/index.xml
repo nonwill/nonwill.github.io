@@ -1,12 +1,33 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>c&#43;&#43; on nonwill</title>
-    <link>/categories/c&#43;&#43;/</link>
-    <description>Recent content in c&#43;&#43; on nonwill</description>
+    <title>C/C&#43;&#43;/Qt on nonwill</title>
+    <link>/post/cpp/</link>
+    <description>Recent content in C/C&#43;&#43;/Qt on nonwill</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 16 Jan 2015 11:32:32 +0800</lastBuildDate><atom:link href="/categories/c++/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Jun 2006 20:09:20 +0900</lastBuildDate><atom:link href="/post/cpp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Qt without Xcode</title>
+      <link>/post/cpp/qt-without-xcode/</link>
+      <pubDate>Sun, 19 Apr 2020 23:20:53 +0800</pubDate>
+      
+      <guid>/post/cpp/qt-without-xcode/</guid>
+      <description>From https://gist.github.com/shoogle How to use Qt Creator for software development on macOS without having to install Xcode
+Justification Qt refuses to install on macOS unless Apple&amp;rsquo;s Xcode is installed beforehand. This is unfortunate because:
+ Xcode is huge!  The full IDE is a 5 GB download, and can occupy 20 GB+ of space on disk.   Qt doesn&amp;rsquo;t actually need the full IDE.  Only Xcode&amp;rsquo;s command line utilities are required for macOS application development¹.</description>
+    </item>
+    
+    <item>
+      <title>句聊 Lanchat 1.5.0</title>
+      <link>/post/cpp/lanchat/</link>
+      <pubDate>Thu, 10 Jan 2019 23:20:53 +0800</pubDate>
+      
+      <guid>/post/cpp/lanchat/</guid>
+      <description>Greetings to lanmessenger 下载:  lanchat-1.5.0-win64
+ 在Lan Messenger的基础上：  重构了其连接管理、消息处理和分发部分的实现。 TCP监听端口可改(UDP端口相同的用户相互可见)。 改用QJson组织消息。 内存管理做了增强，减少了程序运行时占用的内存。 复用其UI并做了改进及问题修复。  下一步：  可用性及稳定性改进，UI重构与改进  远期：  支持离线用户管理 增加插件支持扩展  </description>
+    </item>
+    
     <item>
       <title>使用qt开发gsoap程序</title>
       <link>/post/cpp/gsoap2_Qt/</link>

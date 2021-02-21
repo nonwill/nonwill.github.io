@@ -13,16 +13,6 @@
   </url>
   
   <url>
-    <loc>/</loc>
-    <lastmod>2020-12-29T18:12:27+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/</loc>
-    <lastmod>2020-12-29T18:12:27+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/tags/</loc>
     <lastmod>2020-12-29T18:12:27+08:00</lastmod>
   </url>
@@ -33,7 +23,7 @@
   </url>
   
   <url>
-    <loc>/post/vmware_manjaro/</loc>
+    <loc>/post/vmware/vmware_manjaro/</loc>
     <lastmod>2020-12-29T18:12:27+08:00</lastmod>
   </url>
   
@@ -98,7 +88,7 @@
   </url>
   
   <url>
-    <loc>/post/qt-without-xcode/</loc>
+    <loc>/post/cpp/qt-without-xcode/</loc>
     <lastmod>2020-04-19T23:20:53+08:00</lastmod>
   </url>
   
@@ -148,23 +138,13 @@
   </url>
   
   <url>
-    <loc>/post/lanchat/</loc>
+    <loc>/post/cpp/lanchat/</loc>
     <lastmod>2019-01-10T23:20:53+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/tags/life/</loc>
-    <lastmod>2019-01-09T16:12:27+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/categories/me/</loc>
-    <lastmod>2019-01-09T16:12:27+08:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/post/hellow/</loc>
-    <lastmod>2019-01-09T16:12:27+08:00</lastmod>
+    <loc>/</loc>
+    <lastmod>2019-01-09T20:19:20+19:00</lastmod>
   </url>
   
   <url>
@@ -198,7 +178,7 @@
   </url>
   
   <url>
-    <loc>/post/gsoap2_Qt/</loc>
+    <loc>/post/cpp/gsoap2_Qt/</loc>
     <lastmod>2015-01-16T11:32:32+08:00</lastmod>
   </url>
   
@@ -213,7 +193,7 @@
   </url>
   
   <url>
-    <loc>/post/PostgreSQL-_service/</loc>
+    <loc>/post/script/PostgreSQL-_service/</loc>
     <lastmod>2015-01-12T23:12:27+08:00</lastmod>
   </url>
   
@@ -223,12 +203,12 @@
   </url>
   
   <url>
-    <loc>/post/mysql_service/</loc>
+    <loc>/post/script/mysql_service/</loc>
     <lastmod>2015-01-12T19:12:27+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/cpp_memory/</loc>
+    <loc>/post/cpp/cpp_memory/</loc>
     <lastmod>2014-11-24T19:12:27+08:00</lastmod>
   </url>
   
@@ -243,13 +223,33 @@
   </url>
   
   <url>
-    <loc>/post/uncomp_shc/</loc>
+    <loc>/post/script/uncomp_shc/</loc>
     <lastmod>2014-02-25T16:12:27+08:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/vmware_shrink/</loc>
+    <loc>/post/vmware/vmware_shrink/</loc>
     <lastmod>2012-11-05T18:12:27+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/</loc>
+    <lastmod>2009-09-20T20:09:20+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/script/</loc>
+    <lastmod>2008-08-20T20:09:20+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/vmware/</loc>
+    <lastmod>2006-06-20T20:09:20+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/cpp/</loc>
+    <lastmod>2006-06-06T20:09:20+09:00</lastmod>
   </url>
   
 </urlset>

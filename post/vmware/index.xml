@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>VMWare on nonwill</title>
-    <link>/categories/VMWare/</link>
-    <description>Recent content in VMWare on nonwill</description>
+    <title>系统^虚拟机 on nonwill</title>
+    <link>/post/vmware/</link>
+    <description>Recent content in 系统^虚拟机 on nonwill</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Tue, 29 Dec 2020 18:12:27 +0800</lastBuildDate><atom:link href="/categories/VMWare/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 20 Jun 2006 20:09:20 +0900</lastBuildDate><atom:link href="/post/vmware/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VMWare中Manjaro永久修改分辨率</title>
       <link>/post/vmware/vmware_manjaro/</link>

@@ -9,10 +9,10 @@
     <lastBuildDate>Tue, 29 Dec 2020 18:12:27 +0800</lastBuildDate><atom:link href="/categories/%E5%88%86%E8%BE%A8%E7%8E%87/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>VMWare中Manjaro永久修改分辨率</title>
-      <link>/post/vmware_manjaro/</link>
+      <link>/post/vmware/vmware_manjaro/</link>
       <pubDate>Tue, 29 Dec 2020 18:12:27 +0800</pubDate>
       
-      <guid>/post/vmware_manjaro/</guid>
+      <guid>/post/vmware/vmware_manjaro/</guid>
       <description>1. 打开或创建xorg.conf： sudo nano /etc/X11/xorg.conf 2. 在文件中添加如下部分： Section &amp;#34;Monitor&amp;#34; Identifier &amp;#34;Configured Monitor&amp;#34; Modeline &amp;#34;1920x1080_60.00&amp;#34; 173.00 1920 2048 2248 2576 1080 1083 1088 1120 -hsync +vsync Option &amp;#34;PreferredMode&amp;#34; &amp;#34;1920x1080_60.00&amp;#34; EndSection Section &amp;#34;Screen&amp;#34; Identifier &amp;#34;Default Screen&amp;#34; Monitor &amp;#34;Configured Monitor&amp;#34; Device &amp;#34;Configured Video Device&amp;#34; EndSection Section &amp;#34;Device&amp;#34; Identifier &amp;#34;Configured Video Device&amp;#34; EndSection 3. 保存文件并重启系统 </description>
     </item>
     
