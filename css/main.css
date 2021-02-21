@@ -355,3 +355,21 @@ footer {
   text-decoration: none !important;
   cursor: pointer;
 }
+
+/*  added by nonwill */
+
+div.listouter {
+  margin: 2% 4% 0 4%;
+  padding: 0 6% 0 6%;
+}
+
+body.mobile div.listouter {
+  margin: 2% 0% 0 0%;
+} 
+
+div.listouter+.outer{
+  margin-top: 3px;
+  padding: 0 5% 0 5%;
+}
+
+/*  added by nonwill */

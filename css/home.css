@@ -99,3 +99,34 @@ body.mobile .big-icon {
 body.mobile .navbar-nav li {
   margin-bottom: 1rem;
 }
+
+
+/*  added by nonwill */
+
+div.listouter {
+  margin: 0 10% 0 10%;
+  padding-bottom: 0;
+}
+
+body.mobile div.listouter {
+  margin: 0 1rem 1rem 1rem;
+} 
+
+div.listouter+.outer{
+  margin-top: 1px;
+  padding-top: 0;
+}
+ 
+.navbar+div.outer {
+ padding-top: 0 !important;
+}
+ 
+.listouter>div:last-child{
+margin:0;
+}
+
+.title a:hover {
+  text-decoration: none;
+}
+ 
+/*  added by nonwill */

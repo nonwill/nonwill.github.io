@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>OCR on nonwill</title>
-    <link>/tags/OCR/</link>
-    <description>Recent content in OCR on nonwill</description>
+    <title>GoldenDict&#43;&#43;OCR 「划词版」 on nonwill</title>
+    <link>/post/goldendict/</link>
+    <description>Recent content in GoldenDict&#43;&#43;OCR 「划词版」 on nonwill</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sun, 03 Mar 2019 00:20:53 +0800</lastBuildDate><atom:link href="/tags/OCR/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 03 Mar 2019 00:20:53 +0800</lastBuildDate><atom:link href="/post/goldendict/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>GoldenDict&#43;&#43;OCR 「划词版」</title>
       <link>/post/goldendict/goldendict/</link>
