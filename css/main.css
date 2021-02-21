@@ -215,14 +215,14 @@ body.mobile div.outer {
 
 /*  added by nonwill */
 div.listouter {
-  margin: 2% 5% 0 5%;
-  padding: 0 1em
+  margin: 2% 5% .5em 5%;
+  padding: 0 1em;
 }
 body.mobile div.listouter {
   margin: 2% 0% 0 0%;
 } 
 div.listouter+.outer{
-  margin-top: 3px;
+  margin-top: .5em;
 }
  div.listouter+.outer>.list-group{
   padding: 0 2em
