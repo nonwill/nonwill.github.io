@@ -103,11 +103,6 @@
   </url>
   
   <url>
-    <loc>/post/goldendict/</loc>
-    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
-  </url>
-  
-  <url>
     <loc>/post/goldendict/goldendict/</loc>
     <lastmod>2019-03-03T00:20:53+08:00</lastmod>
   </url>
@@ -129,6 +124,11 @@
   
   <url>
     <loc>/categories/%E5%AD%A6%E4%B9%A0/</loc>
+    <lastmod>2019-03-03T00:20:53+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/post/goldendict/</loc>
     <lastmod>2019-03-03T00:20:53+08:00</lastmod>
   </url>
   
