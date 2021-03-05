@@ -1,0 +1,29 @@
+{{ partial "header" . }}
+   
+    {{ if eq .Params.hidecontent false }}
+     {{ if .Content }}
+ <div class="listouter" style="position:relative;">
+       {{ .Content }}
+  </div>
+     {{ end }}
+    {{ end }}
+    
+<div class="outer">
+ 
+<!-- <section> -->
+  <ul class="list-group">
+
+   {{ range where .Pages.ByDate.Reverse "Section" "post" }}
+    <li class="list-group-item title">
+            {{if .Params.series }}
+                <a href="{{ .URL }}" data-series="{{ .Params.series }}" style="margin-left:1rem;"><time style="color:black;">{{ .Date.Format "2006-01-02" }}</time>  / {{ .Title }} </a>
+            {{ else}}
+                <a href="{{ .URL }}"><time style="color:black;">{{ .Date.Format "2006-01-02" }}</time>  / {{ .Title }} </a>
+            {{ end}}
+    </li>
+    {{ end }}
+ </ul>
+<!-- </section> -->
+  
+
+{{ partial "footer" . }}

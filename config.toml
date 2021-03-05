@@ -1,0 +1,94 @@
+baseURL = "/"
+defaultContentLanguage = "zh"
+defaultContentLanguageInSubdir = true
+title = "nonwill"
+#theme = "yinwang"
+theme = ["hugo-notice", "yinwang"]
+disqusShortname = ""
+# Define the number of posts per page
+paginate        = 6
+footnotereturnlinkcontents = "↩"
+
+disablePathToLower = true
+
+#pygmentsCodeFences = true
+#pygmentsCodefencesGuessSyntax = false
+#pygmentsStyle = "dracula"
+#pygmentsOptions = ['linenos']
+
+[languages.zh]
+  languageCode = "zh-cn"
+
+[params]
+  title       = "一切皆为虚幻，不可说"
+  subtitle = "万物都是因缘，天注定"
+  description = "放下执念，不忘初心"
+  orgName = "nonwill"
+  author = "nonwill"
+  # 谷歌统计gtag
+  googleAnalytics = "UA-158609417-1" 
+  customCSS = []
+  RSSLink = ""
+  menus = true
+  github = "nonwill/nonwill.github.io/issues"
+  #casper or caspertwo
+  singleViewStyle = "casper"
+  highlight = "atom-one-dark" # default use `github` style
+  langs = ["go"]
+  #githubName = "nonwill"
+  #githubRepo = "https://github.com/nonwill/nonwill.github.io"
+  #editBtn = true
+  backgroundColor = "#fbf6ec"
+  copyCode = true
+  anchorLink = "🌜"
+  imageZoom = true
+  labels = true
+ 
+  twitterName = ""
+  fbName = ""
+  logo = "https://github.githubassets.com/images/icons/emoji/unicode/1f955.png"
+  orgWebsite = ""
+  orgDescription = ""
+  authorAvatar = ""
+  authorLocation = ""
+  authorWebsite = ""
+  authorDescription = ""
+  ignoreFiles = ["\\.html$"]
+
+  pageNotFoundTitle = "404 - Page not found"
+
+  # default load highlight.min.js but some language, Must add by youself
+  # single = false
+  # 单页面的Home 按钮去除
+  # "book-check","example",
+
+#[permalinks]
+#  post = "/:year/:month/:day/:title/"
+
+[[menu.main]]
+  name = "GoldenDict"
+  url = "/post/goldendict/goldendict/"
+  weight = 20  
+#[[menu.main]]
+#  name = "NWCP"
+#  url = "/nwcp"
+#  weight = 23
+#[[menu.main]]
+#  name = "分类"
+#  url = "/categories/"
+#  weight = 24
+#[[menu.main]]
+#  name = "标签"
+#  url = "/tags/"
+#  weight = 25
+
+#[[menu.main]]
+#  name = "💖"
+#  url = "/donate/" 
+#  weight = 98
+
+[[menu.main]]
+  name = "💖"
+#  name = "关于"
+  url = "/nonwill" #https://nonwill.github.io/nonwill/
+  weight = 99

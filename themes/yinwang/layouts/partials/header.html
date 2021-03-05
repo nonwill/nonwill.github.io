@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    {{ with .Site.LanguageCode }}<meta http-equiv="content-language" content="{{ . }}" />{{ end }}
+    {{ if .IsHome }}
+    <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1, user-scalable=no">
+    {{ else }}
+    <meta name="viewport" content="width=device-width, initial-scale=0.5">
+    {{ end }}
+    <!-- load bootstrap css -->
+    <title>{{.Title}}</title>
+    {{ with .Site.Params.logo }}
+    <link rel="shortcut icon" type="image/x-icon" href="{{.}}">
+    {{end}}
+    {{ if .IsHome }}
+    
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{.Site.BaseURL}}css/stylesheet.css">
+    <link rel="stylesheet" href="{{.Site.BaseURL}}css/home.css">
+
+    <!-- 多点背景色，不要老白老白的 -->
+    {{ with .Site.Params.backgroundColor }}
+    <style type="text/css">
+    body {background-color: {{ . }};}
+    </style>
+    {{end}}
+    
+    {{ else }}
+
+        {{ if eq .Params.anchorlink false }}
+        
+        {{else if or (.Site.Params.anchorLink) (.Params.anchorlink) }}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.2.0/anchor.min.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function(event) {
+                anchors.options = {
+                visible: 'hover',
+                placement: 'left',
+                icon: {{ .Site.Params.anchorLink | or .Params.anchorlink | default '¶'}}
+                };
+            anchors.add();
+            })
+        </script>
+        
+        {{end}}
+
+        {{ if eq .Params.copycode false }}
+        
+        {{ else if or (.Site.Params.copyCode) (.Params.copycode) }}
+            <script src="https://cdn.bootcss.com/clipboard.js/2.0.4/clipboard.min.js"></script>
+            <link href="{{.Site.BaseURL}}css/tooltips.css" rel="stylesheet">
+            <!-- 添加 clipboard 复制按钮 -->
+        {{end}}
+
+        <!-- 多点背景色，不要老白老白的 -->
+        {{ with .Site.Params.backgroundColor }}
+        <style type="text/css">
+            body {background-color: {{ . }};}
+        </style>
+        {{end}}
+
+        <!-- 单博文 css 文件  -->
+        {{ if .Params.css }}
+            {{range .Params.css }} <link rel="stylesheet" href="{{ . }}"></link>{{ end }}
+        {{ else }}
+            <link rel="stylesheet" href="{{.Site.BaseURL}}css/main.css">
+        {{end}}
+
+        <!-- 代码高亮风格 -->
+    {{ with .Site.Params.highlight | default "github" }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/{{ . }}.min.css" rel="stylesheet">
+    {{end}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    {{range .Site.Params.langs }} <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/{{ . }}.min.js"></script>{{ end }}
+    {{range .Params.langs }} <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/{{ . }}.min.js"></script>{{ end }}
+
+    
+    
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    {{ end }}
+    
+    <!-- <script data-ad-client="ca-pub-3175811221624395" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
+    <script>var _hmt = _hmt || [];(function() {  var hm = document.createElement("script");  hm.src = "https://hm.baidu.com/hm.js?e9ae8a920dfd9a2a27274a47c8ed4473";  var s = document.getElementsByTagName("script")[0];   s.parentNode.insertBefore(hm, s);})();</script>
+
+</head>
+
+
+<body>
+    <script>
+        window.addEventListener("resize", resizeThrottler, false);
+
+        var resizeTimeout;
+        function resizeThrottler() {
+        // ignore resize events as long as an actualResizeHandler execution is in the queue
+        if ( !resizeTimeout ) {
+            resizeTimeout = setTimeout(function() {
+            resizeTimeout = null;
+            actualResizeHandler();
+        
+            // The actualResizeHandler will execute at a rate of 15fps
+            }, 66);
+        }
+        }
+        actualResizeHandler()
+        function actualResizeHandler() {
+                if (/mobile/i.test(navigator.userAgent) || /android/i.test(navigator.userAgent))
+                {
+                    document.body.classList.add('mobile');
+                }else{
+                    document.body.classList.remove('mobile');  
+                }
+    }</script>
+
+    <!-- 只有在首页才给出，导航条 -->
+    {{ if .IsHome }}
+    <nav class="navbar navbar-default navbar-static-top" style="opacity: .9" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="big-icon icon-bar"></span>
+                    <span class="big-icon icon-bar"></span>
+                    <span class="big-icon icon-bar"></span>
+
+                </button>
+                <a class="navbar-brand" href="{{.Site.BaseURL}}">{{ .Site.Title | default "Basics"}}</a>
+            </div>
+
+            <div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" style="height: auto;">
+                <ul class="nav navbar-nav navbar-right">
+                    {{ if .Site.Params.menus }}
+                        {{with .Site.Menus.main }}
+                            {{ range . }}
+                            <li class="{{ if eq .URL ""}}active{{ end }}"><a href="{{.URL}}">{{.Name}}</a></li>
+                            {{ end }}
+                        {{ end }}
+                    {{ else }}
+                        <li class="{{ if eq .URL .Site.BaseURL }}active{{ end }}"><a class="nav-item nav-link" href="{{.Site.BaseURL}}">Home</a></li>
+                        <li>{{ with .Site.Params.github }}<a class="nav-item nav-link" href="https://github.com/{{ . }}"
+                                target="_blank">GitHub</a>{{ end }}</li>
+                        <li>{{ with .Site.Params.gitlab }}<a class="nav-item nav-link" href="https://gitlab.com/{{ . }}"
+                                target="_blank">GitLab</a>{{ end }}</li>
+                        <li class="{{ if eq .URL "/about/" }} active{{ end }}"><a class="nav-item nav-link" href="{{.Site.BaseURL}}about/">About</a></li>
+                    {{ end }}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {{ end }}
+
+
+    {{ if .IsHome }}
+    <!-- <section id="page-title">
+          <h1><a href="">{{ .Site.Title | default "Basics"}}</a></h1>
+          <span id="author-name">
+            <h6><a href="about/">{{ .Site.Params.Author }}</a></h6>
+          </span>
+        </section> -->
+    {{ end }}

@@ -1,0 +1,113 @@
+<footer>
+   <p style="float:right;margin:0 -3px;">&copy; {{ now.Format "2006" }} <a href="https://github.com/{{.Site.Params.github}}">{{ .Site.Params.author }}.</a> </p>
+  <hr>
+  <hr>
+
+  {{if eq .Params.labels false }}
+  {{else if  or (.Site.Params.labels) (.Params.labels) }}
+  <ul class="tags"  style="float: left!important;">
+      {{ if .Params.tags }}
+      <span>标签:</span>{{ range .Params.tags }}<li><a class="link" href="{{$.Site.BaseURL}}tags/{{ . }}"> {{ . }} </a></li>{{ end }}<span>&nbsp;&nbsp;</span>
+      {{ end }}
+      {{ if .Params.categories }}
+      <span>分类:</span>{{ range .Params.categories }}<li><a class="link" href="{{$.Site.BaseURL}}categories/{{ . }}"> {{ . }} </a></li>{{ end }}
+      {{ end }}
+  </ul>
+  <br>
+  {{ end }}
+
+</footer>
+</div> <!-- closes the outer/inner div -->
+
+<!-- load bootstrap JS -->
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.3.1/jquery.slim.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+{{ with .Site.Params.googleAnalytics }}
+{{ "<!-- Global site tag (gtag.js) - Google Analytics -->" | safeHTML }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', '{{ . }}');
+</script>
+{{ end }}
+
+<!-- series Posts -->
+{{ if .IsHome }}
+<script>
+ (function(){
+  var seriesA = document.getElementsByTagName("a");
+  seriesA = Array.from(seriesA).filter(x =>x.getAttribute("data-series"));
+  var nameSeries = {}
+  if(seriesA.length){
+    seriesA.forEach(x =>{
+      var xdata = x.getAttribute("data-series")
+      if(nameSeries[xdata]){
+        nameSeries[xdata].push(x)
+      }else{
+        nameSeries[xdata] = [x]
+      }
+    })
+  }
+
+  function createE(){
+    var detailsArr = [] // full html
+    var postPosArr = [] // outerHTML
+    for(let i in nameSeries){
+      var dcreateE = document.createElement("details")
+      var screateE = document.createElement("summary")
+      screateE.innerHTML = `${i} <i style="border-radius: 49%;border: 2px dashed #fe16fe;padding:3px;">${nameSeries[i].length} </i>`;
+      var inner = screateE.outerHTML // details innerHTML
+
+      nameSeries[i].forEach(x =>{
+        inner += x.outerHTML
+        x.parentElement.style.display = "none"
+      })
+      postPosArr.push(nameSeries[i][0])
+      dcreateE.innerHTML = inner
+      detailsArr.push(dcreateE)
+    }
+    console.info(postPosArr)
+    console.log(detailsArr[0])
+    postPosArr.forEach(a =>{
+      a.parentElement.style.display = "block"
+      a.outerHTML = detailsArr.shift().outerHTML
+    })
+  }
+  createE()
+ })()
+</script>
+{{else}}
+
+{{if eq .Params.imagezoom false }}
+
+{{else if  or (.Site.Params.imageZoom) (.Params.imagezoom) }}
+<script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.4/dist/medium-zoom.min.js"></script>
+
+<script>
+  const zoom = mediumZoom()
+  
+  zoom.attach("p img")
+</script>
+
+{{end}}
+
+
+<!-- // START - Edit Button -->
+{{if .Site.Params.githubRepo}}
+<script>
+        document.getElementById("edit-button").addEventListener("click", function () {
+            var editWindow = window.open("{{ .Site.Params.githubRepo }}/edit/master/content/{{.File.Path}}");
+        });</script>
+{{ end }}
+    <!-- // END - Edit Button -->
+
+{{ end }}
+
+
+</body>
+
+</html>

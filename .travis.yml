@@ -1,0 +1,31 @@
+language: go
+
+go:
+  - "1.15.6"  # 指定Golang 1.13.11
+
+# Specify which branches to build using a safelist
+# 分支白名单限制: 只有hugo分支的提交才会触发构建
+branches:
+  only:
+    - hugo 
+
+install:
+# 安装最新的hugo
+    - wget https://github.com/gohugoio/hugo/releases/download/v0.80.0/hugo_0.80.0_Linux-64bit.deb
+    - sudo dpkg -i hugo*.deb
+    - hugo version
+
+script:
+# 运行hugo命令
+  - hugo
+
+deploy:
+  provider: pages # 重要，指定这是一份github pages的部署配置
+  skip-cleanup: true # 重要，不能省略
+  local-dir: public # 静态站点文件所在目录
+  target-branch: master # 要将静态站点文件发布到哪个分支
+  github-token: $GITHUBTOKEN # 重要，$GITHUB_TOKEN是变量，需要在GitHub上申请、再到配置到Travis
+#  fqdn: blog.xxx.com # 如果是自定义域名，此处要填
+  keep-history: true # 是否保持target-branch分支的提交记录
+  on:
+    branch: hugo # 博客源码的分支
