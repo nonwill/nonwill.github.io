@@ -63,6 +63,8 @@ This is **FULL** distribution with all required files, libraries(includes QT lib
  * 还原配置文件到原来的位置；
  * 启用程序并修改配置参数。
 3. 创建索引失败（index）的问题，请确保配置文件目录下存在index文件夹，没有则新建一个。
+4. 最新Windows版本即使关闭“随系统启动”选项，开机还是自启动的问题：
+>新版使用名称为GoldenDict++（老版和官版为GoldenDict），请删除注册表项中的"HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run"路径下的GoldenDict项**或**运行旧版或官版并在其首选项中取消勾选“随系统启动”确定后退出程序**或**任务管理器的启动页面在GoldenDict条鼠标右键禁用即可。
 #### C. 从官方版本切换到划词版：
 * 配置文件：官版为config，划词版为**config.nwx**且不兼容官版，但都是xml文件，如动手能力强 --- 简单**正则提取替换**即可将**分组参数迁移到划词版**（如您习惯于条理有序，请用**创建基于目录(根)的群组**功能）。
 * 收藏记录文件：官版为favorites，划词版为favorites.nwx且已不再兼容官版格式，但都是xml文件，简单的**修改文件名 --- 加后缀\.nwx并对文件内容进行文本替换**即可将文件格式从官版迁移到划词版。
