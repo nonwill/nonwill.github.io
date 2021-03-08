@@ -31,9 +31,9 @@ This is **improved** build over the **[official](https://github.com/goldendict/g
 #### Last updated date: ***4 March 2021***
 1. Download a **Package** from the following links「按需选取并下载**程序包**」
 * [md5](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/checksum.md5) [sha256](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/checksum.sha256) [Dictionary](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/Dictionary.tar.bz2)「校验码，共享的辞书、样式表和字体文件」  
-* [macOS 64-bit: Qt 5.9.9, no 32-bit support, OS X 10.13 High Sierra or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A27-macOS-10.13.6-x64-20210223.dmg)「适用于macOS 10.13 High Sierra及以上版本」  
-* [Linux 64-bit: Qt 5.15.2, Portable build, Manjaro 20.1 x64 or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A26-manjaro-20.1-x64-20210223.tar.gz)「适用于Manjaro 20.1及以上版本」  
-* [Linux 64-bit: Qt 4.8.7, Portable build, Debian 10.8 x64 or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A26-debian-10.8-x64-20210223.tar.gz)「适用于Ubuntu 20.04及以上版本」  
+* [macOS 64-bit: Qt 5.9.9, no 32-bit support, OS X 10.13 High Sierra or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A27-macOS-10.13.6-x64-20210223.dmg)「适用于macOS 10.13 High Sierra及与之兼容的macOS系统」  
+* [Linux 64-bit: Qt 5.15.2, Portable build, Manjaro 20.1 x64 or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A26-manjaro-20.1-x64-20210223.tar.gz)「适用于64位Manjaro 20.1及与之兼容的Linux系统」  
+* [Linux 64-bit: Qt 4.8.7, Portable build, Debian 10.8 x64 or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A26-debian-10.8-x64-20210223.tar.gz)「适用于64位Debian 10.8及与之兼容的Linux系统」  
 * [Windows 64-bit: Qt 5.9.9, msvc2019, Portable build, Windows 7 sp1 x64 or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A26-Qt-5.9.9-msvc-16.8.5-x64-20210223.tar.bz2)「适用于Windows 7 sp1 x64及以上版本」  
 * [Windows 32-bit: Qt 5.9.9, mingw32-gcc10, Portable build, Windows 7 sp1 or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A26-Qt-5.9.9-mingw-gcc10-x86-20210223.tar.bz2)「适用于Windows 7 sp1及以上版本」  
 * [Windows 32-bit: Qt 4.8.7, msvc2019, Portable build, Windows 7 sp1 or later recommended](https://github.com/nonwill/nwDeployed/releases/download/GoldenDict%2B%2BOCR_2A26_20210223/GoldenDict++OCR-2A26-Qt-4.8.7-msvc-16.8.5-x86-20210223.tar.bz2)「适用于Windows 7 sp1及以上版本」  
@@ -79,6 +79,7 @@ If you find GoldenDict++OCR useful, you are welcome to [contribute by **donating
 {{< /notice >}}
 --->
 {{< notice info Logs.更新日志 >}}
+##### 2021.3.9 2A27：为portable模式开放对音频文件目录的支持，索引文件存放在对应目录下。
 ##### 2021.3.8 2A27：Fix around [issue](https://github.com/goldendict/goldendict/issues/1359): Add minimize and maximize buttons on titlebar of EditDictionaries' dialog。
 ##### 2021.3.4 2A27：划屏可选静态截图（使用外置工具，命令行：wingraber）；更稳妥的方式解决macOS中退出时可能发生的崩溃问题。
 ##### 2021.2.22 2A26：优化日志接口，优化网络资源类词典的日志输出，重新使能--log-to-file日志输出功能；修正查询结果中存在dict server词典但（因匹配不到词条）文章无内容的问题；2021.2.20 2A26：解决macOS中通过Dock栏右键退出时可能发生的崩溃问题；修正从查询工具栏切换到查询面板后查词（匹配）导致程序崩溃的问题；重构Popup窗口使其更方便于快捷查询操作：
