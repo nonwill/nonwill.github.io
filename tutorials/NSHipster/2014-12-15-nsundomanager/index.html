@@ -1,0 +1,148 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>NSUndoManager</title><link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="NSUndoManager,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><meta name=description content="NSUndoManager,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><script data-ad-client=ca-pub-8922574795542092 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script>
+<script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>NSUndoManager</span><span class=btRight><span title="Author · 作者" class=author>Delisa Mason</span> <span title="Translator · 翻译" class=author>Croath Liu</span> <a href=https://github.com/NSHipster/articles-zh-Hans style=color:#007cd5 title="Related or Quoted Post · 关联或转载引用的文章" target=_blank rel="nofollow noopener noreferrer">&#128681;</a><a href=/tutorials/NSHipster/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><p>每个人都会犯错误。多亏了 Foundation 库提供了比拼写错误更强大的功能来解救我们。Cocoa 有一套简单强壮的 NSUndoManager API 管理撤销和重做。</p><p>默认地，每个应用的 window 都有一个 undo manager，每一个响应链条中的对象都可以管理一个自定义的 undo manager 来管理各自页面上本地操作的撤销和重做操作。<code>UITextField</code> 和 <code>UITextView</code> 用这个功能自动提供了文本编辑的撤销重做支持。然而，标明哪些动作可以被撤销是留给应用开发工程师的工作。</p><p>创建一个可以撤销的动作需要三步：做出改变，注册一个可以逆向的 &ldquo;撤销操作&rdquo;，响应撤销改变的动作。</p><h2 id=撤销操作undo-operations>撤销操作(undo operations)</h2><p>为了标明某个动作可以被撤销，需要在执行动作的时候注册一个 &ldquo;撤销操作&rdquo;。<a href=https://developer.apple.com/library/ios/documentation/Cocoa/Conceptual/UndoArchitecture/Articles/UndoManager.html#//apple_ref/doc/uid/20000205-CJBDJCCJ>撤销架构文档</a> 中定义 &ldquo;undo operation&rdquo; 为：</p><blockquote><p>可以对一个对象进行逆向操作的方法，并且需要传递相应必需的参数。</p></blockquote><p>具体指的是：</p><ul><li>用于接收撤销操作信息的对象</li><li>需要传递的信息</li><li>信息所携带的参数</li></ul><p>如果被撤销操作调用的方法也注册了一个撤销操作，那么撤销管理器不需要做额外的工作就可以提供重做(redo)支持，相当于 &ldquo;撤销撤销的操作&rdquo;。</p><p>共有两种撤销操作，简单的以 selector 为基础的撤销和复杂的以 NSInvocation 为基础的撤销。</p><h3 id=注册一个简单的撤销操作>注册一个简单的撤销操作</h3><ul><li>注册一个简单的撤销操作，如果目标可进行撤销操作，调用其 <code>NSUndoManger -registerUndoWithTarget:selector:object:</code> 方法就可以了。目标不必是那个被改变的对象，通常是管理对象状态的工具或容器。同时调用 <code>NSUndoManager -setActionName:</code> 指定撤销操作的名称。撤销对话会展示动作的名称，所以应该进行本地化操作。</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>updateScore</span>(score: NSNumber) {
+</span></span><span style=display:flex><span>    undoManager.registerUndoWithTarget(<span style=color:#66d9ef>self</span>, selector:Selector(<span style=color:#e6db74>&#34;updateScore:&#34;</span>), object:myMovie.score)
+</span></span><span style=display:flex><span>    undoManager.setActionName(NSLocalizedString(<span style=color:#e6db74>&#34;actions.update&#34;</span>, comment: <span style=color:#e6db74>&#34;Update Score&#34;</span>))
+</span></span><span style=display:flex><span>    myMovie.score = score
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>updateScore:</span>(NSNumber<span style=color:#f92672>*</span>)score {
+</span></span><span style=display:flex><span>    [undoManager registerUndoWithTarget:self selector:<span style=color:#66d9ef>@selector</span>(updateScore:) object:myMovie.score];
+</span></span><span style=display:flex><span>    [undoManager setActionName:NSLocalizedString(<span style=color:#e6db74>@&#34;actions.update&#34;</span>, <span style=color:#e6db74>@&#34;Update Score&#34;</span>)];
+</span></span><span style=display:flex><span>    myMovie.score <span style=color:#f92672>=</span> score;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=使用-nsinvocation-注册复杂的撤销操作>使用 NSInvocation 注册复杂的撤销操作</h3><p>简单的撤销操作在某些使用场景下可能太粗糙了，比如说撤销某个动作需要不只一个参数。在这些情况下，我们可以使用 <code>NSInvocation</code> 来记录所需 selector 和相应参数。调用 <code>prepareWithInvocationTarget:</code> 记录哪些对象会接收哪些发生改变的消息。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>movePiece</span>(piece: ChessPiece, row:UInt, column:UInt) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> undoController : ViewController = undoManager?.prepareWithInvocationTarget(<span style=color:#66d9ef>self</span>) <span style=color:#66d9ef>as</span> ViewController
+</span></span><span style=display:flex><span>    undoController.movePiece(piece, row:piece.row, column:piece.column)
+</span></span><span style=display:flex><span>    undoManager?.setActionName(NSLocalizedString(<span style=color:#e6db74>&#34;actions.move-piece&#34;</span>, <span style=color:#e6db74>&#34;Move Piece&#34;</span>))
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    piece.row = row
+</span></span><span style=display:flex><span>    piece.column = column
+</span></span><span style=display:flex><span>    updateChessboard()
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>movePiece:</span>(ChessPiece<span style=color:#f92672>*</span>)piece <span style=color:#a6e22e>toRow:</span>(NSUInteger)row <span style=color:#a6e22e>column:</span>(NSUInteger)column {
+</span></span><span style=display:flex><span>    [[undoManager prepareWithInvocationTarget:self] movePiece:piece ToRow:piece.row column:piece.column];
+</span></span><span style=display:flex><span>    [undoManager setActionName:NSLocalizedString(<span style=color:#e6db74>@&#34;actions.move-piece&#34;</span>, <span style=color:#e6db74>@&#34;Move Piece&#34;</span>)];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    piece.row <span style=color:#f92672>=</span> row;
+</span></span><span style=display:flex><span>    piece.column <span style=color:#f92672>=</span> column;
+</span></span><span style=display:flex><span>    [self updateChessboard];
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>最有魔力的部分是：<code>NSUndoManager</code> 实现了 <code>forwardInvocation:</code>。当撤销管理器收到消息去撤销 <code>-movePiece:row:column:</code> 时，因为 <code>NSUndoManager</code> 没有实现那个方法，于是它将该消息转发至相应对象。</p><h2 id=实现一次撤销>实现一次撤销</h2><p>一旦注册了撤销操作，动作就可以在需要时调用 <code>NSUndoManager -undo</code> 和 <code>NSUndoManager -redo</code>被撤销和重做。</p><h3 id=响应-ios-的摇晃手势>响应 iOS 的摇晃手势</h3><p>默认情况下，用户通过摇晃设备来触发撤销操作。如果一个 view controller 需要处理一个撤销请求，那么这个 view controller 必须：</p><ol><li>能成为 first responder</li><li>一旦页面显示(view appears)，即变成 first responder</li><li>一旦页面消失(view disappears)，即放弃 first responder</li></ol><p>当 view controller 接收到运动事件，当撤销或重做可用时，系统会展示给用户一个会话界面。View controller 的 <code>undoManager</code> 属性不需要其他操作就可以响应用户的选择。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>ViewController</span>: UIViewController {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>viewDidAppear</span>(animated: Bool) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>super</span>.viewDidAppear(animated)
+</span></span><span style=display:flex><span>        becomeFirstResponder()
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>viewWillDisappear</span>(animated: Bool) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>super</span>.viewWillDisappear(animated)
+</span></span><span style=display:flex><span>        resignFirstResponder()
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>override</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>canBecomeFirstResponder</span>() -&gt; Bool {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span><span style=color:#66d9ef>@implementation</span> <span style=color:#a6e22e>ViewController</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>viewDidAppear:</span>(<span style=color:#66d9ef>BOOL</span>)animated {
+</span></span><span style=display:flex><span>    [super viewDidAppear:animated];
+</span></span><span style=display:flex><span>    [self becomeFirstResponder];
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>viewWillDisappear:</span>(<span style=color:#66d9ef>BOOL</span>)animated {
+</span></span><span style=display:flex><span>    [super viewWillDisappear:animated];
+</span></span><span style=display:flex><span>    [self resignFirstResponder];
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>- (<span style=color:#66d9ef>BOOL</span>)<span style=color:#a6e22e>canBecomeFirstResponder</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> YES;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// ...
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>@end</span>
+</span></span></code></pre></div><h2 id=自定义撤销栈>自定义撤销栈</h2><h3 id=将动作组合到一起>将动作组合到一起</h3><p>在同一 run loop 中被注册的所有的撤销操作可以被一同撤销，除非 &ldquo;撤销组合(undo groups)&rdquo; 被单独指定了。撤销组合允许同时进行许多撤销和重做操作。虽然每个动作都可以单独被执行和撤销，但如果用户同时执行了两个动作，同时撤销他们则需要保持一致的用户体验。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>readAndArchiveEmail</span>(email: Email) {
+</span></span><span style=display:flex><span>    undoManager?.beginUndoGrouping()
+</span></span><span style=display:flex><span>    markEmail(email, read: <span style=color:#66d9ef>true</span>)
+</span></span><span style=display:flex><span>    archiveEmail(email)
+</span></span><span style=display:flex><span>    undoManager?.setActionName(NSLocalizedString(<span style=color:#e6db74>&#34;actions.read-archive&#34;</span>, comment:<span style=color:#e6db74>&#34;Mark as Read and Archive&#34;</span>))
+</span></span><span style=display:flex><span>    undoManager?.endUndoGrouping()
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>markEmail</span>(email: Email, read:Bool) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> undoController: ViewController = undoManager?.prepareWithInvocationTarget(<span style=color:#66d9ef>self</span>) <span style=color:#66d9ef>as</span> ViewController
+</span></span><span style=display:flex><span>    undoController.markEmail(email, read:email.read)
+</span></span><span style=display:flex><span>    undoManager?.setActionName(NSLocalizedString(<span style=color:#e6db74>&#34;actions.read&#34;</span>, comment:<span style=color:#e6db74>&#34;Mark as Read&#34;</span>))
+</span></span><span style=display:flex><span>    email.read = read
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>archiveEmail</span>(email: Email) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> undoController: ViewController = undoManager?.prepareWithInvocationTarget(<span style=color:#66d9ef>self</span>) <span style=color:#66d9ef>as</span> ViewController
+</span></span><span style=display:flex><span>    undoController.moveEmail(email, toFolder:<span style=color:#e6db74>&#34;Inbox&#34;</span>)
+</span></span><span style=display:flex><span>    undoManager?.setActionName(NSLocalizedString(<span style=color:#e6db74>&#34;actions.archive&#34;</span>, comment:<span style=color:#e6db74>&#34;Archive&#34;</span>))
+</span></span><span style=display:flex><span>    moveEmail(email, toFolder:<span style=color:#e6db74>&#34;All Mail&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>readAndArchiveEmail:</span>(Email<span style=color:#f92672>*</span>)email {
+</span></span><span style=display:flex><span>    [undoManager beginUndoGrouping];
+</span></span><span style=display:flex><span>    [self markEmail:email asRead:YES];
+</span></span><span style=display:flex><span>    [self archiveEmail:email];
+</span></span><span style=display:flex><span>    [undoManager setActionName:NSLocalizedString(<span style=color:#e6db74>@&#34;actions.read-archive&#34;</span>, <span style=color:#e6db74>@&#34;Mark as Read and Archive&#34;</span>)];
+</span></span><span style=display:flex><span>    [undoManager endUndoGrouping];
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>markEmail:</span>(Email<span style=color:#f92672>*</span>)email <span style=color:#a6e22e>asRead:</span>(<span style=color:#66d9ef>BOOL</span>)isRead {
+</span></span><span style=display:flex><span>    [[undoManager prepareWithInvocationTarget:self] markEmail:email asRead:[email isRead]];
+</span></span><span style=display:flex><span>    [undoManager setActionName:NSLocalizedString(<span style=color:#e6db74>@&#34;actions.read&#34;</span>, <span style=color:#e6db74>@&#34;Mark as Read&#34;</span>)];
+</span></span><span style=display:flex><span>    email.read <span style=color:#f92672>=</span> isRead;
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>archiveEmail:</span>(Email<span style=color:#f92672>*</span>)email {
+</span></span><span style=display:flex><span>    [[undoManager prepareWithInvocationTarget:self] moveEmail:email toFolder:<span style=color:#e6db74>@&#34;Inbox&#34;</span>];
+</span></span><span style=display:flex><span>    [undoManager setActionName:NSLocalizedString(<span style=color:#e6db74>@&#34;actions.archive&#34;</span>, <span style=color:#e6db74>@&#34;Archive&#34;</span>)];
+</span></span><span style=display:flex><span>    [self moveEmail:email toFolder:<span style=color:#e6db74>@&#34;All Mail&#34;</span>];
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=清空栈>清空栈</h3><p>有时撤销管理器的动作列表需要被清空来避免导致意外结果迷惑用户。通常情况下当上下文发生戏剧性变化时，比如说 iOS 上改变了显示的 view controller 或一个打开的文档外部发生了变化。此时，撤销管理器的栈可以通过 <code>NSUndoManager -removeAllActions</code> 来清空或使用 <code>NSUndoManager -removeAllActionsWithTarget:</code> 在更细的力度上清空。</p><h2 id=警告>警告</h2><p>如果一个操作的撤销和重做有不同的名字，检查撤销操作是否执行在设置操作名称之前来确保撤销会话的标题能够正确反应哪个动作即将被撤销。一个例子就是一对相反的操作，比如添加和删除对象：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>addItem</span>(item: NSObject) {
+</span></span><span style=display:flex><span>    undoManager?.registerUndoWithTarget(<span style=color:#66d9ef>self</span>, selector: Selector(<span style=color:#e6db74>&#34;removeItem:&#34;</span>), object:item)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> undoManager?.undoing == <span style=color:#66d9ef>false</span> {
+</span></span><span style=display:flex><span>        undoManager?.setActionName(NSLocalizedString(<span style=color:#e6db74>&#34;action.add-item&#34;</span>, comment: <span style=color:#e6db74>&#34;Add Item&#34;</span>))
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    myArray.append(item)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>removeItem</span>(item: NSObject) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> index = find(myArray, item) {
+</span></span><span style=display:flex><span>        undoManager?.registerUndoWithTarget(<span style=color:#66d9ef>self</span>, selector: Selector(<span style=color:#e6db74>&#34;addItem:&#34;</span>), object:item)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> undoManager?.undoing == <span style=color:#66d9ef>false</span> {
+</span></span><span style=display:flex><span>            undoManager?.setActionName(NSLocalizedString(<span style=color:#e6db74>&#34;action.remove-item&#34;</span>, comment: <span style=color:#e6db74>&#34;Remove Item&#34;</span>))
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        myArray.removeAtIndex(index)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>addItem:</span>(<span style=color:#66d9ef>id</span>)item {
+</span></span><span style=display:flex><span>    [undoManager registerUndoWithTarget:self selector:<span style=color:#66d9ef>@selector</span>(removeItem:) object:item];
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>[undoManager isUndoing]) {
+</span></span><span style=display:flex><span>        [undoManager setActionName:NSLocalizedString(<span style=color:#e6db74>@&#34;actions.add-item&#34;</span>, <span style=color:#e6db74>@&#34;Add Item&#34;</span>)];
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    [myArray addObject:item];
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>- (<span style=color:#66d9ef>void</span>)<span style=color:#a6e22e>removeItem:</span>(<span style=color:#66d9ef>id</span>)item {
+</span></span><span style=display:flex><span>    [undoManager registerUndoWithTarget:self selector:<span style=color:#66d9ef>@selector</span>(addItem:) object:item];
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (<span style=color:#f92672>!</span>[undoManager isUndoing]) {
+</span></span><span style=display:flex><span>        [undoManager setActionName:NSLocalizedString(<span style=color:#e6db74>@&#34;actions.remove-item&#34;</span>, <span style=color:#e6db74>@&#34;Remove Item&#34;</span>)];
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    [myArray removeObject:item];
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>如果你的测试框架(例如 Kiwi)在同一个 run loop 中运行多个测试，在 <code>teardown</code> 中的各个测试中间执行情况撤销栈的操作。否则其他测试在运行中调用 <code>NSUndoManager -undo</code> 时会共享同一撤销状态，导致意外的结果。</p><hr><p>用 <code>NSUndoManager</code> 还能有更多方式提炼许多行为，特别是一些组合操作和管理适用范围方面。苹果为在适当场景下合理使用撤销和重做提供了 <a href=https://developer.apple.com/library/ios/documentation/UserExperience/Conceptual/MobileHIG/UndoRedo.html>可用性指南</a> 。</p><p>我们都希望生活中不犯错，但 Cocoa 给了我们一个让我们生活有更少遗憾的机会，可以更简单地做出一些改变。</p><hr><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><p>除非<a href=https://nshipster.cn/ target=_blank>另有声明</a>，本文采用知识共享「<a href=https://creativecommons.org/licenses/by-nc/3.0/cn/ target=_blank>署名-非商业性使用 3.0 中国大陆</a>」许可协议授权。</p><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2014-12-15 </a>&copy;</span>
+<span style="float:right;margin:0 -3px"><a href=https://vercel.autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2024 Delisa Mason 版权所有</a><a href=https://vercel.autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://vercel.autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://vercel.autoptr.top/tags/nshipster target=_blank>nshipster</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://vercel.autoptr.top/categories/Cocoa target=_blank>Cocoa</a></li><li><a class=link href=https://vercel.autoptr.top/categories/macOS target=_blank>macOS</a></li><li><a class=link href=https://vercel.autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script>
+<script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script>
+<script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>

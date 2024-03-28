@@ -1,0 +1,151 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>GoldenDict++插件接口定义</title><link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="GoldenDict,OCR,划词翻译,音频,开发,插件"><meta name=description content="使用GoldenDict++划词翻译的插件接口开发音频播放、划词（划屏和OCR）接口"><script data-ad-client=ca-pub-8922574795542092 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script>
+<script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>GoldenDict++插件接口定义</span><span class=btRight><span title="Translator · 翻译" class=author><a href=https://vercel.autoptr.top/license/ style=color:red title="All rights reserved · 译文或原创内容·版权所有" target=_blank rel=nofollow>&copy;</a><a href=https://vercel.autoptr.top/gdocr/GoldenDict-OCR-Deployment/ style=color:#007cd5 title="GoldenDict++OCR Deployment「下载•安装」" target=_blank>&#128681;</a><a href=/gdocr/cn/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><div align=center class=gdocr_topic_head style=font-size:14px;color:#444;background-color:transparent;margin-bottom:.3em><style type=text/css>.gdocr_topic_head a{text-decoration:none;color:darkred;display:inline-block;border:1px solid #4e57ef;box-shadow:3px 4px #aaaab7;padding:1px;margin:2px 1px}</style><a href=/gdocr/GoldenDict-OCR-Free-Dictionaries/ style=color:#7f0099 title=对辞书分享社区的态度 target=_blank>辞书分享</a>
+<a href=/gdocr/wiki/GoldenDict-DoubleClick-ScanPopup-Windows/ target=_blank>双击取词</a>
+<a href=/gdocr/GoldenDict-OCR-Portable-Mode/ style=color:#7f0099;font-weight:700 target=_blank>便携模式</a>
+<a href=/gdocr/en/GoldenDict-OCR-Audio-Players/ target=_blank>音频引擎</a>
+<a href=/gdocr/cn/GoldenDict-OCR-Adobe-Flash-Plugin/ style=color:#7f0099 target=_blank>播放动画</a>
+<a href=/gdocr/en/GoldenDict-OCR-Web-History-Cache/ target=_blank>文章缓存</a>
+<a href=/gdocr/en/GoldenDict-OCR-Group-by-Folders/ style=color:#7f0099;font-weight:700 target=_blank>自动分组</a>
+<a href=/gdocr/en/GoldenDict-OCR-Reading-Mode/ target=_blank>阅读模式</a>
+<a href=/gdocr/en/GoldenDict-OCR-QA-Help/ style=color:#7f0099;font-weight:700 target=_blank>问题帮助</a>
+<a href=/gdocr/GoldenDict-OCR-Language-Settings/ target=_blank>划词设置</a>
+<a href=/gdocr/GoldenDict-OCR-Deployment/ style=color:blue;font-weight:700 target=_blank>升级下载</a>
+<a href=/gdocr/GoldenDict-OCR-Changelog/ style=color:blue;font-weight:700 target=_blank>更新日志</a></div><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><p><span style=margin-left:2em></span>按需加载，资源不浪费，问题不易出。<br><span style=margin-left:2em></span>接口尽可能的简单，实现尽可能的简单，仅为所需功能，不做过度设计与冗余实现。</p><h3 id=1-插件公共接口>1. 插件公共接口</h3><p><span style=margin-left:2em></span>实现插件管理及共有接口。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>GDCORE_EXPORT</span> GDPObject : <span style=color:#66d9ef>public</span> QObject
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    Q_OBJECT
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>int</span> type() <span style=color:#66d9ef>const</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* GDO_Type 插件类型 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>version</span>() <span style=color:#66d9ef>const</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* 插件版本 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> QString <span style=color:#a6e22e>author</span>() <span style=color:#66d9ef>const</span>; <span style=color:#75715e>/* 插件作者 */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>init</span>() <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* 初始化, 可有可无, 由插件决定 */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    QString <span style=color:#a6e22e>fileName</span>() <span style=color:#66d9ef>const</span>; <span style=color:#75715e>/* 插件文件 */</span>
+</span></span><span style=display:flex><span>    QString <span style=color:#a6e22e>name</span>() <span style=color:#66d9ef>const</span>; <span style=color:#75715e>/* 插件名称, 简单的描述 */</span>
+</span></span><span style=display:flex><span>    QString <span style=color:#a6e22e>metaIID</span>() <span style=color:#66d9ef>const</span>; <span style=color:#75715e>/* 插件meta ID */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> QList<span style=color:#f92672>&lt;</span>QPair<span style=color:#f92672>&lt;</span>QString<span style=color:#75715e>/*iid*/</span>, QString<span style=color:#75715e>/*path*/</span><span style=color:#f92672>&gt;</span> <span style=color:#f92672>&gt;</span> metaInfo(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>dir, <span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>filter); <span style=color:#75715e>/* 获取符合过滤条件的插件文件的ID和文件路径 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> GDPObject<span style=color:#f92672>*</span> <span style=color:#a6e22e>load</span>(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>file, QObject <span style=color:#f92672>*</span>parent <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>); <span style=color:#75715e>/* 加载插件对象, 一个插件仅有一个对象 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>unload</span>(GDPObject <span style=color:#f92672>*</span>obj); <span style=color:#75715e>/* owner delete, also the obj itself will be deleted */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>signals:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> error(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>); <span style=color:#75715e>/* 插件生存期间的错误信息向外输出 */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>protected</span> slots:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> postError(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>msg, <span style=color:#66d9ef>int</span> err <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>); <span style=color:#75715e>/* 插件生存期间的错误信息格式化输出 */</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>protected</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>explicit</span> GDPObject(QObject <span style=color:#f92672>*</span>parent <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>) <span style=color:#f92672>:</span> QObject(parent), owner(<span style=color:#66d9ef>nullptr</span>)
+</span></span><span style=display:flex><span>    {} <span style=color:#75715e>/* 用户不能显式的构造与析构一个插件对象 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#f92672>~</span>GDPObject() {}  <span style=color:#75715e>/* Call unload() instead */</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>private</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> deleteLater();
+</span></span><span style=display:flex><span><span style=color:#66d9ef>private</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>GDPObjOwner</span>;
+</span></span><span style=display:flex><span>    GDPObjOwner <span style=color:#f92672>*</span>owner; <span style=color:#75715e>/* owner销毁时, 对象亦被效率 */</span>
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><h3 id=2-audioplayer公共接口>2. AudioPlayer公共接口</h3><p><span style=margin-left:2em></span>当前实现的音频播放接口有：Fmod ex、Bass、ffmpeg、Qt Multimedia、Qt phonon，推荐使用Bass或ffmpeg，这两个引擎支持的音频格式最多，考虑资源占用（内存使用大小）推荐使用Bass。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>GDPAudioPlayer</span> <span style=color:#f92672>:</span> <span style=color:#66d9ef>public</span> GDPObject
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    Q_OBJECT
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>explicit</span> GDPAudioPlayer(QObject <span style=color:#f92672>*</span>parent <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>) <span style=color:#f92672>:</span> GDPObject(parent)
+</span></span><span style=display:flex><span>    {}
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#f92672>~</span>GDPAudioPlayer()
+</span></span><span style=display:flex><span>    {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>type</span>() <span style=color:#66d9ef>const</span> {  <span style=color:#66d9ef>return</span> GDOT_AudioPlayer;  }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>version</span>() <span style=color:#66d9ef>const</span> { <span style=color:#66d9ef>return</span> GDP_GENVER(<span style=color:#ae81ff>1</span>);    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 正在进行音频播放吗？ */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>isPlaying</span>() <span style=color:#66d9ef>const</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span> slots:
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>bool</span> play(<span style=color:#66d9ef>const</span> QByteArray <span style=color:#f92672>&amp;</span>audioBuffer) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* 播放音频缓存 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>playFile</span>(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>file) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* 播放音频文件 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>stop</span>() <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* 停止播放当前音频(同时释放音频占用的资源) */</span>
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><ins class=adsbygoogle style=display:block;text-align:center data-ad-layout=in-article data-ad-format=fluid data-ad-client=ca-pub-8922574795542092 data-ad-slot=2550076257></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><h3 id=3-ocr划词公共接口>3. OCR划词公共接口</h3><p><span style=margin-left:2em></span>当前实现的OCR接口有：Nicomsoft OCR、Tesseract、Apple’s Vision framework，Nicomsoft官方已放弃维护且支持的平台和识别语言都少，推荐使用Tesseract。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>GDPOcrText</span> <span style=color:#f92672>:</span> <span style=color:#66d9ef>public</span> GDPObject
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    Q_OBJECT
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* OCR 语言列表，id用于ocr引擎的语言识别标志，name为名称 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>typedef</span> QList<span style=color:#f92672>&lt;</span>QPair<span style=color:#f92672>&lt;</span>QString<span style=color:#75715e>/*id*/</span>, QString<span style=color:#75715e>/*name*/</span><span style=color:#f92672>&gt;</span> <span style=color:#f92672>&gt;</span> OCR_LAN;
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* OCR 语言区域列表，nsocr有分区概念（两个区），Tesseract无（默认一个大区） */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>typedef</span> QList<span style=color:#f92672>&lt;</span>QPair<span style=color:#f92672>&lt;</span>QString <span style=color:#75715e>/*area*/</span>, OCR_LAN<span style=color:#f92672>&gt;</span> <span style=color:#f92672>&gt;</span> OCR_LANS;
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>explicit</span> GDPOcrText(QObject <span style=color:#f92672>*</span>parent <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>) <span style=color:#f92672>:</span> GDPObject(parent)
+</span></span><span style=display:flex><span>    {}
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#f92672>~</span>GDPOcrText()
+</span></span><span style=display:flex><span>    {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/*GDO_Type*/</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>type</span>() <span style=color:#66d9ef>const</span> {    <span style=color:#66d9ef>return</span> GDOT_OcrText;    }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 生成插件版本号 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>version</span>() <span style=color:#66d9ef>const</span> { <span style=color:#66d9ef>return</span> GDP_GENVER(<span style=color:#ae81ff>1</span>);    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 获取引擎能识别的所有语言 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> OCR_LANS <span style=color:#a6e22e>getAreaLans</span>() <span style=color:#66d9ef>const</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 使能需要引擎识别的语言 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>enableLans</span>(<span style=color:#66d9ef>const</span> QStringList <span style=color:#f92672>&amp;</span>lans, <span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>area) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 设置识别语言库目录，如无则忽略 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>setDataPath</span>(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>datadir) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> QString <span style=color:#a6e22e>dataPath</span>() <span style=color:#66d9ef>const</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 正在进行ocr识别吗？ */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>isWorking</span>() <span style=color:#66d9ef>const</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span> slots:
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 识别图像数据，缓存中为bmp图像格式数据 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> ocrMemory(<span style=color:#66d9ef>const</span> QByteArray <span style=color:#f92672>&amp;</span>bmpdata, <span style=color:#66d9ef>int</span> dpi <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>; <span style=color:#75715e>/* bmp data */</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 识别图像数据，可以任何引擎能识别的图形文件 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>ocrFile</span>(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>file, <span style=color:#66d9ef>int</span> dpi <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>) <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 停止正在进行的ocr任务 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>stop</span>() <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>signals:
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 完成ocr识别后发射该信号，参数为ocr得到的文字 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> textOcred(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>text);
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><h3 id=4-划屏截图接口>4. 划屏（截图）接口</h3><p><span style=margin-left:2em></span>当前实现的截图接口有：winmask、fromcliboard；winmask支持动态截图，截图时支持多屏间切换，在windows上表现完美，在linux的大部分桌面环境下表现与windows下一致（完美），在部分linxu桌面环境和macOS中不能使用；fromcliboard会调用预设或用户设定的命令区截图并把截取到的图形数据存在剪切板中，默认参数下，在Windows平台调用wingraber（winmask的静态截图实现），在linux中调用scrot和xclip实现，在macOS中调用screencapture实现。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>GDPGrabScreen</span> <span style=color:#f92672>:</span> <span style=color:#66d9ef>public</span> GDPObject
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    Q_OBJECT
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>explicit</span> GDPGrabScreen(QObject <span style=color:#f92672>*</span>parent <span style=color:#f92672>=</span> <span style=color:#66d9ef>nullptr</span>) <span style=color:#f92672>:</span> GDPObject(parent)
+</span></span><span style=display:flex><span>    {}
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#f92672>~</span>GDPGrabScreen()
+</span></span><span style=display:flex><span>    {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>type</span>() <span style=color:#66d9ef>const</span> {    <span style=color:#66d9ef>return</span> GDOT_GrapScreen;    }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span> <span style=color:#a6e22e>version</span>() <span style=color:#66d9ef>const</span> { <span style=color:#66d9ef>return</span> GDP_GENVER(<span style=color:#ae81ff>1</span>);    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 设置截图命令, 非必须 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>setCmd</span>(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>) {}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 正在截图过程中？ */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>bool</span> <span style=color:#a6e22e>isBusy</span>() <span style=color:#66d9ef>const</span> <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span> slots:
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 开始截图 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>bool</span> start() <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 停止截图 */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>virtual</span> <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>stop</span>() <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>signals:
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/* 完成截图, 返回截图(BMP)数据或图形文件以及图形文件DPI */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> grabed(<span style=color:#66d9ef>const</span> QByteArray <span style=color:#f92672>&amp;</span>bmpData, <span style=color:#66d9ef>int</span> dpi <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>grabedFile</span>(<span style=color:#66d9ef>const</span> QString <span style=color:#f92672>&amp;</span>fileName, <span style=color:#66d9ef>int</span> dpi <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>);
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2020-06-06 </a><a href=https://vercel.autoptr.top/license/ title="All rights reserved · 原创内容·版权所有" target=_blank rel=nofollow>&copy;</a></span>
+<span style="float:right;margin:0 -3px"><a href=https://vercel.autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2024 AuTopTr 版权所有</a><a href=https://vercel.autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://vercel.autoptr.top/tags/OCR target=_blank>OCR</a></li><li><a class=link href=https://vercel.autoptr.top/tags/Plugin target=_blank>Plugin</a></li><li><a class=link href=https://vercel.autoptr.top/tags/C++ target=_blank>C++</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://vercel.autoptr.top/categories/GoldenDict target=_blank>GoldenDict</a></li><li><a class=link href=https://vercel.autoptr.top/categories/%e5%88%92%e8%af%8d target=_blank>划词</a></li><li><a class=link href=https://vercel.autoptr.top/categories/Qt target=_blank>Qt</a></li><li><a class=link href=https://vercel.autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script>
+<script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script>
+<script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>

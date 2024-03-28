@@ -1,0 +1,62 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>GoldenDict++ Group By Folder or Formats</title><link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="GoldenDict,划词翻译,按目录分组,按格式分组"><meta name=description content="Group dictionaries by root-dir or dictionary-formats, GoldenDict++"><script data-ad-client=ca-pub-8922574795542092 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script>
+<script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>GoldenDict++ Group By Folder or Formats</span><span class=btRight><span title="Translator · 翻译" class=author><a href=https://vercel.autoptr.top/license/ style=color:red title="All rights reserved · 译文或原创内容·版权所有" target=_blank rel=nofollow>&copy;</a><a href=https://vercel.autoptr.top/gdocr/cn/GoldenDict-OCR-Group-by-Folders/ style=color:#007cd5 title=GoldenDict++按目录/格式自动分组 target=_blank>&#128681;</a><a href=/gdocr/en/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><div align=center class=gdocr_topic_head style=font-size:14px;color:#444;background-color:transparent;margin-bottom:.3em><style type=text/css>.gdocr_topic_head a{text-decoration:none;color:darkred;display:inline-block;border:1px solid #4e57ef;box-shadow:3px 4px #aaaab7;padding:1px;margin:2px 1px}</style><a href=/gdocr/GoldenDict-OCR-Free-Dictionaries/ style=color:#7f0099 title=对辞书分享社区的态度 target=_blank>辞书分享</a>
+<a href=/gdocr/wiki/GoldenDict-DoubleClick-ScanPopup-Windows/ target=_blank>双击取词</a>
+<a href=/gdocr/GoldenDict-OCR-Portable-Mode/ style=color:#7f0099;font-weight:700 target=_blank>便携模式</a>
+<a href=/gdocr/en/GoldenDict-OCR-Audio-Players/ target=_blank>音频引擎</a>
+<a href=/gdocr/cn/GoldenDict-OCR-Adobe-Flash-Plugin/ style=color:#7f0099 target=_blank>播放动画</a>
+<a href=/gdocr/en/GoldenDict-OCR-Web-History-Cache/ target=_blank>文章缓存</a>
+<a href=/gdocr/en/GoldenDict-OCR-Reading-Mode/ target=_blank>阅读模式</a>
+<a href=/gdocr/en/GoldenDict-OCR-QA-Help/ style=color:#7f0099;font-weight:700 target=_blank>问题帮助</a>
+<a href=/gdocr/GoldenDict-OCR-Language-Settings/ target=_blank>划词设置</a>
+<a href=/gdocr/GoldenDict-OCR-Changelog/ style=color:blue;font-weight:700 target=_blank>更新日志</a>
+<a href=/gdocr/GoldenDict-OCR-Deployment/ style=color:blue;font-weight:700 target=_blank>升级下载</a></div><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><style>.autoptr-aspect-ratio{position:relative;width:100%;height:0;padding-bottom:60%}#biliplayer{position:absolute;width:100%;height:100%;left:0;top:0}@media only screen and (min-device-width:320px) and (max-device-width:480px){.aspect-ratio #biliplayer{width:100%;height:100%}}</style><div align=center class=autoptr-aspect-ratio><iframe id=biliplayer src="//player.bilibili.com/player.html?bvid=BV1EN41177Lx&page=1&high_quality=1&danmaku=0" scrolling=no border=0 frameborder=no framespacing=0 allowfullscreen loading=lazy></iframe></div><p><span style=margin-left:2em></span>When switching from the official GoldenDict or earlier versions of ++OCR to the latest version of GoldenDict++, you have to regroup all your dictionaries due to compatibility issues with the configuration files, which is tedious and time-consuming. However, if you have normally grouped your dictionaries by dir (under content) when you add them, regrouping them will be a no-brainer.
+<img src=/media/gdusage/groupbyDirOrFormat.gif alt></p><h3 id=1-first-ensure-that-the-dictionary-catalogue-is-in-order>1. First ensure that the dictionary catalogue is in order</h3><blockquote><p>Not necessary for auto grouping by dictionary-formats</p></blockquote><p><span style=margin-left:2em></span>As the directory structure shown below (only some of the directories are listed for demonstration purposes), the subdirectories that exist under the general dictionaries&rsquo; path<code>content</code> are the dictionary <code>Group</code> directories, and under each of these directories you can store as many dictionary files as you like, then the automatic grouping by directory function will use the name of the directory under dictionaries&rsquo; path<code>content</code>(Pronunciation, wikipedia, 文学, etc.) as <code>Group</code> name and will group all the dictionaries under that name (including the subdirectories nested under it) into it:
+<ins class=adsbygoogle style=display:block;text-align:center data-ad-layout=in-article data-ad-format=fluid data-ad-client=ca-pub-8922574795542092 data-ad-slot=2550076257></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bat data-lang=bat><span style=display:flex><span>content
+</span></span><span style=display:flex><span>├─Pronunciation
+</span></span><span style=display:flex><span>│  ├─LPD3
+</span></span><span style=display:flex><span>│  ├─MW2020
+</span></span><span style=display:flex><span>│  ├─NHK日本語発音辞典
+</span></span><span style=display:flex><span>│  └─法语语音库
+</span></span><span style=display:flex><span>├─wikipedia
+</span></span><span style=display:flex><span>├─文学
+</span></span><span style=display:flex><span>│  ├─中国神话大词典
+</span></span><span style=display:flex><span>│  ├─夜航船
+</span></span><span style=display:flex><span>│  └─DK
+</span></span><span style=display:flex><span>├─日语
+</span></span><span style=display:flex><span>│  ├─现代日汉双解词典
+</span></span><span style=display:flex><span>│  └─新英和中辞典
+</span></span><span style=display:flex><span>├─汉英
+</span></span><span style=display:flex><span>│  ├─现代汉英词典
+</span></span><span style=display:flex><span>│  └─牛朗文韦柯反查
+</span></span><span style=display:flex><span>├─汉语言
+</span></span><span style=display:flex><span>│  ├─中华语文知识库
+</span></span><span style=display:flex><span>│  ├─成语
+</span></span><span style=display:flex><span>│  │  ├─中华成语大词典
+</span></span><span style=display:flex><span>│  │  └─成语反查辞典
+</span></span><span style=display:flex><span>│  ├─汉典
+</span></span><span style=display:flex><span>│  └─综合写作词典
+</span></span><span style=display:flex><span>├─科学
+</span></span><span style=display:flex><span>│  ├─Flash Animations for Physics
+</span></span><span style=display:flex><span>│  └─phet
+</span></span><span style=display:flex><span>├─英汉
+</span></span><span style=display:flex><span>│  ├─ecdict
+</span></span><span style=display:flex><span>│  └─英汉大词典
+</span></span><span style=display:flex><span>├─英汉Esl
+</span></span><span style=display:flex><span>│  ├─oalecd8e
+</span></span><span style=display:flex><span>│  └─韦氏高阶
+</span></span><span style=display:flex><span>└─英语
+</span></span><span style=display:flex><span>    ├─En-En-MW-Collegiate.Thesaurus.2015
+</span></span><span style=display:flex><span>    └─Thesaurus.com 2020
+</span></span></code></pre></div><h3 id=2-create-file-named-gdautogrp-under-root-of-dictionaries-path>2. Create file named <code>.gdautogrp</code> under root of dictionaries&rsquo; path</h3><blockquote><p>Only for <code>3E1A</code> and later versions<br>AND it‘s not necessary for auto grouping by dictionary-formats</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bat data-lang=bat><span style=display:flex><span>content
+</span></span><span style=display:flex><span>├─.gdautogrp
+</span></span></code></pre></div><h3 id=3-open-the-dictionary-edit-dialog-and-switch-to-the-groups-page>3. Open the <code>Dictionary Edit</code> dialog and switch to the <code>Groups</code> page</h3><p><span style=margin-left:2em></span>The grouping will be instantly completed after clicking on one of AutoGroup buttons and confirming in the messagebox.</p><p><span style=margin-left:2em></span>Then you can fine-tune the order of the dictionaries in each group.</p><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2021-04-13 </a><a href=https://vercel.autoptr.top/license/ title="All rights reserved · 原创内容·版权所有" target=_blank rel=nofollow>&copy;</a></span>
+<span style="float:right;margin:0 -3px"><a href=https://vercel.autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2024 AuTopTr 版权所有</a><a href=https://vercel.autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://vercel.autoptr.top/tags/eBook target=_blank>eBook</a></li><li><a class=link href=https://vercel.autoptr.top/tags/%e7%94%b5%e5%ad%90%e4%b9%a6 target=_blank>电子书</a></li><li><a class=link href=https://vercel.autoptr.top/tags/AQ target=_blank>AQ</a></li><li><a class=link href=https://vercel.autoptr.top/tags/Help target=_blank>Help</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://vercel.autoptr.top/categories/GoldenDict target=_blank>GoldenDict</a></li><li><a class=link href=https://vercel.autoptr.top/categories/%e5%88%92%e8%af%8d target=_blank>划词</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script>
+<script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script></body></html>

@@ -1,0 +1,136 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>UIAlertController</title><link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="UIAlertController,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><meta name=description content="UIAlertController,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><script data-ad-client=ca-pub-8922574795542092 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script>
+<script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script>
+<script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script>
+<script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>UIAlertController</span><span class=btRight><span title="Author · 作者" class=author>Mattt</span> <span title="Translator · 翻译" class=author>Croath Liu</span> <a href=https://github.com/NSHipster/articles-zh-Hans style=color:#007cd5 title="Related or Quoted Post · 关联或转载引用的文章" target=_blank rel="nofollow noopener noreferrer">&#128681;</a><a href=/tutorials/NSHipster/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><p>你知道 <code>UIAlertView</code>、<code>UIActionSheet</code> (以及它们各自的 delegate protocols) 在 iOS 8 中已经被废弃了吗？</p><p>这是真的。在你的代码中按住 ⌘ 点击 <code>UIAlertView</code> 或者 <code>UIActionSheet</code>，你就会看到最上面的注释：</p><blockquote><p><code>UIAlertView</code> is deprecated. Use <code>UIAlertController</code> with a <code>preferredStyle</code> of <code>UIAlertControllerStyleAlert</code> instead.</p></blockquote><p>你可能好奇为什么 Xcode 不直接警告你这个变化呢？别急，往下读：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>@availability(iOS, introduced=2.0)</span>
+</span></span></code></pre></div><p>虽然类已经被废弃了，但在 <code>@availability</code> 属性中并没有表达出这一点。<code>UIAlertView</code> 目前还是能用的。</p><p>最开始的时候，<code>UIAlertView</code> 充满了无底线的让步，牺牲格式和设计正确性来顺应开发者的喜好。它的 <code>delegate</code> 类型是在初始化函数中注释的 (<code>delegate:(id /* &lt;UIAlertViewDelegate */)delegate</code>)，并且在 protocol 方法中实现了让人匪夷所思的概念——<code>buttonAtIndex:</code> 的 &ldquo;clicked&rdquo; 而不是 &ldquo;tapped&rdquo;；然后还提供了不限数量的参数来引入 <code>otherButtonTitles</code>，因此 button 的索引管理变得非常痛苦；一个 <code>-show</code> 方法也根本不考虑 view 的层级关系&mldr;&mldr;类似的问题数不胜数。</p><p><code>UIActionSheet</code> 也一样糟糕，但是开发者大多数时间里都没时间想起那些糟糕的使用方法，与其相关的抱怨特就更少了。</p><p>因此，介绍 <code>UIAlertController</code> 给大家，就好比派出军队解放一座被占领的城市一样。它不仅仅改进了那些让人头疼的 API，也开辟了一条为最新设备上 UIKit 特性适配的新路径。</p><p>本周文章的主题就是 <code>UIAlertController</code>，向大家展示如何替换旧的 alert，以及这些操作方法的高级扩展。</p><hr><p><code>UIAlertController</code> 同时替代了 <code>UIAlertView</code> 和 <code>UIActionSheet</code>，从系统层级上统一了 alert 的概念 —— 即以 modal 方式或 popover 方式展示。</p><p><code>UIAlertController</code> 是 <code>UIViewController</code> 的子类，而非其先前的方式。因此新的 alert 可以由 view controller 展示相关的配置中获益很多。</p><p><code>UIAlertController</code> 不管是要用 alert 还是 action sheet 方式展示，都要以 <code>title</code> 和 <code>message</code> 参数来初始化。Alert 会在当前显示的 view controller 中心以模态形式出现，action sheet 则会在底部滑出。Alert 可以同时有按钮和输入框，action sheet 仅支持按钮。</p><p>新的方式并没有把所有的 alert 按钮配置都放在初始化函数中，而是引入了一个新类 <code>UIAlertAction</code> 的对象，在初始化之后可以进行配置。这种形式的 API 重构让对按钮数量、类型、顺序方便有了更大的控制。同时也弃用了 <code>UIAlertView</code> 和 <code>UIActionSheet</code> 使用的delegate 这种方式，而是采用更简便的完成时回调。</p><h2 id=新旧-alert-方式对比>新旧 Alert 方式对比</h2><h3 id=标准的-alert-样式>标准的 Alert 样式</h3><p><img src=/media/NSHipster/uialertcontroller-alert-defautl-style.png alt="A Standard Alert"></p><h4 id=旧方法uialertview>旧方法：UIAlertView</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> alertView = UIAlertView(title: <span style=color:#e6db74>&#34;Default Style&#34;</span>, message: <span style=color:#e6db74>&#34;A standard alert.&#34;</span>, delegate: <span style=color:#66d9ef>self</span>, cancelButtonTitle: <span style=color:#e6db74>&#34;Cancel&#34;</span>, otherButtonTitles: <span style=color:#e6db74>&#34;OK&#34;</span>)
+</span></span><span style=display:flex><span>alertView.alertViewStyle = .Default
+</span></span><span style=display:flex><span>alertView.show()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> UIAlertViewDelegate</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>alertView</span>(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>switch</span> buttonIndex {
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=新方法uialertcontroller>新方法：UIAlertController</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> alertController = UIAlertController(title: <span style=color:#e6db74>&#34;Default Style&#34;</span>, message: <span style=color:#e6db74>&#34;A standard alert.&#34;</span>, preferredStyle: .Alert)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> cancelAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Cancel&#34;</span>, style: .Cancel) { (action) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>alertController.addAction(cancelAction)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> OKAction = UIAlertAction(title: <span style=color:#e6db74>&#34;OK&#34;</span>, style: .Default) { (action) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>alertController.addAction(OKAction)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>self</span>.presentViewController(alertController, animated: <span style=color:#66d9ef>true</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=标准的-action-sheet-样式>标准的 Action Sheet 样式</h3><p><img src=/media/NSHipster/uialertcontroller-action-sheet-automatic-style.png alt="A Standard Action Sheet"></p><h4 id=uiactionsheet>UIActionSheet</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> actionSheet = UIActionSheet(title: <span style=color:#e6db74>&#34;Takes the appearance of the bottom bar if specified; otherwise, same as UIActionSheetStyleDefault.&#34;</span>, delegate: <span style=color:#66d9ef>self</span>, cancelButtonTitle: <span style=color:#e6db74>&#34;Cancel&#34;</span>, destructiveButtonTitle: <span style=color:#e6db74>&#34;Destroy&#34;</span>, otherButtonTitles: <span style=color:#e6db74>&#34;OK&#34;</span>)
+</span></span><span style=display:flex><span>actionSheet.actionSheetStyle = .Default
+</span></span><span style=display:flex><span>actionSheet.showInView(<span style=color:#66d9ef>self</span>.view)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> UIActionSheetDelegate</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>actionSheet</span>(actionSheet: UIActionSheet, clickedButtonAtIndex buttonIndex: Int) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>switch</span> buttonIndex {
+</span></span><span style=display:flex><span>        ...
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h4 id=uialertcontroller>UIAlertController</h4><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> alertController = UIAlertController(title: <span style=color:#66d9ef>nil</span>, message: <span style=color:#e6db74>&#34;Takes the appearance of the bottom bar if specified; otherwise, same as UIActionSheetStyleDefault.&#34;</span>, preferredStyle: .ActionSheet)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> cancelAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Cancel&#34;</span>, style: .Cancel) { (action) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>alertController.addAction(cancelAction)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> OKAction = UIAlertAction(title: <span style=color:#e6db74>&#34;OK&#34;</span>, style: .Default) { (action) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>alertController.addAction(OKAction)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> destroyAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Destroy&#34;</span>, style: .Destructive) { (action) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    println(action)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>alertController.addAction(destroyAction)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>self</span>.presentViewController(alertController, animated: <span style=color:#66d9ef>true</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=新功能>新功能</h2><p><code>UIAlertController</code> 并不只是对已有的 API 做了清理，而是进行了标准化归纳。以前，预设的样式闲置有很多（swizzling 虽然可以提供更多的功能但还是有很大风险）。<code>UIAlertController</code> 让以前看起来很神奇的事情变为了可能。</p><h3 id=带有警示按钮的-alert>带有警示按钮的 Alert</h3><p><img src=/media/NSHipster/uialertcontroller-alert-cancel-destroy.png alt="Alert with Destructive Button"></p><p>这种行为已经被 <code>UIAlertActionStyle</code> 所涵盖，共有三种类型：</p><blockquote><ul><li><code>.Default</code>: 对按钮应用标准样式。</li><li><code>.Cancel</code>: 对按钮应用取消样式，代表取消操作不做任何改变。</li><li><code>.Destructive</code>: 对按钮应用警示性的样式，提示用户这样做可能会改变或删除某些数据。</li></ul></blockquote><p>所以想要对模态的 alert 加一个警示性的按钮，只需要加上 <code>.Destructive</code> 风格的 <code>UIAlertAction</code> 属性：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> alertController = UIAlertController(title: <span style=color:#e6db74>&#34;Title&#34;</span>, message: <span style=color:#e6db74>&#34;Message&#34;</span>, preferredStyle: .Alert)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> cancelAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Cancel&#34;</span>, style: .Cancel) { (action) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    println(action)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>alertController.addAction(cancelAction)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> destroyAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Destroy&#34;</span>, style: .Destructive) { (action) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    println(action)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>alertController.addAction(destroyAction)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>self</span>.presentViewController(alertController, animated: <span style=color:#66d9ef>true</span>) {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=大于-2-个按钮的-alert>大于 2 个按钮的 Alert</h3><p><img src=/media/NSHipster/uialertcontroller-alert-one-two-three-cancel.png alt="Alert with More Than 2 Buttons"></p><p>有 1 个或者 2 个操作的时候，按钮会水平排布。更多按钮的情况，就会像 action sheet 那样展示：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> oneAction = UIAlertAction(title: <span style=color:#e6db74>&#34;One&#34;</span>, style: .Default) { (<span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span> }
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> twoAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Two&#34;</span>, style: .Default) { (<span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span> }
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> threeAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Three&#34;</span>, style: .Default) { (<span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span> }
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> cancelAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Cancel&#34;</span>, style: .Cancel) { (<span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span> }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>alertController.addAction(oneAction)
+</span></span><span style=display:flex><span>alertController.addAction(twoAction)
+</span></span><span style=display:flex><span>alertController.addAction(threeAction)
+</span></span><span style=display:flex><span>alertController.addAction(cancelAction)
+</span></span></code></pre></div><h3 id=创建登录表单>创建登录表单</h3><p><img src=/media/NSHipster/uialertcontroller-alert-username-password-login-forgot-password-cancel.png alt="Creating a Login Form"></p><p>iOS 5 就为 <code>UIAlertView</code> 加入了 <code>alertViewStyle</code> 属性，将原本私有的 API 暴露出来给开发者使用 —— 像某些系统内建应用一样允许在 alert 中显示登录和密码框。</p><p>在 iOS 8 中，<code>UIAlertController</code> 则加入了 <code>addTextFieldWithConfigurationHandler</code> 方法：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> loginAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Login&#34;</span>, style: .Default) { (<span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> loginTextField = alertController.textFields![<span style=color:#ae81ff>0</span>] <span style=color:#66d9ef>as</span> UITextField
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> passwordTextField = alertController.textFields![<span style=color:#ae81ff>1</span>] <span style=color:#66d9ef>as</span> UITextField
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    login(loginTextField.text, passwordTextField.text)
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>loginAction.enabled = <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> forgotPasswordAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Forgot Password&#34;</span>, style: .Destructive) { (<span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span> }
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> cancelAction = UIAlertAction(title: <span style=color:#e6db74>&#34;Cancel&#34;</span>, style: .Cancel) { (<span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span> }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>alertController.addTextFieldWithConfigurationHandler { (textField) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    textField.placeholder = <span style=color:#e6db74>&#34;Login&#34;</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    NSNotificationCenter.defaultCenter().addObserverForName(UITextFieldTextDidChangeNotification, object: textField, queue: NSOperationQueue.mainQueue()) { (notification) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>        loginAction.enabled = textField.text <span style=color:#f92672>!=</span> <span style=color:#e6db74>&#34;&#34;</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>alertController.addTextFieldWithConfigurationHandler { (textField) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    textField.placeholder = <span style=color:#e6db74>&#34;Password&#34;</span>
+</span></span><span style=display:flex><span>    textField.secureTextEntry = <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>alertController.addAction(loginAction)
+</span></span><span style=display:flex><span>alertController.addAction(forgotPasswordAction)
+</span></span><span style=display:flex><span>alertController.addAction(cancelAction)
+</span></span></code></pre></div><h3 id=创建注册表单>创建注册表单</h3><p><img src=/media/NSHipster/uialertcontroller-alert-sign-up.png alt="Creating a Sign Up Form"></p><p><code>UIAlertController</code> 想得比以前更周到一些，它提供了展示无限个输入框的权限，并且每一个输入框都可以根据需求进行自定义。这让仅在一个模态的 alert 中实现完善的注册功能成为可能：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span>alertController.addTextFieldWithConfigurationHandler { (textField) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    textField.placeholder = <span style=color:#e6db74>&#34;Email&#34;</span>
+</span></span><span style=display:flex><span>    textField.keyboardType = .EmailAddress
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>alertController.addTextFieldWithConfigurationHandler { (textField) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    textField.placeholder = <span style=color:#e6db74>&#34;Password&#34;</span>
+</span></span><span style=display:flex><span>    textField.secureTextEntry = <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>alertController.addTextFieldWithConfigurationHandler { (textField) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    textField.placeholder = <span style=color:#e6db74>&#34;Password Confirmation&#34;</span>
+</span></span><span style=display:flex><span>    textField.secureTextEntry = <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>虽然有了这些，但必须要说明的是，不用_矫枉过正_。不能因为你可以这样做，就代表你_应该_这样做。忘了这玩意吧，提供一个 view controller 来做注册功能吧，因为你本就应该这样做！</p><h2 id=注意>注意</h2><p>如果试图向 alert controller 添加带有 <code>.ActionSheet</code> 属性的输入框，将会抛出异常：</p><blockquote><p>Terminating app due to uncaught exception <code>NSInternalInconsistencyException</code>, reason: &lsquo;Text fields can only be added to an alert controller of style <code>UIAlertControllerStyleAlert</code>&rsquo;</p></blockquote><p>同样的，向 alert 或 action sheet 添加一个以上的 <code>.Cancel</code> 按钮将会抛出异常：</p><blockquote><p>Terminating app due to uncaught exception <code>NSInternalInconsistencyException</code>, reason: &lsquo;<code>UIAlertController</code> can only have one action with a style of <code>UIAlertActionStyleCancel</code>&rsquo;</p></blockquote><hr><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><p>除非<a href=https://nshipster.cn/ target=_blank>另有声明</a>，本文采用知识共享「<a href=https://creativecommons.org/licenses/by-nc/3.0/cn/ target=_blank>署名-非商业性使用 3.0 中国大陆</a>」许可协议授权。</p><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2014-09-30 </a>&copy;</span>
+<span style="float:right;margin:0 -3px"><a href=https://vercel.autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2024 Mattt 版权所有</a><a href=https://vercel.autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://vercel.autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://vercel.autoptr.top/tags/nshipster target=_blank>nshipster</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://vercel.autoptr.top/categories/Cocoa target=_blank>Cocoa</a></li><li><a class=link href=https://vercel.autoptr.top/categories/macOS target=_blank>macOS</a></li><li><a class=link href=https://vercel.autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script>
+<script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script>
+<script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>
