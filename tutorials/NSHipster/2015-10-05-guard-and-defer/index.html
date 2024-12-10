@@ -1,0 +1,142 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>guard & defer</title>
+<link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="guard & defer,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><meta name=description content="guard & defer,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><script data-ad-client=ca-pub-8922574795542092 async src=https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js></script><script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>guard & defer</span><span class=btRight><span title="Author · 作者" class=author>Mattt & Nate Cook</span> <span title="Translator · 翻译" class=author><a href=https://github.com/NSHipster/articles-zh-Hans style=color:#007cd5 title="Related or Quoted Post · 关联或转载引用的文章" target=_blank rel="nofollow noopener noreferrer">&#128681;</a><a href=/tutorials/NSHipster/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><blockquote><p>「我们应该（聪明的程序员明白自己的局限性）尽力……让文本里的程序（program）和时间轴上的进程（process）的对应尽量简单。」</p><p>—<a href=https://en.wikipedia.org/wiki/Edsger_W._Dijkstra>Edsger W. Dijkstra</a>,
+<a href=https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf>《Go To 有害论》</a></p></blockquote><p>很遗憾，他的文章通常只因为使《____有害论》这种文章标题在程序员中流行起来，还有网上对这些论文不妥当的抨击出现时，才会被想起。因为 Dijkstra（照常）提出了一个很好的观点：<strong>代码结构应该反映其行为。</strong></p><p>Swift 2.0 带来了两个新的能够简化程序和提高效率的控制流表达形式：<code>guard</code> 和 <code>defer</code>。前者可以让代码编写更流畅，后者能够让执行推迟。</p><p>我们应该如何使用这两个新的声明方式呢？<code>guard</code> 和 <code>defer</code> 将如何帮我们厘清程序和进程间的对应关系呢？</p><p>我们 defer（推迟）一下 <code>defer</code> 先看 <code>guard</code>。</p><hr><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><h2 id=guard>guard</h2><p><code>guard</code> 是一个要求表达式的值为 <code>true</code> 从而继续执行的条件语句。如果表达式为 <code>false</code>，则会执行必须提供的 <code>else</code> 分支。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>sayHello</span>(numberOfTimes: Int) {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>guard</span> numberOfTimes <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span> <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>for</span> <span style=color:#66d9ef>_</span> <span style=color:#66d9ef>in</span> <span style=color:#ae81ff>1.</span>..numberOfTimes {
+</span></span><span style=display:flex><span>        print(<span style=color:#e6db74>&#34;Hello!&#34;</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><code>guard</code> 语句中的 <code>else</code> 分支必须退出当前的区域，通过使用 <code>return</code> 来退出函数，<code>continue</code> 或者 <code>break</code> 来退出循环，或者使用像 <code>fatalError(_:file:line:)</code> 这种返回 <a href=https://nshipster.com/never><code>Never</code></a> 的函数。</p><p><code>guard</code> 语句和 optional 绑定组合在一起非常好用。在 <code>guard</code> 语句的条件里进行的 optional 绑定可以在函数或闭包其后的部分使用。</p><p>对比一下 <code>guard-let</code> 语句和 <code>if-let</code> 语句中的 optional 绑定：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>var</span> name: String?
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> name = name {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// name 在这里面不是 optional（类型是 String）</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span><span style=color:#75715e>// name 在外面是 optional（类型是 String?）</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>guard</span> <span style=color:#66d9ef>let</span> name = name <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// name 从这里开始都不是 optional 了（类型是 String）</span>
+</span></span></code></pre></div><p>如果说在 <a href=/swift-1.2/>Swift 1.2</a> 中介绍的并行 optional 绑定领导了对 <a href=http://www.scottlogic.com/blog/2014/12/08/swift-optional-pyramids-of-doom.html>厄运金字塔</a> 的革命，那么 <code>guard</code> 声明则与之一并将金字塔摧毁。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>for</span> imageName <span style=color:#66d9ef>in</span> imageNamesList {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>guard</span> <span style=color:#66d9ef>let</span> image = UIImage(named: imageName)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>else</span> { <span style=color:#66d9ef>continue</span> }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// do something with image</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=使用-guard-来避免过多的缩进和错误>使用 guard 来避免过多的缩进和错误</h3><p>我们来对比一下使用 <code>guard</code> 关键字之后能如何改善代码且帮助我们避免错误。</p><p>比如，我们要实现一个 <code>readBedtimeStory()</code> 函数：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#960050;background-color:#1e0010></span><span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>StoryError</span>: Error {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> missing
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> illegible
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> tooScary
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>readBedtimeStory</span>() <span style=color:#66d9ef>throws</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> url = Bundle.main.url(forResource: <span style=color:#e6db74>&#34;book&#34;</span>,
+</span></span><span style=display:flex><span>                               withExtension: <span style=color:#e6db74>&#34;txt&#34;</span>)
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>let</span> data = <span style=color:#66d9ef>try</span>? Data(contentsOf: url),
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>let</span> story = String(data: data, encoding: .utf8)
+</span></span><span style=display:flex><span>        {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>if</span> story.contains(<span style=color:#e6db74>&#34;👹&#34;</span>) {
+</span></span><span style=display:flex><span>                <span style=color:#66d9ef>throw</span> StoryError.tooScary
+</span></span><span style=display:flex><span>            } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>                print(<span style=color:#e6db74>&#34;Once upon a time... </span><span style=color:#e6db74>\(</span>story<span style=color:#e6db74>)</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>            }
+</span></span><span style=display:flex><span>        } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>            <span style=color:#66d9ef>throw</span> StoryError.illegible
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    } <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>throw</span> StoryError.missing
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>要读一个睡前故事，我们需要能找到一本书，这本故事书必须要是可读的，并且故事不能太吓人（<strong>请不要让怪物出现在书的结尾，谢谢你！</strong>）。</p><p>请注意 <code>throw</code> 语句离检查本身有多远。你需要读完整个方法来找到如果没有 <code>book.txt</code> 会发生什么。</p><p>像一本好书一样，代码应该讲述一个故事：有着易懂的情节，清晰的开端、发展和结尾。（请尝试不要写太多「后现代」风格的代码。）</p><p>使用 <code>guard</code> 语句组织代码可以让代码读起来更加的线性：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>readBedtimeStory</span>() <span style=color:#66d9ef>throws</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>guard</span> <span style=color:#66d9ef>let</span> url = Bundle.main.url(forResource: <span style=color:#e6db74>&#34;book&#34;</span>,
+</span></span><span style=display:flex><span>                                  withExtension: <span style=color:#e6db74>&#34;txt&#34;</span>)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>throw</span> StoryError.missing
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>guard</span> <span style=color:#66d9ef>let</span> data = <span style=color:#66d9ef>try</span>? Data(contentsOf: url),
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>let</span> story = String(data: data, encoding: .utf8)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>throw</span> StoryError.illegible
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> story.contains(<span style=color:#e6db74>&#34;👹&#34;</span>) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>throw</span> StoryError.tooScary
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    print(<span style=color:#e6db74>&#34;Once upon a time ...</span><span style=color:#e6db74>\(</span>story<span style=color:#e6db74>)</span><span style=color:#e6db74>&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p><strong>这样就好多了！</strong> 每一个错误都在相应的检查之后立刻被抛出，所以我们可以按照左手边的代码顺序来梳理工作流的顺序。</p><h3 id=不要在-guard-中双重否定>不要在 guard 中双重否定</h3><p>不要滥用这个新的流程控制机制——特别是在条件表达式已经表示否定的情况下。</p><p>举个例子，如果你想要在一个字符串为空是提早退出，不要这样写：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>// 啊？</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>guard</span> <span style=color:#f92672>!</span>string.isEmpty <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>保持简单。自然的走下去。避免双重否定。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>// 噢！</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> string.isEmtpy {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=defer>defer</h2><p>在错误处理方面，<code>guard</code> 和新的 <code>throw</code> 语法之间，Swift 鼓励用尽早返回错误（这也是 NSHipster 最喜欢的方式）来代替嵌套 if 的处理方式。尽早返回让处理更清晰了，但是已经被初始化（可能也正在被使用）的资源必须在返回前被处理干净。</p><p><code>defer</code> 关键字为此提供了安全又简单的处理方式：声明一个 block，当前代码执行的闭包退出时会执行该 block。</p><p>看看下面这个包装了系统调用 <code>gethostname(2)</code> 的函数，用来返回当前系统的<a href=https://zh.wikipedia.org/zh-cn/%E4%B8%BB%E6%A9%9F%E5%90%8D%E7%A8%B1>主机名称</a>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>Darwin</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>currentHostName</span>() -&gt; String {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> capacity = Int(NI_MAXHOST)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> buffer = UnsafeMutablePointer&lt;Int8&gt;.allocate(capacity: capacity)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>guard</span> gethostname(buffer, capacity) == <span style=color:#ae81ff>0</span> <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>        buffer.deallocate()
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;localhost&#34;</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> hostname = String(cString: buffer)
+</span></span><span style=display:flex><span>    buffer.deallocate()
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> hostname
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这里有一个在最开始就创建的 <code>UnsafeMutablePointer&lt;UInt8></code> 用于存储目标数据，但是我<strong>既要</strong>在错误发生后销毁它，<strong>又要</strong>在正常流程下不再使用它时对其进行销毁。</p><p>这种设计很容易导致错误，而且不停地在做重复工作。</p><p>通过使用 <code>defer</code> 语句，我们可以排除潜在的错误并且简化代码：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>currentHostName</span>() -&gt; String {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> capacity = Int(NI_MAXHOST)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> buffer = UnsafeMutablePointer&lt;Int8&gt;.allocate(capacity: capacity)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> { buffer.deallocate() }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>guard</span> gethostname(buffer, capacity) == <span style=color:#ae81ff>0</span> <span style=color:#66d9ef>else</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#e6db74>&#34;localhost&#34;</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> String(cString: buffer)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>尽管 <code>defer</code> 紧接着出现在 <code>allocate(capacity:)</code> 调用之后，但它要等到当前区域结束时才会被执行。多亏了 <code>defer</code>，<code>buffer</code> 才能无论在哪个点退出函数都可以被释放。</p><p>考虑在任何需要配对调用的 API 上都使用 <code>defer</code>，比如 <code>allocate(capacity:)</code> / <code>deallocate()</code>、<code>wait()</code> / <code>signal()</code> 和 <code>open()</code> / <code>close()</code>。这样的话，你不仅可以消除一种程序员易犯的错误，还能让 Dijkstra 自豪地用它的母语德语说：「Goed gedaan!」。</p><h3 id=经常-defer>经常 defer</h3><p>如果在同一个作用域内使用多个 <code>defer</code> 语句，它们会根据出现顺序反过来执行——像栈一样。这个反序是非常重要的细节，保证了被延迟的代码块创建时作用域内存在的东西，在代码块执行同样存在。</p><p>举个例子，执行这段代码会得到下面的输出：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>procrastinate</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> { print(<span style=color:#e6db74>&#34;wash the dishes&#34;</span>) }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> { print(<span style=color:#e6db74>&#34;take out the recycling&#34;</span>) }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> { print(<span style=color:#e6db74>&#34;clean the refrigerator&#34;</span>) }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    print(<span style=color:#e6db74>&#34;play videogames&#34;</span>)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><samp>play videogames<br>clean the refrigerator<br>take out the recycling<br>wash the dishes<br></samp><blockquote><p>如果你像这样嵌套 <code>defer</code> 语句，会怎么样？</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>defer</span> { <span style=color:#66d9ef>defer</span> { print(<span style=color:#e6db74>&#34;clean the gutter&#34;</span>) } }
+</span></span></code></pre></div><blockquote><p>你的第一想法可能是语句会被压入栈的最底部。但并不是这样的。仔细想一想，然后在 Playground 里验证你的猜想。</p></blockquote><h3 id=正确-defer>正确 defer</h3><p>如果在 <code>defer</code> 语句中引用了一个变量，执行时会用到变量最终的值。换句话说：<code>defer</code> 代码块不会捕获变量当前的值。</p><p>如果你运行这段代码，你会得到下面的输出：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>flipFlop</span>() {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> position = <span style=color:#e6db74>&#34;It&#39;s pronounced /ɡɪf/&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> { print(position) }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    position = <span style=color:#e6db74>&#34;It&#39;s pronounced /dʒɪf/&#34;</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> { print(position) }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><samp>It's pronounced /dʒɪf/<br>It's pronounced /dʒɪf/</samp><h3 id=仔细-defer>仔细 defer</h3><p>另一件需要注意的事情，那就是 <code>defer</code> 代码块无法跳出它所在的作用域。因此如你尝试调用一个会 throw 的方法，抛出的错误就无法传递到其周围的上下文。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>burnAfterReading</span>(file url: URL) <span style=color:#66d9ef>throws</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> { <span style=color:#66d9ef>try</span> FileManager.<span style=color:#66d9ef>default</span>.removeItem(at: url) }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// 🛑 Errors not handled</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> string = <span style=color:#66d9ef>try</span> String(contentsOf: url)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>作为替代，你可以使用 <code>try?</code> 来无视掉错误，或者直接将语句移出 <code>defer</code> 代码块，将其放到函数的最后，正常的执行。</p><h3 id=其他情况下defer-会带来坏处>（其他情况下）Defer 会带来坏处</h3><p>虽然 <code>defer</code> 像一个语法糖一样，但也要小心使用避免形成容易误解、难以阅读的代码。在某些情况下你可能会尝试用 <code>defer</code> 来对某些值返回之前做最后一步的处理，例如说在后置运算符 <code>++</code> 的实现中：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>postfix</span> <span style=color:#66d9ef>func</span> <span style=color:#f92672>++</span>(<span style=color:#66d9ef>inout</span> x: Int) -&gt; Int {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> current = x
+</span></span><span style=display:flex><span>    x <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> current
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在这种情况下，可以用 <code>defer</code> 来进行一个很另类的操作。如果能在 defer 中处理的话为什么要创建临时变量呢？</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>postfix</span> <span style=color:#66d9ef>func</span> <span style=color:#f92672>++</span>(<span style=color:#66d9ef>inout</span> x: Int) -&gt; Int {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>defer</span> { x <span style=color:#f92672>+=</span> <span style=color:#ae81ff>1</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> x
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这种写法确实聪明，但这样却颠倒了函数的逻辑顺序，极大降低了代码的可读性。应该严格遵循 <code>defer</code> 在整个程序最后运行以释放已申请资源的原则，其他任何使用方法都可能让代码乱成一团。</p><hr><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><p>「聪明的程序员明白自己的局限性」，我们必须权衡每种语言特性的好处和其成本。</p><p>类似于 <code>guard</code> 的新特性能让代码流程上更线性，可读性更高，就应该尽可能使用。</p><p>同样 <code>defer</code> 也解决了重要的问题，但是会强迫我们一定要找到它声明的地方才能追踪到其销毁的方法，因为声明方法很容易被滚动出了视野之外，所以应该尽可能遵循它出现的初衷尽可能少地使用，避免造成混淆和晦涩。</p><hr><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2817006856 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script><p>除非<a href=https://nshipster.cn/ target=_blank>另有声明</a>，本文采用知识共享「<a href=https://creativecommons.org/licenses/by-nc/3.0/cn/ target=_blank>署名-非商业性使用 3.0 中国大陆</a>」许可协议授权。</p><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2015-10-05 </a>&copy;</span>
+<span style="float:right;margin:0 -3px"><a href=https://vercel.autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2024 Mattt & Nate Cook 版权所有</a><a href=https://vercel.autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://vercel.autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://vercel.autoptr.top/tags/nshipster target=_blank>nshipster</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://vercel.autoptr.top/categories/Swift target=_blank>Swift</a></li><li><a class=link href=https://vercel.autoptr.top/categories/macOS target=_blank>macOS</a></li><li><a class=link href=https://vercel.autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script><script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script><script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>
