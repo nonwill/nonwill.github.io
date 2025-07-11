@@ -1,0 +1,207 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>Swift Documentation</title>
+<link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="Swift Documentation,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><meta name=description content="Swift Documentation,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><script>if(document.domain=="autoptr.pages.dev"){var url=window.location.href,url=url.replace(/autoptr+\.pages+\.dev/g,"www.autoptr.top");window.location.href=url}</script><script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>Swift Documentation</span><span class=btRight><span title="Author · 作者" class=author>Mattt & Nate Cook</span> <span title="Translator · 翻译" class=author>April Peng</span> <a href=https://github.com/NSHipster/articles-zh-Hans style=color:#007cd5 title="Related or Quoted Post · 关联或转载引用的文章" target=_blank rel="nofollow noopener noreferrer">&#128681;</a><a href=/tutorials/NSHipster/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><p>代码的结构和组织关乎了开发童鞋们的节操问题。明确和一致的代码表示了明确和一贯的思想。编译器并没有一个挑剔的口味，但当谈到命名，空格或文档，人类的差异就体现出来了。</p><p>NSHipster 的读者无疑会记得<a href=https://nshipster.cn/documentation/>去年发表的关于文档的文章</a>，但很多东西已经在 Xcode 6 中发生了变化（幸运的是，基本上算是变得更好了）。因此，这一周，我们将在此为嗷嗷待哺的 Swift 开发者们记录一下文档说明。</p><p>好了，来让我们仔细看看。</p><hr><p>从 00 年代早期，<a href=https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/HeaderDoc/intro/intro.html#//apple_ref/doc/uid/TP40001215-CH345-SW1>Headerdoc</a> 就一直作为苹果首选的文档标准。从 Perl 脚本解析勉强的 <a href=https://en.wikipedia.org/wiki/Javadoc>Javadoc</a> 注释作为出发点，Headerdoc 最终成为了苹果在线文档及 Xcode 中的开发者文档的后台引擎。</p><p>随着 WWDC 2014 的发布，开发者文档被翻修并进行了时尚的新设计，包含了 Swift 和 Objective-C 的切换。 （如果你<a href=https://developer.apple.com/library/prerelease/ios/documentation/HomeKit/Reference/HomeKit_Framework/index.html#//apple_ref/doc/uid/TP40014519>看过任何新的 iOS 8 的在线 API</a>，那你已经见过这个新设计了）</p><p><strong>真正让人意外的是，<em>文档的格式</em> 也发生了变化。</strong></p><p>在 Swift 的代码里调用快速文档 (Quick Documentation)（<code>⌥ʘ</code>）时 Headerdoc 没有正确解析注释：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    让我们随便来写点什么.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    @param 啦啦啦啦，这货是参数。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    @return 咯咯咯咯，这货是返回值。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>foo</span>(bar: String) -&gt; AnyObject { ... }
+</span></span></code></pre></div><p><img alt="Unrecognized Headerdoc" src=/media/NSHipster/swift-documentation-headerdoc.png></p><p>但如果修改一下标记方式，就 <em>可以</em> 被正确解析：</p><p><img alt="New Recognized Format" src=/media/NSHipster/swift-documentation-new-format.png></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    让我们随便来写点什么.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    :param: 啦啦啦啦，这货是参数。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    </span><span style=color:#75715e>:returns:</span><span style=color:#75715e> 咯咯咯咯，这货是返回值。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>foo</span>(bar: String) -&gt; AnyObject { ... }
+</span></span></code></pre></div><p>那么，这个陌生的新文件格式是个什么情况？事实证明，SourceKit（Xcode 使用的私有框架，在此前以其高 FPS 崩溃闻名）包括一个解析 <a href=http://docutils.sourceforge.net/docs/user/rst/quickref.html>reStructuredText</a> 的基本解析器。虽然仅实现了 <a href=http://docutils.sourceforge.net/docs/ref/rst/restructuredtext.html#field-lists>specification</a> 的一个子集，但涵盖基本的格式已经足够了。</p><h4 id=基本标记>基本标记</h4><p>文档注释通过使用 <code>/** ... */</code> 的多行注释或 <code>///...</code> 的单行注释来进行区分。在注释块里面，段落由空行分隔。无序列表可由多个项目符号字符组成：<code>-</code>、<code>+</code>、 <code>*</code>、 <code>•</code> 等，同时有序列表使用阿拉伯数字（1，2，3，&mldr;），后跟一个点符 <code>1.</code> 或右括号 <code>1)</code> 或两侧括号括起来 <code>(1)</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	你可以制作 *斜体*, **粗体**, 或 `代码` 的字体风格.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	- 列表很不错,
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	- 但最好不要叠套
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	- 子列表的格式
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	  - 就不太好了.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	1. 有序列表也一样
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	2. 对那些有序的东西来说;
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	3. 阿拉伯数字
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	4. 是唯一支持的格式.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span></code></pre></div><h4 id=定义与字段列表>定义与字段列表</h4><p>定义和字段列表跟 Xcode 里的快速文档弹出内容显示的差不多，定义列表会更紧凑一些：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	Definition list
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		一些术语以及它们的定义.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	Format
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		左对齐术语，放在缩进的定义下面.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	:Field header:
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		字段列表隔开一些。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	:Another field: 字段列表可以紧跟开始，不需要另起一行并缩进。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>		随后缩进的行也被视为内容的一部分.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span></code></pre></div><p>两个特殊字段用于记录参数和返回值：分别为：<code>:param:</code> 和 <code>:returns:</code>。<code>:param:</code> 后跟的是参数的名称，然后是说明。返回值没有名字，所以 <code>:returns:</code> 后就是说明：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	重复一个字符串 `times` 次.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	</span><span style=color:#75715e>:param: str</span><span style=color:#75715e>     需要重复的字符串.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	</span><span style=color:#75715e>:param: times</span><span style=color:#75715e>   需要重复 `str` 的次数.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	</span><span style=color:#75715e>:returns:</span><span style=color:#75715e> 一个重复了 `str` `times` 次的新字符串.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>repeatString</span>(str: String, times: Int) -&gt; String {
+</span></span><span style=display:flex><span>	<span style=color:#66d9ef>return</span> join(<span style=color:#e6db74>&#34;&#34;</span>, Array(count: times, repeatedValue: str))
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h3 id=代码块>代码块</h3><p>代码块也可以嵌入到文档的注释里，这对于演示正确的使用方式或实现细节很有用。用至少两个空格来插入代码块：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	`Shape` 实例的面积.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	计算取决于该实例的形状。如果是三角形，`area` 将相当于:
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	  let height = triangle.calculateHeight()
+</span></span></span><span style=display:flex><span><span style=color:#75715e>	  let area = triangle.base * height / 2
+</span></span></span><span style=display:flex><span><span style=color:#75715e>*/</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> area: CGFloat { <span style=color:#66d9ef>get</span> }
+</span></span></code></pre></div><h2 id=我的自行车类的新文档>我的自行车类的新文档</h2><p>当这个应用在整个类的时候看起来怎么样？事实上，看起来相当的不错：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>Foundation</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>/// 🚲 一个两轮的，人力驱动的交通工具.</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Bicycle</span> {
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        车架样式.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Road: 用于街道或步道.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Touring: 用于长途.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Cruiser: 用于城镇周围的休闲之旅.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Hybrid: 用于通用运输.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>Style</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> Road, Touring, Cruiser, Hybrid
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        转换踏板功率为运动的机制。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Fixed: 一个单一的，固定的齿轮。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Freewheel: 一个可变速，脱开的齿轮。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>Gearing</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> Fixed
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> Freewheel(speeds: Int)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        用于转向的硬件。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Riser: 一个休闲车把。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Café: 一个正常车把。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Drop: 一个经典车把.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        - Bullhorn: 一个超帅车把.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>Handlebar</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> Riser, Café, Drop, Bullhorn
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/// 自行车的风格</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> style: Style
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/// 自行车的齿轮</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> gearing: Gearing
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/// 自行车的车把</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> handlebar: Handlebar
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/// 车架大小, 厘米为单位.</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> frameSize: Int
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/// 自行车行驶的旅程数</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span>(<span style=color:#66d9ef>set</span>) <span style=color:#66d9ef>var</span> numberOfTrips: Int
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/// 自行车总共行驶的距离，米为单位</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span>(<span style=color:#66d9ef>set</span>) <span style=color:#66d9ef>var</span> distanceTravelled: Double
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        使用提供的部件及规格初始化一个新自行车。
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        </span><span style=color:#75715e>:param: style</span><span style=color:#75715e> 自行车的风格
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        </span><span style=color:#75715e>:param: gearing</span><span style=color:#75715e> 自行车的齿轮
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        </span><span style=color:#75715e>:param: handlebar</span><span style=color:#75715e> 自行车的车把
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        </span><span style=color:#75715e>:param: centimeters</span><span style=color:#75715e> 自行车的车架大小，单位为厘米
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        </span><span style=color:#75715e>:returns:</span><span style=color:#75715e> 一个漂亮的，全新的，为你度身定做.
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>init</span>(style: Style, gearing: Gearing, handlebar: Handlebar, frameSize centimeters: Int) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.style = style
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.gearing = gearing
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.handlebar = handlebar
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.frameSize = centimeters
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.numberOfTrips = <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.distanceTravelled = <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>/**
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        把自行车骑出去遛一圈
+</span></span></span><span style=display:flex><span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>        </span><span style=color:#75715e>:param: meters</span><span style=color:#75715e> 行驶的距离，单位为米
+</span></span></span><span style=display:flex><span><span style=color:#75715e>    */</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>travel</span>(distance meters: Double) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>if</span> meters <span style=color:#f92672>&gt;</span> <span style=color:#ae81ff>0</span> {
+</span></span><span style=display:flex><span>            distanceTravelled <span style=color:#f92672>+=</span> meters
+</span></span><span style=display:flex><span>            <span style=color:#f92672>++</span>numberOfTrips
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>在 <code>Style</code> 的 <code>enum</code> 声明里使用 Option-click，说明就精美的以符号列表呈现了：</p><p><img alt="Swift enum Declaration Documentation" src=/media/NSHipster/swift-documentation-enum-declaration.png></p><p>对 <code>travel</code> 方法快速查看文档，参数一如预期的被解析成单独的字段：</p><p><img alt="Swift func Declaration Documentation" src=/media/NSHipster/swift-documentation-method-declaration.png></p><h2 id=mark--todo--fixme>MARK / TODO / FIXME</h2><p>在 Objective-C 里，<a href=https://nshipster.com/pragma/>预处理指令 <code>#pragma mark</code></a> 用来把功能区分成有意义的，易于导航的章节。在 Swift 里，没有预处理指令（最接近的是相似的-井号<a href=https://developer.apple.com/library/prerelease/ios/documentation/Swift/Conceptual/BuildingCocoaApps/InteractingWithCAPIs.html#//apple_ref/doc/uid/TP40014216-CH8-XID_25>编译配置</a>），但同样可以用注释达到效果 <code>// MARK: </code>。</p><p>在 Xcode 6β4 中，以下注释将出现在 Xcode 的代码导航（source navigator）中：</p><ul><li><code>// MARK: </code><em>(等同于 <code>#pragma</code>，记号后紧跟一个横杠 (<code>-</code>) 会被编译成水平分割线)</em></li><li><code>// TODO:</code></li><li><code>// FIXME:</code></li></ul><blockquote><p>其他常规注释标记，如 <code>NOTE</code> 和 <code>XXX</code> 在 Xcode 中不能被识别。</p></blockquote><p>要显示这些新的标签，下面是 <code>Bicycle</code> 类如何扩展的使用 <code>Printable</code> 协议，并实现 <code>description</code> 的。</p><p><img alt="Xcode 6 Documentation Source Navigator MARK / TODO / FIXME" src=/media/NSHipster/swift-documentation-xcode-source-navigator.png></p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> Printable</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>extension</span> <span style=color:#a6e22e>Bicycle</span>: Printable {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> description: String {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>var</span> descriptors: [String] = []
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>switch</span> <span style=color:#66d9ef>self</span>.style {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Road:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;A road bike for streets or trails&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Touring:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;A touring bike for long journeys&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Cruiser:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;A cruiser bike for casual trips around town&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Hybrid:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;A hybrid bike for general-purpose transportation&#34;</span>)
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>switch</span> <span style=color:#66d9ef>self</span>.gearing {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Fixed:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;with a single, fixed gear&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Freewheel(<span style=color:#66d9ef>let</span> n):
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;with a </span><span style=color:#e6db74>\(</span>n<span style=color:#e6db74>)</span><span style=color:#e6db74>-speed freewheel gear&#34;</span>)
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>switch</span> <span style=color:#66d9ef>self</span>.handlebar {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Riser:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;and casual, riser handlebars&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Café:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;and upright, café handlebars&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Drop:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;and classic, drop handlebars&#34;</span>)
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> .Bullhorn:
+</span></span><span style=display:flex><span>            descriptors.append(<span style=color:#e6db74>&#34;and powerful bullhorn handlebars&#34;</span>)
+</span></span><span style=display:flex><span>        }
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        descriptors.append(<span style=color:#e6db74>&#34;on a </span><span style=color:#e6db74>\(</span>frameSize<span style=color:#e6db74>)</span><span style=color:#ae81ff>\&#34;</span><span style=color:#e6db74> frame&#34;</span>)
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// </span><span style=color:#75715e>FIXME:</span><span style=color:#75715e> 使用格式化的距离</span>
+</span></span><span style=display:flex><span>        descriptors.append(<span style=color:#e6db74>&#34;with a total of </span><span style=color:#e6db74>\(</span>distanceTravelled<span style=color:#e6db74>)</span><span style=color:#e6db74> meters traveled over </span><span style=color:#e6db74>\(</span>numberOfTrips<span style=color:#e6db74>)</span><span style=color:#e6db74> trips.&#34;</span>)
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#75715e>// </span><span style=color:#75715e>TODO:</span><span style=color:#75715e> 允许自行车被命名吗？</span>
+</span></span><span style=display:flex><span>        
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> join(<span style=color:#e6db74>&#34;, &#34;</span>, descriptors)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>把所有东西都放到代码里来：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> bike = Bicycle(style: .Road, gearing: .Freewheel(speeds: <span style=color:#ae81ff>8</span>), handlebar: .Drop, frameSize: <span style=color:#ae81ff>53</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>bike.travel(distance: <span style=color:#ae81ff>1_500</span>) <span style=color:#75715e>// 到处晃一晃</span>
+</span></span><span style=display:flex><span>bike.travel(distance: <span style=color:#ae81ff>200</span>) <span style=color:#75715e>// 骑车去市场</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>println(bike)
+</span></span><span style=display:flex><span><span style=color:#75715e>// “公路自行车，具有 8 速飞轮齿轮，经典，下降车把，53” 框架，总的行驶距离 2 次共 1700.0 米。“</span>
+</span></span></code></pre></div><hr><p>虽然 Swift 的工具和文档仍在迅速发展，但在早期就通过使用新的轻量级标记语言规范生成文档，以及使用 <code>MARK: </code>注释来养成良好的习惯是很明智的。</p><p>快去试试这些技巧，把它加到你的 <code>TODO: </code>列表里吧。</p><p><strong>译者注：为了方便大家理解，把这篇文章中的注释翻译成了中文，在实际项目中我们仍然推荐用英文书写。</strong></p><hr><p>除非<a href=https://nshipster.cn/ target=_blank>另有声明</a>，本文采用知识共享「<a href=https://creativecommons.org/licenses/by-nc/3.0/cn/ target=_blank>署名-非商业性使用 3.0 中国大陆</a>」许可协议授权。</p><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2015-05-05 </a>&copy;</span>
+<span style="float:right;margin:0 -3px"><a href=https://autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2025 Mattt & Nate Cook 版权所有</a><a href=https://autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://autoptr.top/tags/nshipster target=_blank>nshipster</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://autoptr.top/categories/Swift target=_blank>Swift</a></li><li><a class=link href=https://autoptr.top/categories/macOS target=_blank>macOS</a></li><li><a class=link href=https://autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script><script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script><script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>
