@@ -1,0 +1,74 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>Windows 源码安装 PaddleOCR-2.9.1</title>
+<link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="PaddleOCR,MSVC2019,cmake,Windows"><meta name=description content="Windows 如何从源码安装 PaddleOCR-2.9.1"><script>if(document.domain=="autoptr.pages.dev"){var url=window.location.href,url=url.replace(/autoptr+\.pages+\.dev/g,"www.autoptr.top");window.location.href=url}</script><script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>Windows 源码安装 PaddleOCR-2.9.1</span><span class=btRight><span title="Translator · 翻译" class=author><a href=https://autoptr.top/license/ style=color:red title="All rights reserved · 译文或原创内容·版权所有" target=_blank rel=nofollow>&copy;</a><a href=.. title="Back to Topics · 回主题页">&#127793;</a></span></h1><h3 id=编译onednn-362库>编译<code>oneDNN-3.6.2</code>库</h3><ul><li>cmake-gui 配置<code>NMake Makefiles JOM</code>并设置参数后直接<code>jom && jom install</code>即可</li></ul><h3 id=编译opencv-3420库>编译<code>opencv-3.4.20</code>库</h3><ul><li><p>下载源码包并，解压，设置安装路径<code>opencv-install_path</code>，进入源码目录</p></li><li><p>cmake-gui 选<code>NMake Makefiles JOM</code>设置参数，<code>jom && jom install</code>，或</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bat data-lang=bat><span style=display:flex><span><span style=color:#66d9ef>mkdir</span> build
+</span></span><span style=display:flex><span><span style=color:#66d9ef>cd</span> build
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>cmake .. \
+</span></span><span style=display:flex><span>    -DCMAKE_INSTALL_PREFIX=%opencv-install_path% \
+</span></span><span style=display:flex><span>    -G <span style=color:#e6db74>&#34;NMake Makefiles JOM&#34;</span> \
+</span></span><span style=display:flex><span>    -DCMAKE_BUILD_TYPE=Release \
+</span></span><span style=display:flex><span>    -DBUILD_SHARED_LIBS=ON \
+</span></span><span style=display:flex><span>    -DWITH_IPP=OFF \
+</span></span><span style=display:flex><span>    -DBUILD_IPP_IW=OFF \
+</span></span><span style=display:flex><span>    -DWITH_LAPACK=OFF \
+</span></span><span style=display:flex><span>    -DWITH_EIGEN=OFF \
+</span></span><span style=display:flex><span>    -DWITH_ZLIB=ON \
+</span></span><span style=display:flex><span>    -DBUILD_ZLIB=ON \
+</span></span><span style=display:flex><span>    -DWITH_JPEG=ON \
+</span></span><span style=display:flex><span>    -DBUILD_JPEG=ON \
+</span></span><span style=display:flex><span>    -DWITH_PNG=ON \
+</span></span><span style=display:flex><span>    -DBUILD_PNG=ON \
+</span></span><span style=display:flex><span>    -DWITH_TIFF=ON \
+</span></span><span style=display:flex><span>    -DBUILD_TIFF=ON
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>jom
+</span></span><span style=display:flex><span>jom install
+</span></span></code></pre></div><blockquote><p>部署完成后会在安装路径<code>opencv-3.4.20-install_path</code>下生成<code>opencv</code>的头文件和库文件。</p></blockquote><h3 id=获取paddle预测库>获取<code>Paddle</code>预测库</h3><ul><li>直接下载安装(推荐)</li></ul><blockquote><p>在<a href=https://www.paddlepaddle.org.cn/documentation/docs/zh/advanced_guide/inference_deployment/inference/build_and_install_lib_cn.html>Paddle预测库官网</a>选择并下载适合需要的预测库版本，下载后解压，生成<code>paddle_inference</code>文件夹。</p></blockquote><ul><li>或 &ndash; 源码编译(未有成功，卡在硬件缺失<code>avx512</code>支持)</li></ul><blockquote><p>参考<a href=https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html><code>Paddle</code>预测库官网</a>说明，从代码仓库克隆最新代码或下载已发布的特定版本号的代码包，解压，设置安装路径<code>paddle-install_path</code>，进入源码路径下：</p></blockquote><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bat data-lang=bat><span style=display:flex><span><span style=color:#66d9ef>mkdir</span> build
+</span></span><span style=display:flex><span><span style=color:#66d9ef>cd</span> build
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>cmake  .. \
+</span></span><span style=display:flex><span>    -DCMAKE_INSTALL_PREFIX=%paddle-install_path% \
+</span></span><span style=display:flex><span>    -G <span style=color:#e6db74>&#34;NMake Makefiles JOM&#34;</span> \
+</span></span><span style=display:flex><span>    -DCMAKE_BUILD_TYPE=Release \
+</span></span><span style=display:flex><span>    -DBUILD_SHARED_LIBS=ON \
+</span></span><span style=display:flex><span>    -DWITH_CONTRIB=OFF \
+</span></span><span style=display:flex><span>    -DWITH_MKL=ON \
+</span></span><span style=display:flex><span>    -DWITH_MKLDNN=ON  \
+</span></span><span style=display:flex><span>    -DWITH_TESTING=OFF \
+</span></span><span style=display:flex><span>    -DWITH_INFERENCE_API_TEST=OFF \
+</span></span><span style=display:flex><span>    -DON_INFER=ON \
+</span></span><span style=display:flex><span>    -DWITH_PYTHON=OFF
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>jom
+</span></span><span style=display:flex><span>jom install
+</span></span></code></pre></div><blockquote><p>更多编译参数选项可参考官网<a href=https://www.paddlepaddle.org.cn/documentation/docs/zh/develop/guides/05_inference_deployment/inference/build_and_install_lib_cn.html><code>Paddle C++</code>说明</a></p></blockquote><ul><li>编译完成之后，应在<code>paddle-install_path</code>目录下生成以下文件及文件夹：</li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>|-- CMakeCache.txt
+</span></span><span style=display:flex><span>|-- paddle
+</span></span><span style=display:flex><span>|-- third_party
+</span></span><span style=display:flex><span>|-- version.txt
+</span></span></code></pre></div><blockquote><p>其中<code>paddle</code>是<code>C++</code>预测库开发必须的文件，<code>version.txt</code>含有预测库的版本信息。</p></blockquote><h3 id=部署paddleocr>部署<code>PaddleOCR</code></h3><ul><li><a href=https://github.com/nonwill/PdddleOCR>从<code>Git Repo</code>获取最新<code>项目文件</code></a></li></ul><blockquote><p>解压得到<code>项目目录</code></p></blockquote><ul><li>编译<code>PaddleOCR</code>动态库和<code>demo</code></li></ul><blockquote><p>获取<code>PaddleOCR-2.9.1</code>或更新版本的的代码包，合并到<code>项目目录</code>下<br>qmake && jom</p></blockquote><ul><li><p>运行<code>ppocr</code>的参数：执行<code>ppocr --help</code>查看，或</p></li><li><p>参数说明：</p></li></ul><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-sh data-lang=sh><span style=display:flex><span>use_gpu  <span style=color:#ae81ff>0</span> <span style=color:#75715e># 是否使用GPU，1表示使用，0表示不使用</span>
+</span></span><span style=display:flex><span>gpu_id  <span style=color:#ae81ff>0</span> <span style=color:#75715e># GPU id，使用GPU时有效</span>
+</span></span><span style=display:flex><span>gpu_mem  <span style=color:#ae81ff>4000</span>  <span style=color:#75715e># 申请的GPU内存</span>
+</span></span><span style=display:flex><span>cpu_math_library_num_threads  <span style=color:#ae81ff>10</span> <span style=color:#75715e># CPU预测时的线程数，在机器核数充足的情况下，该值越大，预测速度越快</span>
+</span></span><span style=display:flex><span>use_mkldnn <span style=color:#ae81ff>1</span> <span style=color:#75715e># 是否使用mkldnn库</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># det config</span>
+</span></span><span style=display:flex><span>max_side_len  <span style=color:#ae81ff>960</span> <span style=color:#75715e># 输入图像长宽大于960时，等比例缩放图像，使得图像最长边为960</span>
+</span></span><span style=display:flex><span>det_db_thresh  0.3 <span style=color:#75715e># 用于过滤DB预测的二值化图像，设置为0.-0.3对结果影响不明显</span>
+</span></span><span style=display:flex><span>det_db_box_thresh  0.5 <span style=color:#75715e># DB后处理过滤box的阈值，如果检测存在漏框情况，可酌情减小</span>
+</span></span><span style=display:flex><span>det_db_unclip_ratio  1.6 <span style=color:#75715e># 表示文本框的紧致程度，越小则文本框更靠近文本</span>
+</span></span><span style=display:flex><span>use_polygon_score <span style=color:#ae81ff>1</span> <span style=color:#75715e># 是否使用多边形框计算bbox score，0表示使用矩形框计算。矩形框计算速度更快，多边形框对弯曲文本区域计算更准确。</span>
+</span></span><span style=display:flex><span>det_model_dir  ./inference/det_db <span style=color:#75715e># 检测模型inference model地址</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># cls config</span>
+</span></span><span style=display:flex><span>use_angle_cls <span style=color:#ae81ff>0</span> <span style=color:#75715e># 是否使用方向分类器，0表示不使用，1表示使用</span>
+</span></span><span style=display:flex><span>cls_model_dir ./inference/cls <span style=color:#75715e># 方向分类器inference model地址</span>
+</span></span><span style=display:flex><span>cls_thresh  0.9 <span style=color:#75715e># 方向分类器的得分阈值</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># rec config</span>
+</span></span><span style=display:flex><span>rec_model_dir  ./inference/rec_crnn <span style=color:#75715e># 识别模型inference model地址</span>
+</span></span><span style=display:flex><span>char_list_file ../../ppocr/utils/ppocr_keys_v1.txt <span style=color:#75715e># 字典文件</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e># show the detection results</span>
+</span></span><span style=display:flex><span>visualize <span style=color:#ae81ff>1</span> <span style=color:#75715e># 是否对结果进行可视化，为1时，会在当前文件夹下保存文件名为`ocr_vis.png`的预测结果。</span>
+</span></span></code></pre></div><ul><li>多语言预测的支持，需设置<code>char_list_file</code>(字典文件路径)和<code>rec_model_dir</code>(inference模型路径)参数。</li></ul><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2025-01-29 </a><a href=https://autoptr.top/license/ title="All rights reserved · 原创内容·版权所有" target=_blank rel=nofollow>&copy;</a></span>
+<span style="float:right;margin:0 -3px"><a href=https://autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2025 AuTopTr 版权所有</a><a href=https://autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://autoptr.top/tags/PaddleOCR target=_blank>PaddleOCR</a></li><li><a class=link href=https://autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://autoptr.top/tags/C target=_blank>C</a></li><li><a class=link href=https://autoptr.top/tags/OCR target=_blank>OCR</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://autoptr.top/categories/Notes target=_blank>Notes</a></li><li><a class=link href=https://autoptr.top/categories/CC++ target=_blank>CC++</a></li><li><a class=link href=https://autoptr.top/categories/%e5%88%92%e8%af%8d target=_blank>划词</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script><script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script><script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>
