@@ -1,0 +1,173 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>C++ new、delete 与 C malloc、free 的区别</title>
+<link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="memory,new,delete,malloc,free,C++,C"><meta name=description content="C++与C语言的内存管理差异，测试用程序源码"><script>if(document.domain=="autoptr.pages.dev"){var url=window.location.href,url=url.replace(/autoptr+\.pages+\.dev/g,"www.autoptr.top");window.location.href=url}</script><script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>C++ new、delete 与 C malloc、free 的区别</span><span class=btRight><span title="Translator · 翻译" class=author><a href=https://autoptr.top/license/ style=color:red title="All rights reserved · 译文或原创内容·版权所有" target=_blank rel=nofollow>&copy;</a><a href=.. title="Back to Topics · 回主题页">&#127793;</a></span></h1><p>小程序以验证C/C++内存管理的差异（写的不是很严谨，仅为主题，分别在redhat 5.6 x86_64 + gcc-4.9.2，windows 7 x64 + gcc-4.9.2 编译运行通过）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;iostream&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;typeinfo&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdlib.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e>#include</span> <span style=color:#75715e>&lt;stdio.h&gt;</span><span style=color:#75715e>
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>t_cpu</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span><span style=color:#75715e>#define print_type(t) std::cout &lt;&lt; &#34;Size of &#34; &lt;&lt; #t &lt;&lt;  &#34;: &#34; &lt;&lt; sizeof(t) &lt;&lt; std::endl
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    print_type(<span style=color:#66d9ef>char</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>short</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>short</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span>);
+</span></span><span style=display:flex><span>    print_type(size_t);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>long</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>float</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>double</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>long</span> <span style=color:#66d9ef>double</span>);
+</span></span><span style=display:flex><span>    print_type(<span style=color:#66d9ef>void</span><span style=color:#f92672>*</span>);
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span> {
+</span></span><span style=display:flex><span><span style=color:#66d9ef>public</span><span style=color:#f92672>:</span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> _1;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>int</span> _2;
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>    __T(){
+</span></span><span style=display:flex><span>        _1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span>;
+</span></span><span style=display:flex><span>        _2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>2</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    <span style=color:#f92672>~</span>__T(){
+</span></span><span style=display:flex><span>        printf(<span style=color:#e6db74>&#34;~&#34;</span>);
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>init</span>()
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        _1 <span style=color:#f92672>=</span> <span style=color:#ae81ff>7</span>;
+</span></span><span style=display:flex><span>        _2 <span style=color:#f92672>=</span> <span style=color:#ae81ff>8</span>;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>void</span> <span style=color:#a6e22e>test</span>()
+</span></span><span style=display:flex><span>    {
+</span></span><span style=display:flex><span>        _1 <span style=color:#f92672>+=</span> _2;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>};
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>t_new</span>(size_t sl)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    __T <span style=color:#f92672>*</span>pchar <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> __T[sl];
+</span></span><span style=display:flex><span>    size_t  <span style=color:#f92672>*</span>psize  <span style=color:#f92672>=</span> (size_t<span style=color:#f92672>*</span>)(((<span style=color:#66d9ef>char</span><span style=color:#f92672>*</span>)pchar)<span style=color:#f92672>-</span><span style=color:#66d9ef>sizeof</span>(size_t));
+</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>Test new and delete </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>size: %ld pchar: %p psize: %p *psize: %ld </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sl, pchar, psize, <span style=color:#f92672>*</span>psize);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>delete</span> []pchar;
+</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>t_malloc</span>(size_t sl)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>Test malloc and free </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>size of class __T: %ld  </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span>));
+</span></span><span style=display:flex><span>    __T <span style=color:#f92672>*</span>pchar <span style=color:#f92672>=</span> (__T <span style=color:#f92672>*</span>)malloc(sl <span style=color:#f92672>*</span> <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span>));
+</span></span><span style=display:flex><span>    size_t  <span style=color:#f92672>*</span>psize  <span style=color:#f92672>=</span> (size_t<span style=color:#f92672>*</span>)(((<span style=color:#66d9ef>char</span><span style=color:#f92672>*</span>)pchar)<span style=color:#f92672>-</span><span style=color:#66d9ef>sizeof</span>(size_t));
+</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;size: %ld pchar: %p psize: %p *psize: %ld </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sl, pchar, psize, <span style=color:#f92672>*</span>psize);
+</span></span><span style=display:flex><span>    free(pchar);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>t_new_free</span>(size_t sl)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    __T <span style=color:#f92672>*</span>pchar <span style=color:#f92672>=</span> <span style=color:#66d9ef>new</span> __T[sl];
+</span></span><span style=display:flex><span>    size_t  <span style=color:#f92672>*</span>psize  <span style=color:#f92672>=</span> (size_t<span style=color:#f92672>*</span>)(((<span style=color:#66d9ef>char</span><span style=color:#f92672>*</span>)pchar)<span style=color:#f92672>-</span><span style=color:#66d9ef>sizeof</span>(size_t));
+</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>Test new and free </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>size: %ld pchar: %p psize: %p *psize: %ld </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sl, pchar, psize, <span style=color:#f92672>*</span>psize);
+</span></span><span style=display:flex><span>    <span style=color:#75715e>//delete []pchar;
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#66d9ef>for</span> (__T <span style=color:#f92672>*</span>t <span style=color:#f92672>=</span> pchar; t <span style=color:#f92672>&lt;</span> pchar <span style=color:#f92672>+</span> sl; <span style=color:#f92672>++</span>t) {
+</span></span><span style=display:flex><span>        t<span style=color:#f92672>-&gt;~</span>__T();
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>    free(psize);
+</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>void</span> <span style=color:#a6e22e>t_malloc_delete</span>(size_t sl)
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>Test malloc and delete </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>size of class __T: %ld  </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span>));
+</span></span><span style=display:flex><span>    size_t <span style=color:#f92672>*</span>psize <span style=color:#f92672>=</span> (size_t <span style=color:#f92672>*</span>)malloc(sl <span style=color:#f92672>*</span> <span style=color:#66d9ef>sizeof</span>(<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span>) <span style=color:#f92672>+</span> <span style=color:#66d9ef>sizeof</span>(size_t));
+</span></span><span style=display:flex><span>    __T  <span style=color:#f92672>*</span>pchar  <span style=color:#f92672>=</span> (__T<span style=color:#f92672>*</span>)(((<span style=color:#66d9ef>char</span><span style=color:#f92672>*</span>)psize)<span style=color:#f92672>+</span><span style=color:#66d9ef>sizeof</span>(size_t));
+</span></span><span style=display:flex><span>    <span style=color:#f92672>*</span>psize <span style=color:#f92672>=</span> sl;
+</span></span><span style=display:flex><span>    <span style=color:#75715e>//for (__T *t = pchar; t &lt; pchar + sl; ++t) {
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>//    t-&gt;init();
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    <span style=color:#75715e>//}
+</span></span></span><span style=display:flex><span><span style=color:#75715e></span>    printf(<span style=color:#e6db74>&#34;size: %ld pchar: %p psize: %p *psize: %ld </span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>, sl, pchar, psize, <span style=color:#f92672>*</span>psize);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>delete</span> [] pchar;
+</span></span><span style=display:flex><span>    printf(<span style=color:#e6db74>&#34;</span><span style=color:#ae81ff>\n</span><span style=color:#e6db74>&#34;</span>);
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>int</span> <span style=color:#a6e22e>main</span>()
+</span></span><span style=display:flex><span>{
+</span></span><span style=display:flex><span>    t_cpu();
+</span></span><span style=display:flex><span>    t_new(<span style=color:#ae81ff>48</span>);
+</span></span><span style=display:flex><span>    t_malloc(<span style=color:#ae81ff>32</span>);
+</span></span><span style=display:flex><span>    t_new_free(<span style=color:#ae81ff>16</span>);
+</span></span><span style=display:flex><span>    t_malloc_delete(<span style=color:#ae81ff>8</span>);
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>输出（redhat）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span>Size of <span style=color:#66d9ef>char</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>short</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>short</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>int</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of size_t: <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>long</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>float</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>double</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>double</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>16</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>void</span><span style=color:#f92672>*:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Test <span style=color:#66d9ef>new</span> and <span style=color:#66d9ef>delete</span> 
+</span></span><span style=display:flex><span>size: <span style=color:#ae81ff>48</span> pchar: <span style=color:#ae81ff>0x2442018</span> psize: <span style=color:#ae81ff>0x2442010</span> <span style=color:#f92672>*</span>psize: <span style=color:#ae81ff>48</span> 
+</span></span><span style=display:flex><span><span style=color:#f92672>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Test malloc and free 
+</span></span><span style=display:flex><span>size of <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>  
+</span></span><span style=display:flex><span>size: <span style=color:#ae81ff>32</span> pchar: <span style=color:#ae81ff>0x2442010</span> psize: <span style=color:#ae81ff>0x2442008</span> <span style=color:#f92672>*</span>psize: <span style=color:#ae81ff>273</span> 
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Test <span style=color:#66d9ef>new</span> and free 
+</span></span><span style=display:flex><span>size: <span style=color:#ae81ff>16</span> pchar: <span style=color:#ae81ff>0x2442018</span> psize: <span style=color:#ae81ff>0x2442010</span> <span style=color:#f92672>*</span>psize: <span style=color:#ae81ff>16</span> 
+</span></span><span style=display:flex><span><span style=color:#f92672>~~~~~~~~~~~~~~~~</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Test malloc and <span style=color:#66d9ef>delete</span> 
+</span></span><span style=display:flex><span>size of <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>  
+</span></span><span style=display:flex><span>size: <span style=color:#ae81ff>8</span> pchar: <span style=color:#ae81ff>0x2442018</span> psize: <span style=color:#ae81ff>0x2442010</span> <span style=color:#f92672>*</span>psize: <span style=color:#ae81ff>8</span> 
+</span></span><span style=display:flex><span><span style=color:#f92672>~~~~~~~~</span>
+</span></span></code></pre></div><p>输出（Windows）：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-c++ data-lang=c++><span style=display:flex><span>Size of <span style=color:#66d9ef>char</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>char</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>1</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>short</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>short</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>2</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>int</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>int</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of size_t: <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>long</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>unsigned</span> <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>long</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>float</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>double</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>long</span> <span style=color:#66d9ef>double</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>12</span>
+</span></span><span style=display:flex><span>Size of <span style=color:#66d9ef>void</span><span style=color:#f92672>*:</span> <span style=color:#ae81ff>4</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Test <span style=color:#66d9ef>new</span> and <span style=color:#66d9ef>delete</span>
+</span></span><span style=display:flex><span>size: <span style=color:#ae81ff>48</span> pchar: <span style=color:#ae81ff>00</span><span style=color:#ae81ff>991</span>b54 psize: <span style=color:#ae81ff>00</span><span style=color:#ae81ff>991</span>b50 <span style=color:#f92672>*</span>psize: <span style=color:#ae81ff>48</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Test malloc and free
+</span></span><span style=display:flex><span>size of <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>size: <span style=color:#ae81ff>32</span> pchar: <span style=color:#ae81ff>00</span><span style=color:#ae81ff>991</span>b50 psize: <span style=color:#ae81ff>00</span><span style=color:#ae81ff>991</span>b4c <span style=color:#f92672>*</span>psize: <span style=color:#ae81ff>134253675</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Test <span style=color:#66d9ef>new</span> and free
+</span></span><span style=display:flex><span>size: <span style=color:#ae81ff>16</span> pchar: <span style=color:#ae81ff>00</span><span style=color:#ae81ff>991</span>b54 psize: <span style=color:#ae81ff>00</span><span style=color:#ae81ff>991</span>b50 <span style=color:#f92672>*</span>psize: <span style=color:#ae81ff>16</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>~~~~~~~~~~~~~~~~</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>Test malloc and <span style=color:#66d9ef>delete</span>
+</span></span><span style=display:flex><span>size of <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>__T</span><span style=color:#f92672>:</span> <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span>size: <span style=color:#ae81ff>8</span> pchar: <span style=color:#ae81ff>00</span><span style=color:#ae81ff>991</span>b54 psize: <span style=color:#ae81ff>00</span><span style=color:#ae81ff>991</span>b50 <span style=color:#f92672>*</span>psize: <span style=color:#ae81ff>8</span>
+</span></span><span style=display:flex><span><span style=color:#f92672>~~~~~~~~</span>
+</span></span></code></pre></div><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2014-11-24 </a><a href=https://autoptr.top/license/ title="All rights reserved · 原创内容·版权所有" target=_blank rel=nofollow>&copy;</a></span>
+<span style="float:right;margin:0 -3px"><a href=https://autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2026 AuTopTr 版权所有</a><a href=https://autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://autoptr.top/tags/C target=_blank>C</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://autoptr.top/categories/Notes target=_blank>Notes</a></li><li><a class=link href=https://autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script><script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script><script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>
