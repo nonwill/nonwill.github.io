@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+    <circle fill="none" stroke="#000" stroke-miterlimit="10" cx="322.9" cy="78.4" r="23.5"/>
+    <text transform="translate(311.353 89.694)" font-size="42">+</text>
+    <text transform="translate(383.113 157.975)" font-size="42">3</text>
+    <g fill="none" stroke="#000" stroke-miterlimit="10">
+        <path d="M263.1 126.1l24.6-24.5M382.6 124.8L358 100.2"/>
+    </g>
+    <circle fill="none" stroke="#000" stroke-miterlimit="10" cx="249.7" cy="153.9" r="23.5"/>
+    <text transform="translate(243 165.281)" font-size="42">-</text>
+    <g font-size="42">
+        <text transform="translate(168.945 233.563)">5</text>
+        <text transform="translate(310.633 233.563)">2</text>
+    </g>
+    <g fill="none" stroke="#000" stroke-miterlimit="10">
+        <path d="M189.9 201.7l24.6-24.6M309.4 200.4l-24.5-24.6"/>
+    </g>
+</svg>
