@@ -1,0 +1,48 @@
+<svg height="262pt" viewBox="89 90 355 262" width="355pt"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <font-face ascent="770.01953" cap-height="717.28516" descent="-229.98047" font-family="Helvetica" font-size="12" font-weight="500" underline-position="-75.683594" underline-thickness="49.316406" x-height="522.94922">
+            <font-face-src>
+                <font-face-name name="Helvetica"/>
+            </font-face-src>
+        </font-face>
+        <marker id="a" markerHeight="8" markerUnits="strokeWidth" markerWidth="10" orient="auto" overflow="visible" viewBox="-1 -4 10 8">
+            <path d="m8 0-8-3v6z" stroke="#000"/>
+        </marker>
+        <marker id="b" markerHeight="8" markerUnits="strokeWidth" markerWidth="10" orient="auto" overflow="visible" viewBox="-1 -4 10 8">
+            <path d="m8 0-8-3v6z" fill="none" stroke="#000"/>
+        </marker>
+        <marker id="c" markerHeight="8" markerUnits="strokeWidth" markerWidth="10" orient="auto" overflow="visible" viewBox="-1 -4 10 8">
+            <path d="m8 0-8-3v6z" fill="none" stroke="#f00"/>
+        </marker>
+    </defs>
+    <g fill="none">
+        <path d="m197.5 94h138v52h-138z" fill="#fff"/>
+        <path d="m197.5 94h138v52h-138z" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
+        <text fill="#000" transform="translate(202.5 113)">
+            <tspan font-family="Helvetica" font-size="12" font-weight="500" textLength="34.68164" x="46.65918" y="11">NSSet</tspan>
+        </text>
+        <path d="m97.25 193h138v52h-138z" fill="#fff"/>
+        <path d="m97.25 193h138v52h-138z" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
+        <text fill="#000" transform="translate(102.25 212)">
+            <tspan font-family="Helvetica" font-size="12" font-weight="500" textLength="77.373047" x="25.313477" y="11">NSMutableSet</tspan>
+        </text>
+        <path d="m192.93401 192.64867v-11.9-11h46.88185v-11.49734-2" marker-end="url(#a)" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="m297.75 193h138v52h-138z" fill="#fff"/>
+        <path d="m297.75 193h138v52h-138z" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
+        <text fill="#000" transform="translate(302.75 212)">
+            <tspan font-family="Helvetica" font-size="12" font-weight="500" textLength="78.703125" x="24.648438" y="11">NSOrderedSet</tspan>
+        </text>
+        <path d="m97.25 288h138v52h-138z" fill="#fff"/>
+        <path d="m97.25 288h138v52h-138z" stroke="#000" stroke-linecap="round" stroke-linejoin="round"/>
+        <text fill="#000" transform="translate(102.25 307)">
+            <tspan font-family="Helvetica" font-size="12" font-weight="500" textLength="121.39453" x="3.302734" y="11">NSMutableOrderedSet</tspan>
+        </text>
+        <g stroke-linecap="round" stroke-linejoin="round">
+            <path d="m340.06599 192.64867v-11.9-11h-46.88185v-11.49734-2" marker-end="url(#a)" stroke="#000"/>
+            <path d="m166.2516 287.5v-11.9l.00254-18.2v-2" marker-end="url(#b)" stroke="#000"/>
+            <path d="m221.57573 287.78591v-11.9-9h89.84927v-9.77181-2.00001" marker-end="url(#c)" stroke="#f00"/>
+        </g>
+    </g>
+</svg>

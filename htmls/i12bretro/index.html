@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+    <title>Tutorials - All credit to github.com/i12bretro</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/media/shortcuticon.png">
+    <meta name="keywords" content="i12bretro Tutorials">
+    <meta name="description" content="i12bretro Tutorials">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+		<script type="text/javascript" src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+		<link href="css/steps.css" rel="stylesheet" type="text/css" />
+		<style>
+			table { width: 65%; max-width: 950px; }
+			tr { line-height: 24px; }
+			tbody tr td { vertical-align: bottom; }
+			.dataTables_filter { position: absolute; top: 50px; right: 100px; z-index: 100; }
+			img.viewIcon { height: 24px; }
+			a:link { transition: color 0.35s; }
+			a:hover { color: #333; }
+		</style>
+	</head>
+	<body>
+		<div id="gridContainer">
+			<div class="topMargin"></div>
+			<div id="listName" class="topMargin">
+				<h1>i12bretro Tutorials <span style="float:right; margin:.1em .5em; font-size:.7em;"><a href="/tutorials/" title="Back to Topics · 回主题页" style="text-decoration: none;">&#127793;</a></span></h1>
+			</div>
+			<div></div>
+			<div id="content"><div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8922574795542092" data-ad-slot="2817006856" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+				<table border="0" cellspacing="2" cellpadding="2" align="center">
+					<thead>
+						<tr><th width="80">ID</th><th>Title</th><th width="40">View</th><th width="195">Last Modified</th></tr>
+					</thead>
+					<tbody id="tutorialList">
+					
+					</tbody>
+				</table>
+			</div>
+		</div>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-37ZP0S1L3D');
+</script>
+<div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8922574795542092" data-ad-slot="2802455178" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+	</body>
+	<script>
+		$.ajax({ type:'GET', dataType: 'json', cache: false, url: 'https://vercel.autoptr.top/i12bretro-tutorials/data.json', success: function(r){ 
+				r.forEach((tut) => {
+					$('#tutorialList').append(`<tr><td align="center">${('0000'+ tut.i).slice(-4)}</td><td><a href="https://vercel.autoptr.top/i12bretro-tutorials/${('0000'+ tut.i).slice(-4)}.html" target="_blank">${tut.t}</a></td><td align="center"><a href="https://youtu.be/${tut.v}" target="_blank"><img src="images/youtube.png" alt="View on YouTube" title="View on YouTube" class="viewIcon" /></a></td><td align="center">${new Date((tut.d * 1000)).toLocaleDateString().replace(', ',' ')}</td></tr>`);
+				});
+				initTable();
+			}
+		});
+		
+		function initTable(){
+			$('table').DataTable({'paging':   false });
+		}
+		
+		window.onload = function() {
+        setTimeout(function() {
+                let script = document.createElement("script");
+                script.setAttribute("crossorigin", "anonymous");
+                script.setAttribute("async", "");
+                script.src = "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8922574795542092";
+                document.body.appendChild(script);
+        }, 2e3);
+       }
+
+	</script>
+</html>
