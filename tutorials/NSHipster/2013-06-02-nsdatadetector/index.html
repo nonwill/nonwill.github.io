@@ -1,0 +1,128 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>NSDataDetector</title>
+<link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="NSDataDetector,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><meta name=description content="NSDataDetector,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><script>if(document.domain=="autoptr.pages.dev"){var url=window.location.href,url=url.replace(/autoptr+\.pages+\.dev/g,"www.autoptr.top");window.location.href=url}</script><script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>NSDataDetector</span><span class=btRight><span title="Author · 作者" class=author>Mattt</span> <span title="Translator · 翻译" class=author>April Peng</span> <a href=https://github.com/NSHipster/articles-zh-Hans style=color:#007cd5 title="Related or Quoted Post · 关联或转载引用的文章" target=_blank rel="nofollow noopener noreferrer">&#128681;</a><a href=/tutorials/NSHipster/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><p>机器只用二进制说话，而人类的语言却充满了谜语，真假，和省略。</p><p>当人类在他们所有的日常交往中都使用 <a href=https://en.wikipedia.org/wiki/Resource_Description_Framework>RDF</a> 后，人工智能的一大任务就是要去搞清楚到底我们都在谈论什么。</p><p>因为在我们的日常生活中，跟人碰面，制定计划，上网查找信息，这些基本交互都包含把隐晦的人类语言自动转换成明确的结构化数据的巨大价值，因此我们才可以很容易地把这些信息加入到我们的日历，地址簿，地图和提醒中去。</p><p>幸运的是，对于 Cocoa 开发者来说，有一个简单的解决方案：<code>NSDataDetector</code>。</p><hr><p><code>NSDataDetector</code> 是 <a href=https://developer.apple.com/library/mac/#documentation/Foundation/Reference/NSRegularExpression_Class/Reference/Reference.html><code>NSRegularExpression</code></a> 的子类，而不只是一个 ICU 的模式匹配，它可以检测半结构化的信息：日期，地址，链接，电话号码和交通信息。</p><p>它以惊人的准确度完成这一切。<code>NSDataDetector</code> 可以匹配航班号，地址段，奇怪的格式化了的数字，甚至是相对的指示语，如 “下周六五点”。</p><p>你可以把它看成是一个有着复杂的令人难以置信的正则表达式匹配，可以从自然语言提取信息（尽管实际的实现细节可能比这个复杂得多）。</p><p><code>NSDataDetector</code> 对象用一个需要检查的信息的位掩码类型来初始化，然后传入一个需要匹配的字符串。像 <code>NSRegularExpression</code> 一样，在一个字符串中找到的每个匹配是用 <code>NSTextCheckingResult</code> 来表示的，它有诸如字符范围和匹配类型的详细信息。然而，<code>NSDataDetector</code> 的特定类型也可以包含元数据，如地址或日期组件。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>let</span> string = <span style=color:#e6db74>&#34;123 Main St. / (555) 555-5555&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> types: NSTextCheckingType = .Address <span style=color:#f92672>|</span> .PhoneNumber
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> error: NSError?
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> detector = NSDataDetector(types: types.rawValue, error: &amp;error)
+</span></span><span style=display:flex><span>detector.enumerateMatchesInString(string, options: <span style=color:#66d9ef>nil</span>, range: NSMakeRange(<span style=color:#ae81ff>0</span>, (string <span style=color:#66d9ef>as</span> NSString).length)) { (result, flags, <span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    println(result)
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span>NSError <span style=color:#f92672>*</span>error <span style=color:#f92672>=</span> nil;
+</span></span><span style=display:flex><span>NSDataDetector <span style=color:#f92672>*</span>detector <span style=color:#f92672>=</span> [NSDataDetector dataDetectorWithTypes:NSTextCheckingTypeAddress
+</span></span><span style=display:flex><span>                                                        <span style=color:#f92672>|</span> NSTextCheckingTypePhoneNumber
+</span></span><span style=display:flex><span>                                                           error:<span style=color:#f92672>&amp;</span>error];
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>NSString <span style=color:#f92672>*</span>string <span style=color:#f92672>=</span> <span style=color:#e6db74>@&#34;123 Main St. / (555) 555-5555&#34;</span>;
+</span></span><span style=display:flex><span>[detector enumerateMatchesInString:string
+</span></span><span style=display:flex><span>                           options:kNilOptions
+</span></span><span style=display:flex><span>                             range:NSMakeRange(<span style=color:#ae81ff>0</span>, [string length])
+</span></span><span style=display:flex><span>                        usingBlock:
+</span></span><span style=display:flex><span><span style=color:#f92672>^</span>(NSTextCheckingResult <span style=color:#f92672>*</span>result, NSMatchingFlags flags, <span style=color:#66d9ef>BOOL</span> <span style=color:#f92672>*</span>stop) {
+</span></span><span style=display:flex><span>  NSLog(<span style=color:#e6db74>@&#34;Match: %@&#34;</span>, result);
+</span></span><span style=display:flex><span>}];
+</span></span></code></pre></div><blockquote><p>当初始化 <code>NSDataDetector</code> 的时候，确保只指定你感兴趣的类型。每当增加一个需要检查的类型，随着而来的是不小的性能损失为代价。</p></blockquote><h2 id=数据检测器匹配类型>数据检测器匹配类型</h2><p>因为 <code>NSTextCheckingResult</code> 有众多用途，并不能立即清楚其属性是否是特定于 <code>NSDataDetector</code>。为了供您参考，下面是 <code>NSDataDetector</code> 的各种 <code>NSTextCheckingTypes</code> 匹配，及其相关属性表：</p><table><thead><tr><th>类型</th><th>属性</th></tr></thead><tbody><pre><code>&lt;tr&gt;
+  &lt;td&gt;&lt;tt&gt;NSTextCheckingTypeDate&lt;/tt&gt;&lt;/td&gt;
+  &lt;td&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;tt&gt;date&lt;/tt&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;tt&gt;duration&lt;/tt&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;tt&gt;timeZone&lt;/tt&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;tt&gt;NSTextCheckingTypeAddress&lt;/tt&gt;&lt;/td&gt;
+  &lt;td&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;tt&gt;addressComponents&lt;/tt&gt;&lt;sup&gt;*&lt;/sup&gt;&lt;/li&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingNameKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingJobTitleKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingOrganizationKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingStreetKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingCityKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingStateKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingZIPKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingCountryKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingPhoneKey&lt;/tt&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/ul&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;tt&gt;NSTextCheckingTypeLink&lt;/tt&gt;&lt;/td&gt;
+  &lt;td&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;tt&gt;url&lt;/tt&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;tt&gt;NSTextCheckingTypePhoneNumber&lt;/tt&gt;&lt;/td&gt;
+  &lt;td&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;tt&gt;phoneNumber&lt;/tt&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;&lt;tt&gt;NSTextCheckingTypeTransitInformation&lt;/tt&gt;&lt;/td&gt;
+  &lt;td&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;tt&gt;components&lt;/tt&gt;&lt;sup&gt;*&lt;/sup&gt;&lt;/li&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingAirlineKey&lt;/tt&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;tt&gt;NSTextCheckingFlightKey&lt;/tt&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/ul&gt;
+  &lt;/td&gt;
+&lt;/tr&gt;
+</code></pre></tbody><tfoot><tr><td colspan=2><sup>*</sup> <tt>NSDictionary</tt> properties have values at defined keys.</tfoot></table><h2 id=在-ios-上做数据检测>在 iOS 上做数据检测</h2><p>有点混乱的是，iOS 也定义了 <code>UIDataDetectorTypes</code>。这些位掩码的值可以设置成一个 <code>UITextView</code> 的 <code>dataDetectorTypes</code>，来自动检测显示的文本。</p><p><code>UIDataDetectorTypes</code> 和 <code>NSTextCheckingTypes</code> 相同的那些枚举常量其实是不同的（如 <code>UIDataDetectorTypePhoneNumber</code> 和 <code>NSTextCheckingTypePhoneNumber</code>），他们的整数值并不一样，而且一个中的所有值也并不能在另外一个里面都能找到。可以用以下方法把 <code>UIDataDetectorTypes</code> 转换为 <code>NSTextCheckingTypes</code>：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>func</span> <span style=color:#a6e22e>NSTextCheckingTypesFromUIDataDetectorTypes</span> (dataDetectorType: UIDataDetectorTypes) -&gt; NSTextCheckingType {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> textCheckingType: NSTextCheckingType = <span style=color:#66d9ef>nil</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> dataDetectorType <span style=color:#f92672>&amp;</span> .Address <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        textCheckingType <span style=color:#f92672>|=</span> .Address
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> dataDetectorType <span style=color:#f92672>&amp;</span> .CalendarEvent <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        textCheckingType <span style=color:#f92672>|=</span> .Date
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> dataDetectorType <span style=color:#f92672>&amp;</span> .Link <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        textCheckingType <span style=color:#f92672>|=</span> .Link
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>    
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> dataDetectorType <span style=color:#f92672>&amp;</span> .PhoneNumber <span style=color:#f92672>!=</span> <span style=color:#66d9ef>nil</span> {
+</span></span><span style=display:flex><span>        textCheckingType <span style=color:#f92672>|=</span> .PhoneNumber
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> textCheckingType
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span><span style=color:#66d9ef>static</span> <span style=color:#66d9ef>inline</span> NSTextCheckingType <span style=color:#a6e22e>NSTextCheckingTypesFromUIDataDetectorTypes</span>(UIDataDetectorTypes dataDetectorType) {
+</span></span><span style=display:flex><span>    NSTextCheckingType textCheckingType <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>;
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (dataDetectorType <span style=color:#f92672>&amp;</span> UIDataDetectorTypeAddress) {
+</span></span><span style=display:flex><span>        textCheckingType <span style=color:#f92672>|=</span> NSTextCheckingTypeAddress;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (dataDetectorType <span style=color:#f92672>&amp;</span> UIDataDetectorTypeCalendarEvent) {
+</span></span><span style=display:flex><span>        textCheckingType <span style=color:#f92672>|=</span> NSTextCheckingTypeDate;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (dataDetectorType <span style=color:#f92672>&amp;</span> UIDataDetectorTypeLink) {
+</span></span><span style=display:flex><span>        textCheckingType <span style=color:#f92672>|=</span> NSTextCheckingTypeLink;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> (dataDetectorType <span style=color:#f92672>&amp;</span> UIDataDetectorTypePhoneNumber) {
+</span></span><span style=display:flex><span>        textCheckingType <span style=color:#f92672>|=</span> NSTextCheckingTypePhoneNumber;
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>return</span> textCheckingType;
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><hr><p>现在还对自然语言和结构化数据之间的翻译转换很容易这件事有怀疑吗？其实这并不奇怪，因为有 <a href=https://nshipster.com/cfstringtransform/>超级</a> <a href=https://nshipster.com/nslinguistictagger/>棒</a> 的 Cocoa 语言 API。</p><p>不要让你的用户因为一个程序的疏忽而重新输入信息。在你的应用程序里充分利用 <code>NSDataDetector</code> 解锁那些已经隐藏在众目睽睽下的结构化信息吧。</p><pre tabindex=0><code>
+---
+
+
+
+除非&lt;a href=&#34;https://nshipster.cn/&#34; target=_blank&gt;另有声明&lt;/a&gt;，本文采用知识共享「&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/3.0/cn/&#34; target=_blank&gt;署名-非商业性使用 3.0 中国大陆&lt;/a&gt;」许可协议授权。
+</code></pre><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2013-06-02 </a>&copy;</span>
+<span style="float:right;margin:0 -3px"><a href=https://autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2026 Mattt 版权所有</a><a href=https://autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://autoptr.top/tags/nshipster target=_blank>nshipster</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://autoptr.top/categories/Cocoa target=_blank>Cocoa</a></li><li><a class=link href=https://autoptr.top/categories/macOS target=_blank>macOS</a></li><li><a class=link href=https://autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script><script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script><script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>

@@ -1,0 +1,136 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>iOS 12</title>
+<link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="iOS 12,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><meta name=description content="iOS 12,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><script>if(document.domain=="autoptr.pages.dev"){var url=window.location.href,url=url.replace(/autoptr+\.pages+\.dev/g,"www.autoptr.top");window.location.href=url}</script><script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>iOS 12</span><span class=btRight><span title="Author · 作者" class=author>Mattt</span> <span title="Translator · 翻译" class=author>Henry Lee</span> <a href=https://github.com/NSHipster/articles-zh-Hans style=color:#007cd5 title="Related or Quoted Post · 关联或转载引用的文章" target=_blank rel="nofollow noopener noreferrer">&#128681;</a><a href=/tutorials/NSHipster/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><p>如果你去看今年的 WWDC Keynote 演讲，你就知道 iOS 12 的这些比较重大的的新特性：
+<a href=https://developer.apple.com/documentation/sirikit#2979425>Siri Shortcuts</a>,
+<a href=https://developer.apple.com/arkit/>ARKit 2</a>, and
+<a href=https://developer.apple.com/machine-learning/>Core ML 2</a> &mdash;
+更不用提风传很久的炸弹：代号为 &ldquo;Marzipan&rdquo; 的 iOS/Mac 桥接件终于提前透露了出来。</p><p>另外如果你看了今年的这一期
+<a href=https://developer.apple.com/videos/play/wwdc2018/102/>Platforms State of the Union session</a>,
+你会发现一些虽然没那么光芒四射但依旧很令人兴奋技术：
+像<a href=https://developer.apple.com/documentation/usernotificationsui/>自定义用户通知 UI</a>,
+和更新了的 <a href=https://developer.apple.com/documentation/network>Network</a>
+和<a href=https://developer.apple.com/documentation/naturallanguage>自然语言（Natural Language）</a> 框架。</p><p>但在 NSHipster ,
+我们感兴趣的是那些最详细最细微的变化 (我们可以说, <em>晦涩的</em>?)
+也是最终加起来却又能给我们每天的工作带来很大影响的变化。</p><p>今年的 <a href=https://developer.apple.com/documentation/ios_release_notes/ios_12_release_notes>iOS 12 版本说明</a>和 <a href=https://developer.apple.com/documentation/ios_release_notes/ios_12_release_notes/foundation_release_notes>Foundation 版本说明</a>涵盖了很多这样的变化，但是它们还没有展开故事的全貌。
+正因如此，你还需要深入挖掘。</p><p>为了庆祝 iOS 12 在这周的发布,
+我们把通过<a href=http://codeworkshop.net/objc-diff/sdkdiffs/ios/12.0/>iOS 11.4 到 12 的 API 的一些差异</a>
+分享给大家（尽管 API 已经列出来了，但是他们还没有正式文档的说明，所以记得小心使用）。</p><hr><h2 id=为更重要的请求在网络流量里排出优先级>为更重要的请求在网络流量里排出优先级</h2><p>你听过 iOS 里的 Fast Lane（快车道）么？
+并不是 Google 的 <a href=https://fastlane.tools>fastlane</a>。
+也不是 Cisco 的 <a href=https://www.cisco.com/c/en/us/products/ios-nx-os-software/ios-technologies/index.html>IOS</a>。</p><p><a href=https://developer.cisco.com/site/fast-lane/>Fast Lane</a>
+（或者写成 <a href=https://www.cisco.com/c/dam/en/us/td/docs/wireless/controller/technotes/8-3/Optimizing_WiFi_Connectivity_and_Prioritizing_Business_Apps.pdf>Fastlane</a>?）
+是一种能根据网络请求的类型（例如音频、视频或后台数据）来优化无线网络流量的一个机制。</p><p>它原本是只有 Cisco 路由器（Cisco 路由器承载了互联网一半的流量）专有的一个技术，里面包含了一些 Wi-Fi 的标准，
+例如快速漫游的 <a href=https://en.wikipedia.org/wiki/IEEE_802.11r-2008>802.11r</a>、
+辅助漫游的 <a href=https://en.wikipedia.org/wiki/IEEE_802.11k-2008>802.11k</a>
+和无线配置的 <a href=https://en.wikipedia.org/wiki/IEEE_802.11v>802.11v</a>。</p><p>多亏了 2015 年 Apple 和 Cisco 的<a href="https://newsroom.cisco.com/press-release-content?type=webcontent&articleId=1715414">合作</a>，
+iOS 开发者可以通过给网络连接提供一个<a href=https://developer.cisco.com/site/fast-lane/>服务类型(QoS 标记)</a> 来用到这个技术
+（很多高层的 API 可以自动地帮你实现这个工作）。</p><p>在 iOS 12 的新 API 里，你可以把 <code>URLRequest</code> 对象<code>networkServiceType</code> 设置为 <a href="https://developer.apple.com/documentation/foundation/nsurlrequestnetworkservicetype/nsurlnetworkservicetyperesponsivedata?language=objc"><code>NSURLNetworkServiceTypeResponsiveData</code></a>，从而让一些时间敏感的操作优先请求。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>Foundation</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> url = URL(string: <span style=color:#e6db74>&#34;https://example.com/checkout&#34;</span>)<span style=color:#f92672>!</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> request = URLRequest(url: url)
+</span></span><span style=display:flex><span>request.httpMethod = <span style=color:#e6db74>&#34;POST&#34;</span>
+</span></span><span style=display:flex><span>request.networkServiceType = .responsiveData <span style=color:#75715e>// Prioritize</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>URLSession.shared.dataTask(with: request) {
+</span></span><span style=display:flex><span>    (data, response, error) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><p>这个选项<a href="https://developer.apple.com/documentation/foundation/nsurlrequestnetworkservicetype/nsurlnetworkservicetyperesponsivedata?language=objc">还没有文档说明</a>，
+但是在 <a href=https://developer.apple.com/videos/play/wwdc2018/714/>WWDC 2018 Session 714: &ldquo;Optimizing Your App for Today’s Internet&rdquo;</a> 的向导里，苹果工程师已经提到了。
+不过只有最需要极力减少请求时间的时候才能谨慎地使用这个特性，
+例如他们提到了一个场景就是一些购物应用的收银台页面可以使用，
+当然你也可以推断出一些其他的使用案例。</p><h2 id=在后台读取-nfc-标签>在后台读取 NFC 标签</h2><p>在 WWDC 2018 里被排着队问到的最多的一个问题是 <code>NSUserActivity</code> 加入的 <a href=https://developer.apple.com/documentation/foundation/nsuseractivity/2968463-ndefmessagepayload><code>ndefMessagePayload</code></a> 属性，
+而彼时苹果工程师在 Lab Session 回答的最多的也是“无可奉告”。</p><p>但是重重迷雾终于在上周的 iPhone XS, iPhone XS Max 和 iPhone XR 的发布会上被揭开。
+这些设备支持在后台读取 NFC 标签，
+而且如果你在最新的设备上跑着 iOS 12，
+你将可以 &mdash;
+干这些 &mdash;
+可以不需要别的设置，
+就通过扫到的标签来启动 App、打电话或打开链接。
+为了防止误激活，
+这个只在 iPhone 是解锁状态下才工作，
+处于飞行模式、使用 Apple Pay 中和使用相机的时候不能工作。</p><p>有了 NFC 集成，通过提供一个更顺畅与真实世界连接的途径，而不是堕落到去扫二维码（在中国非常流行，但是被世界其他地方被忽视），
+Apple 终于可以完全实现 2013 对于 <abbr title="Bluetooth Low Energy">BLE</abbr> 的承诺了。</p><p>可能 NFC 和 iBeacon 最适用场景还是你在博物馆参观，
+站在展品面前想了解更多信息的时候，
+只需要把 iPhone 放到信息牌上就能实现。</p><p>实现类似功能需要 App 有个特别的 entitlements，
+设置相关的域和其他一些相关配置 &mdash;
+还有一些你需要实际实现的 API。
+好在，Apple 还提供了一些过程中的扩展文档，
+包括一个<a href="https://developer.apple.com/documentation/corenfc/building_an_nfc_tag_reader_app?changes=latest_minor">示例项目</a> 和
+<a href="https://developer.apple.com/documentation/corenfc/adding_support_for_background_tag_reading?changes=latest_minor">这篇文章</a>.</p><h2 id=根据电话号码和邮件地址匹配联系人>根据电话号码和邮件地址匹配联系人</h2><p><a href=https://developer.apple.com/documentation/contacts>Contacts framework</a> 是在
+iOS 9 和 macOS El Capitan 作为 <a href=https://developer.apple.com/documentation/addressbook>AddressBook framework</a>
+的更现代的替代版本出现的。</p><p>截止目前，
+你只能通过姓名或者唯一编码（identifier）搜索联系人，
+但是在 iOS 12 里，
+你能用<code>CNContact</code> 类的 <a href=https://developer.apple.com/documentation/contacts/cncontact/3020511-predicateforcontacts><code>predicateForContacts(matching:)</code></a> 和
+<a href=https://developer.apple.com/documentation/contacts/cncontact/3020510-predicateforcontacts><code>predicateForContacts(matchingEmailAddress:)</code></a>
+来构造谓词（predicate）用以匹配手机号码与邮件地址。</p><p>例如，
+如果我们想要依照一组手机号和邮件地址取出所有匹配到的姓与名，
+你可以创建一个 <code>CNContactFetchRequest</code>，
+用 &ldquo;AND&rdquo; 来把连个子谓词（subpredicate）组合一个复合谓词，而后传给当前 <code>CNContactStore</code> 对象的 <code>enumerateContacts(with:)</code> 方法。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>Contacts</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> phoneNumber = CNPhoneNumber(stringValue: <span style=color:#e6db74>&#34;+1 555 555 1234&#34;</span>)
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> phoneNumberPredicate = CNContact.predicateForContacts(matching: phoneNumber)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> emailPredicate = CNContact.predicateForContacts(matchingEmailAddress: <span style=color:#e6db74>&#34;johnny@example.com&#34;</span>)
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>var</span> fetchRequest = CNContactFetchRequest(keysToFetch: [
+</span></span><span style=display:flex><span>    CNContactGivenNameKey <span style=color:#66d9ef>as</span> CNKeyDescriptor,
+</span></span><span style=display:flex><span>    CNContactFamilyNameKey <span style=color:#66d9ef>as</span> CNKeyDescriptor
+</span></span><span style=display:flex><span>])
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>fetchRequest.predicate =
+</span></span><span style=display:flex><span>  NSCompoundPredicate(andPredicateWithSubpredicates: [
+</span></span><span style=display:flex><span>    phoneNumberPredicate,
+</span></span><span style=display:flex><span>    emailPredicate
+</span></span><span style=display:flex><span>])
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> store = CNContactStore()
+</span></span><span style=display:flex><span><span style=color:#66d9ef>try</span> store.enumerateContacts(with: fetchRequest) { (contact, <span style=color:#66d9ef>_</span>) <span style=color:#66d9ef>in</span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><h2 id=在空中更新位置信息>在空中更新位置信息</h2><p>很多飞行员很喜欢用 iPad 来导航和制定飞行计划。
+如果你的 App 是用来装备给在天上驾驶员座舱里的老兄们的话，
+你就会对 iOS 12 里 <code>CLLocationManager</code> 的新特性感到兴奋。</p><p><a href=https://developer.apple.com/documentation/corelocation/cllocationmanager/1620567-activitytype><code>activityType</code> 属性</a>
+已经出来有一段时间了，但是针对于 <code>CLLocationManager</code> 的配置却鲜有人知。
+如果你用这个 <code>CLLocationManager</code> 在一段时间内追踪位置的变化，
+通过一些唾手可得的优化，
+你就能知道用户在以什么行为模式运动。
+但目前，运动变化的种类被严格限制在正在 <a href=https://developer.apple.com/documentation/corelocation/clactivitytype/automotivenavigation>驾驶类</a>、
+<a href=https://developer.apple.com/documentation/corelocation/clactivitytype/fitness>走路/跑步/骑行类</a>和
+<a href=https://developer.apple.com/documentation/corelocation/clactivitytype/other>其他类</a>这三个领域。
+但是在 iOS 12 里，你可以指定<a href="https://developer.apple.com/documentation/corelocation/clactivitytype/clactivitytypeairborne?language=objc">飞行活动类</a>来让你的运动追踪算法飞起来！</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>CoreLocation</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> manager = CLLocationManager()
+</span></span><span style=display:flex><span>manager.activityType = .airborne <span style=color:#75715e>// ✈️</span>
+</span></span></code></pre></div><h2 id=检测平放设备朝向>检测平放设备朝向</h2><p>你是否想检测设备是否平放在一个表面上，
+但是只能勉强地使用 <em>两个条件</em> 来检测？
+好消息是，在 iOS 12 里，
+新增了一个 <code>isFlat</code> 的方便属性。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>import</span> <span style=color:#a6e22e>UIKit</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// iOS 12+</span>
+</span></span><span style=display:flex><span>UIDevice.current.orientation.isFlat
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#75715e>// iOS &lt;= 11.4</span>
+</span></span><span style=display:flex><span>UIDevice.current.orientation == .faceUp <span style=color:#f92672>||</span>
+</span></span><span style=display:flex><span>  UIDevice.current.orientation == .faceDown
+</span></span></code></pre></div><h2 id=新密码的自动输入与一次性验证码在文本框里的输入>新密码的自动输入与一次性验证码在文本框里的输入</h2><p>尽管 Apple 为了在让用户在设备上愉悦地输入做了长期的英雄般卓越的工作，
+但是有一些事实还是不能改变：
+在一个毫无触感的光滑玻璃上输入总是比在一个合适的硬件键盘上输入要苍白
+（尽管依然要吐槽新 MacBook 的键盘）。</p><p>为了减少文本输入之类的苦差事，
+iOS 10 为一些服从 <code>UITextInputTraits</code> 协议的控件（分别是 <code>UITextField</code> 和 <code>UITextView</code>）
+提供了 <a href=https://developer.apple.com/documentation/uikit/uitextcontenttype><code>textContentType</code></a> 属性。
+只要提供一个具体的枚举类型，你就指定了这个控件的语义类型，
+就可以依据当前用户的信息，自动填入名字或者地址类的信息。</p><p>iOS 12 和 tvOS 12 拓展了这个枚举，增加了
+<a href=https://developer.apple.com/documentation/uikit/uitextcontenttype/2980929-newpassword><code>UITextContentTypeNewPassword</code></a>
+和 <a href=https://developer.apple.com/documentation/uikit/uitextcontenttype/2980930-onetimecode><code>UITextContentTypeOneTimeCode</code></a> 类型。</p><p>当你同时指定 <code>.newPassword</code> 和 <a href=https://nshipster.cn/uitextinputpasswordrules/><code>passwordRules</code></a> 属性的时候，
+密码自动填写功能(Password AutoFill)就能根据系统登录密码的要求自动生成一个新的密码。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span>textField.textContentType = .newPassword
+</span></span><span style=display:flex><span>textField.passwordRules = .<span style=color:#66d9ef>init</span>(descriptor:
+</span></span><span style=display:flex><span>    <span style=color:#e6db74>&#34;allowed: ascii-printable; minlength: 8;&#34;</span>
+</span></span><span style=display:flex><span>)
+</span></span></code></pre></div><p>当你指定了 <code>.oneTimeCode</code> 内容类型的时候，
+文本框能够自动地转发短信的二次验证码。</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span>textField.textContentType = .oneTimeCode
+</span></span></code></pre></div><hr><p>我们这一期的 iOS 12 代码 diff 探险就在这里结束了。
+当然，这是一次庞大的更新，
+我们期待在接下来的几周再讲解更多更深的新 API。</p><blockquote><p>对之后的内容有任何建议？
+<a href=https://twitter.com/NSHipster/>来 Twitter 联系我们!</a></p></blockquote><hr><p>除非<a href=https://nshipster.cn/ target=_blank>另有声明</a>，本文采用知识共享「<a href=https://creativecommons.org/licenses/by-nc/3.0/cn/ target=_blank>署名-非商业性使用 3.0 中国大陆</a>」许可协议授权。</p><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2018-09-17 </a>&copy;</span>
+<span style="float:right;margin:0 -3px"><a href=https://autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2026 Mattt 版权所有</a><a href=https://autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://autoptr.top/tags/nshipster target=_blank>nshipster</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://autoptr.top/categories/Miscellaneous target=_blank>Miscellaneous</a></li><li><a class=link href=https://autoptr.top/categories/macOS target=_blank>macOS</a></li><li><a class=link href=https://autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script><script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script><script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>

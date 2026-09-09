@@ -1,0 +1,131 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>RawOptionSetType</title>
+<link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="RawOptionSetType,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><meta name=description content="RawOptionSetType,macOS,C++,Cocoa,Objective-C,Swift,NSHipster"><script>if(document.domain=="autoptr.pages.dev"){var url=window.location.href,url=url.replace(/autoptr+\.pages+\.dev/g,"www.autoptr.top");window.location.href=url}</script><script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>RawOptionSetType</span><span class=btRight><span title="Author · 作者" class=author>Mattt</span> <span title="Translator · 翻译" class=author>Chester Liu</span> <a href=https://github.com/NSHipster/articles-zh-Hans style=color:#007cd5 title="Related or Quoted Post · 关联或转载引用的文章" target=_blank rel="nofollow noopener noreferrer">&#128681;</a><a href=/tutorials/NSHipster/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><p>在 Objective-C 中，<a href=https://nshipster.com/ns_enum-ns_options/><code>NS_ENUM</code> & <code>NS_OPTIONS</code></a>被用于注释 C 语言中的 <code>enum</code> 类型，它实现的很漂亮，给编译器和开发者都设置了清晰的期望。自从在 Xcode 4.5 中被引进以后，这两个宏已经成为了系统框架中的标准规范，也是社区公认的最佳实践。</p><p>在 Swift 中，枚举类型成了和 <code>struct</code> 与 <code>class</code> 一样的一等语言结构，包含了很多富于表现力的新特性，例如原始类型(raw types)和关联值(associated values)。枚举非常适合于封装一组固定值的封闭集合，开发者们在代码中都很积极地尝试去使用它。</p><p>当要在 Swift 中和 Foundation 这样的框架进行交互时，<code>NS_ENUM</code> 定义会自动转换成 <code>enum</code>。通常情况下和原有的 Objective-C 代码相比，这种转换是一种进步，因为去除了名字当中的重复部分：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>UITableViewCellStyle</span> : Int {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Default
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Value1
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Value2
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>case</span> Subtitle
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span><span style=color:#66d9ef>typedef</span> <span style=color:#a6e22e>NS_ENUM</span>(NSInteger, UITableViewCellStyle) {
+</span></span><span style=display:flex><span>   UITableViewCellStyleDefault,
+</span></span><span style=display:flex><span>   UITableViewCellStyleValue1,
+</span></span><span style=display:flex><span>   UITableViewCellStyleValue2,
+</span></span><span style=display:flex><span>   UITableViewCellStyleSubtitle
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><p>不幸的是，对于 <code>NS_OPTIONS</code> 来说，它的 Swift 替代品可以说是相当糟糕：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>UIViewAutoresizing</span> : RawOptionSetType {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>init</span>(<span style=color:#66d9ef>_</span> value: UInt)
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> value: UInt
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> None: UIViewAutoresizing { <span style=color:#66d9ef>get</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> FlexibleLeftMargin: UIViewAutoresizing { <span style=color:#66d9ef>get</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> FlexibleWidth: UIViewAutoresizing { <span style=color:#66d9ef>get</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> FlexibleRightMargin: UIViewAutoresizing { <span style=color:#66d9ef>get</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> FlexibleTopMargin: UIViewAutoresizing { <span style=color:#66d9ef>get</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> FlexibleHeight: UIViewAutoresizing { <span style=color:#66d9ef>get</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> FlexibleBottomMargin: UIViewAutoresizing { <span style=color:#66d9ef>get</span> }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-objc data-lang=objc><span style=display:flex><span><span style=color:#66d9ef>typedef</span> <span style=color:#a6e22e>NS_OPTIONS</span>(NSUInteger, UIViewAutoresizing) {
+</span></span><span style=display:flex><span>   UIViewAutoresizingNone                 <span style=color:#f92672>=</span> <span style=color:#ae81ff>0</span>,
+</span></span><span style=display:flex><span>   UIViewAutoresizingFlexibleLeftMargin   <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>0</span>,
+</span></span><span style=display:flex><span>   UIViewAutoresizingFlexibleWidth        <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>1</span>,
+</span></span><span style=display:flex><span>   UIViewAutoresizingFlexibleRightMargin  <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>2</span>,
+</span></span><span style=display:flex><span>   UIViewAutoresizingFlexibleTopMargin    <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>3</span>,
+</span></span><span style=display:flex><span>   UIViewAutoresizingFlexibleHeight       <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>4</span>,
+</span></span><span style=display:flex><span>   UIViewAutoresizingFlexibleBottomMargin <span style=color:#f92672>=</span> <span style=color:#ae81ff>1</span> <span style=color:#f92672>&lt;&lt;</span> <span style=color:#ae81ff>5</span>
+</span></span><span style=display:flex><span>};
+</span></span></code></pre></div><hr><p><code>RawOptionsSetType</code> 是 <code>NS_OPTIONS</code> 类型在 Swift 当中的替代品（至少是最接近的东西了）。它是一个协议，遵守 <code>RawRepresentable</code>, <code>Equatable</code>, <code>BitwiseOperationsType</code>, 和 <code>NilLiteralConvertible</code> 这几个协议。一个选项(option)类型可以用一个遵守 <code>RawOptionsSetType</code> 协议的 <code>struct</code> 表示。</p><p>为什么这货这么差劲？主要是因为 C 语言中位运算的技巧不能用于 Swift 中的枚举类型。一个 <code>enum</code> 代表着一系列可用选项的封闭集合，但是并没有内建一个用来表示若干选项的交集的机制。表面上，一个 <code>enum</code> 可以定义出选项值所有可能的组合，但是对于 <code>n > 3</code> 的情况，组合数学告诉我们这种办法是不靠谱的。在 Swift 中实现 <code>NS_OPTIONS</code> 有很多种方式，<code>RawOptionSetType</code> 可能还不是最差的。</p><p>和语法上清晰而明确的 <code>enum</code> 声明相比，<code>RawOptionsSetType</code> 显得笨拙而冗长，需要一些模板代码来支持计算属性(computed properties)：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Toppings</span> : RawOptionSetType, BooleanType {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>private</span> <span style=color:#66d9ef>var</span> value: UInt = <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>init</span>(<span style=color:#66d9ef>_</span> value: UInt) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.value = value
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> RawOptionSetType</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>fromMask</span>(raw: UInt) -&gt; Toppings {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(raw)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> RawRepresentable</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>fromRaw</span>(raw: UInt) -&gt; Toppings? {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(raw)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>toRaw</span>() -&gt; UInt {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> value
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> BooleanType</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> boolValue: Bool {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> value <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> BitwiseOperationsType</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> allZeros: Toppings {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> NilLiteralConvertible</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>func</span> <span style=color:#a6e22e>convertFromNilLiteral</span>() -&gt; Toppings {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0</span>)
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// </span><span style=color:#75715e>MARK:</span><span style=color:#75715e> -</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> None: Toppings           { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0b0000</span>) }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> ExtraCheese: Toppings    { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0b0001</span>) }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> Pepperoni: Toppings      { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0b0010</span>) }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> GreenPepper: Toppings    { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0b0100</span>) }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> Pineapple: Toppings      { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0b1000</span>) }
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><blockquote><p>在 Xcode 6 Beta 6 中，<code>RawOptionSetType</code> 不再遵守 <code>BooleanType</code> 协议，如果想支持按位检查的话还是需要支持 <code>BooleanType</code>。</p></blockquote><p>在 Swift 中这种写法的一个好处是，Swift 内建的二进制整数字面值支持进行视觉上的按位运算。当 options 类型定义完成之后，使用它的语法还不算特别难看。</p><p>以下面这个大一些的例子为例：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Pizza</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>enum</span> <span style=color:#a6e22e>Style</span> {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>case</span> Neopolitan, Sicilian, NewHaven, DeepDish
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>struct</span> <span style=color:#a6e22e>Toppings</span> : RawOptionSetType { ... }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> diameter: Int
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> style: Style
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> toppings: Toppings
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>init</span>(inchesInDiameter diameter: Int, style: Style, toppings: Toppings = .None) {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.diameter = diameter
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.style = style
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>self</span>.toppings = toppings
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>let</span> dinner = Pizza(inchesInDiameter: <span style=color:#ae81ff>12</span>, style: .Neopolitan, toppings: .Pepperoni <span style=color:#f92672>|</span> .GreenPepper)
+</span></span></code></pre></div><p>对于值的归属检查，可以使用 <code>&</code> 运算符，就像在 C 中操作无符号整数一样：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>extension</span> <span style=color:#a6e22e>Pizza</span> {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> isVegetarian: Bool {
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>return</span> toppings <span style=color:#f92672>&amp;</span> Toppings.Pepperoni ? <span style=color:#66d9ef>false</span> : <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>    }
+</span></span><span style=display:flex><span>}
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>dinner.isVegetarian <span style=color:#75715e>// false</span>
+</span></span></code></pre></div><hr><p>平心而论，现在来谈论选项(option)类型在 Swift 语言当中的角色还为时过早。很有可能 Swift 中的其他结构，例如元组(tuple)和模式匹配(pattern matching)，也可能就是 <code>enum</code> 本身，会让选项类型变得不仅仅只是来自过去的遗迹。</p><p>不管怎样，如果你想在代码中实现类似 <code>NS_OPTIONS</code> 的结构，下面是一段 <a href=https://nshipster.com/xcode-snippets/>Xcode snippet</a>，可以帮助你快速上手：</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-swift data-lang=swift><span style=display:flex><span><span style=color:#66d9ef>struct</span> <span style=color:#f92672>&lt;</span># Options #<span style=color:#f92672>&gt;</span> : RawOptionSetType, BooleanType {
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>let</span> rawValue: UInt
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>init</span>(nilLiteral: ()) { <span style=color:#66d9ef>self</span>.value = <span style=color:#ae81ff>0</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>init</span>(<span style=color:#66d9ef>_</span> value: UInt = <span style=color:#ae81ff>0</span>) { <span style=color:#66d9ef>self</span>.value = value }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>init</span>(rawValue value: UInt) { <span style=color:#66d9ef>self</span>.value = value }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> boolValue: Bool { <span style=color:#66d9ef>return</span> value <span style=color:#f92672>!=</span> <span style=color:#ae81ff>0</span> }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>var</span> rawValue: UInt { <span style=color:#66d9ef>return</span> value }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> allZeros: <span style=color:#f92672>&lt;</span># Options #<span style=color:#f92672>&gt;</span> { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0</span>) }
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> None: <span style=color:#f92672>&lt;</span># Options #<span style=color:#f92672>&gt;</span>         { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0b0000</span>) }
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>static</span> <span style=color:#66d9ef>var</span> <span style=color:#f92672>&lt;</span># Option #<span style=color:#f92672>&gt;</span>: <span style=color:#f92672>&lt;</span># Options #<span style=color:#f92672>&gt;</span>     { <span style=color:#66d9ef>return</span> <span style=color:#66d9ef>self</span>(<span style=color:#ae81ff>0b0001</span>) }
+</span></span><span style=display:flex><span>    <span style=color:#75715e>// ...</span>
+</span></span><span style=display:flex><span>}
+</span></span></code></pre></div><pre tabindex=0><code>
+---
+
+
+
+除非&lt;a href=&#34;https://nshipster.cn/&#34; target=_blank&gt;另有声明&lt;/a&gt;，本文采用知识共享「&lt;a href=&#34;https://creativecommons.org/licenses/by-nc/3.0/cn/&#34; target=_blank&gt;署名-非商业性使用 3.0 中国大陆&lt;/a&gt;」许可协议授权。
+</code></pre><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2014-09-08 </a>&copy;</span>
+<span style="float:right;margin:0 -3px"><a href=https://autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2026 Mattt 版权所有</a><a href=https://autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://autoptr.top/tags/C++ target=_blank>C++</a></li><li><a class=link href=https://autoptr.top/tags/nshipster target=_blank>nshipster</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://autoptr.top/categories/Swift target=_blank>Swift</a></li><li><a class=link href=https://autoptr.top/categories/macOS target=_blank>macOS</a></li><li><a class=link href=https://autoptr.top/categories/CC++ target=_blank>CC++</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script><script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script><script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>
