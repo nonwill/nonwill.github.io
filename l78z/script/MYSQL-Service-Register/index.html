@@ -1,0 +1,67 @@
+<!doctype html><html><head><meta charset=utf-8><meta http-equiv=content-language content="zh-cn"><meta name=viewport content="width=device-width,initial-scale=.5"><title>MYSQL 注册启动及停用卸载批处理脚本</title>
+<link rel="shortcut icon" type=image/x-icon href=/media/shortcuticon.png><meta name=keywords content="MYSQL,database,数据库,批处理"><meta name=description content="适用于MYSQL数据库的批处理活动脚本"><script>if(document.domain=="autoptr.pages.dev"){var url=window.location.href,url=url.replace(/autoptr+\.pages+\.dev/g,"www.autoptr.top");window.location.href=url}</script><script src=/jscss/ajax/libs/anchor-js/4.2.0/anchor.min.js></script><script>document.addEventListener("DOMContentLoaded",function(){anchors.options={visible:"hover",placement:"left",icon:"🌜"},anchors.add()})</script><link rel=stylesheet href=/css/main.css><link href=/jscss/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css rel=stylesheet><script src=/jscss/ajax/libs/highlight.js/9.12.0/highlight.min.js></script><script>hljs.initHighlightingOnLoad()</script><style type=text/css>body{background-color:#fbf6ec}</style><script>top.location!=self.location&&(top.location=self.location)</script><script>var _hmt=_hmt||[];(function(){var e,t=document.createElement("script");t.src="https://hm.baidu.com/hm.js?746e6e6d14d22526bf274c834750df53",e=document.getElementsByTagName("script")[0],e.parentNode.insertBefore(t,e)})()</script></head><body><script>window.addEventListener("resize",resizeThrottler,!1);var resizeTimeout;function resizeThrottler(){resizeTimeout||(resizeTimeout=setTimeout(function(){resizeTimeout=null,actualResizeHandler()},66))}actualResizeHandler();function actualResizeHandler(){/mobile/i.test(navigator.userAgent)||/android/i.test(navigator.userAgent)?document.body.classList.add("mobile"):document.body.classList.remove("mobile")}</script><a id=mysite-singlepage-top></a><div class=inner style=position:relative><div class=blog-post><h1 class=blog-title align=center><span class=btContent>MYSQL 注册启动及停用卸载批处理脚本</span><span class=btRight><span title="Translator · 翻译" class=author><a href=https://autoptr.top/license/ style=color:red title="All rights reserved · 译文或原创内容·版权所有" target=_blank rel=nofollow>&copy;</a><a href=/l78z/script/ title="Back to Topics · 回主题页">&#127793;</a></span></h1><p>注册启动 my_install.bat</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bat data-lang=bat><span style=display:flex><span>@<span style=color:#66d9ef>echo</span> off
+</span></span><span style=display:flex><span><span style=color:#66d9ef>set</span> MYSQL_DIR=%~dp0
+</span></span><span style=display:flex><span><span style=color:#75715e>rem set MYSQL_DIR=%cd%</span>
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#66d9ef>not</span> <span style=color:#e6db74>&#34;</span>%MYSQL_HOME%<span style=color:#e6db74>&#34;</span><span style=color:#f92672>==</span><span style=color:#e6db74>&#34;&#34;</span> (
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>not</span> <span style=color:#e6db74>&#34;</span>%MYSQL_HOME%<span style=color:#e6db74>&#34;</span><span style=color:#f92672>==</span><span style=color:#e6db74>&#34;</span>%MYSQL_DIR%<span style=color:#e6db74>&#34;</span> (
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>echo</span> MYSQL_HOME=%MYSQL_HOME% != MYSQL_DIR=%MYSQL_DIR%
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>goto</span> my_ends
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>) <span style=color:#66d9ef>else</span> (
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>set</span> MYSQL_HOME=%MYSQL_DIR%
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>echo</span> MYSQL_HOME must be set as MYSQL_DIR=%MYSQL_DIR%
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>set</span> PATH=%MYSQL_HOME%bin;%MYSQL_HOME%lib;%PATH%
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>mysqladmin -uroot  ping <span style=color:#ae81ff>1</span>&gt;nul <span style=color:#ae81ff>2</span>&gt;nul
+</span></span><span style=display:flex><span>@<span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;</span>%ERRORLEVEL%<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;0&#34;</span> (
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>echo</span> Mysql is running.
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>goto</span> my_ends
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#34;MYSQL_HOME = </span>%MYSQL_HOME%<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>echo</span> Install and start mysql server ...
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>mysqld --install mysql_srv
+</span></span><span style=display:flex><span>sc config mysql_srv start= DEMAND
+</span></span><span style=display:flex><span><span style=color:#75715e>rem sc query mysql_srv</span>
+</span></span><span style=display:flex><span>net start mysql_srv
+</span></span><span style=display:flex><span><span style=color:#75715e>rem sc query mysql_srv</span>
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>mysqladmin -uroot  ping <span style=color:#ae81ff>1</span>&gt;nul <span style=color:#ae81ff>2</span>&gt;nul
+</span></span><span style=display:flex><span>@<span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;</span>%ERRORLEVEL%<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;0&#34;</span> <span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#34;Mysql started successfully&#34;</span>
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>:my_ends
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>cmd /K
+</span></span></code></pre></div><p>停用卸载 my_uninstall.bat</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bat data-lang=bat><span style=display:flex><span>@<span style=color:#66d9ef>echo</span> off
+</span></span><span style=display:flex><span><span style=color:#66d9ef>set</span> MYSQL_DIR=%~dp0
+</span></span><span style=display:flex><span><span style=color:#75715e>rem set MYSQL_DIR=%cd%</span>
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>if</span> <span style=color:#66d9ef>not</span> <span style=color:#e6db74>&#34;</span>%MYSQL_HOME%<span style=color:#e6db74>&#34;</span><span style=color:#f92672>==</span><span style=color:#e6db74>&#34;&#34;</span> (
+</span></span><span style=display:flex><span>    <span style=color:#66d9ef>if</span> <span style=color:#66d9ef>not</span> <span style=color:#e6db74>&#34;</span>%MYSQL_HOME%<span style=color:#e6db74>&#34;</span><span style=color:#f92672>==</span><span style=color:#e6db74>&#34;</span>%MYSQL_DIR%<span style=color:#e6db74>&#34;</span> (
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>echo</span> MYSQL_HOME=%MYSQL_HOME% != MYSQL_DIR=%MYSQL_DIR%
+</span></span><span style=display:flex><span>        <span style=color:#66d9ef>goto</span> my_ends
+</span></span><span style=display:flex><span>    )
+</span></span><span style=display:flex><span>) <span style=color:#66d9ef>else</span> <span style=color:#66d9ef>set</span> MYSQL_HOME=%MYSQL_DIR%
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>set</span> PATH=%MYSQL_HOME%\bin;%MYSQL_HOME%\lib;%PATH%
+</span></span><span style=display:flex><span><span style=color:#66d9ef>echo</span> <span style=color:#e6db74>&#34;MYSQL_HOME = </span>%MYSQL_HOME%<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span><span style=color:#66d9ef>echo</span> Stop and uninstall mysql server ...
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>mysqladmin -uroot  ping  <span style=color:#ae81ff>1</span>&gt;nul <span style=color:#ae81ff>2</span>&gt;nul
+</span></span><span style=display:flex><span>@<span style=color:#66d9ef>if</span> <span style=color:#e6db74>&#34;</span>%ERRORLEVEL%<span style=color:#e6db74>&#34;</span> <span style=color:#f92672>==</span> <span style=color:#e6db74>&#34;0&#34;</span> (
+</span></span><span style=display:flex><span>    net stop mysql_srv
+</span></span><span style=display:flex><span>    <span style=color:#75715e>rem sc query mysql_srv</span>
+</span></span><span style=display:flex><span>)
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>mysqld --remove mysql_srv
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span>:my_ends
+</span></span><span style=display:flex><span> 
+</span></span><span style=display:flex><span><span style=color:#66d9ef>pause</span>
+</span></span></code></pre></div><ins class=adsbygoogle style=display:block data-ad-client=ca-pub-8922574795542092 data-ad-slot=2802455178 data-ad-format=auto data-full-width-responsive=true></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({})</script></div><footer><p style="margin:0 -3px"><span style="float:left;margin:0 -3px"><a href=#mysite-singlepage-top title="Back to Top · 回顶部" rel=nofollow>&#127772;2015-01-12 </a><a href=https://autoptr.top/license/ title="All rights reserved · 原创内容·版权所有" target=_blank rel=nofollow>&copy;</a></span>
+<span style="float:right;margin:0 -3px"><a href=https://autoptr.top/license/ title="Copyright &copy; All rights reserved" target=_blank rel=nofollow>&copy; 2026 AuTopTr 版权所有</a><a href=https://autoptr.top/ title="Back to Home · 回首页">&#127771;</a></span></p><hr><hr><p style="margin:3px 5px"><ul class=tags><span>标签:</span><li><a class=link href=https://autoptr.top/tags/MySql target=_blank>MySql</a></li><li><a class=link href=https://autoptr.top/tags/bat target=_blank>bat</a></li><span>&nbsp;&nbsp;</span>
+<span>分类:</span><li><a class=link href=https://autoptr.top/categories/%e6%95%b0%e6%8d%ae%e5%ba%93 target=_blank>数据库</a></li><li><a class=link href=https://autoptr.top/categories/Script target=_blank>Script</a></li><li><a class=link href=https://autoptr.top/categories/%e8%84%9a%e6%9c%ac target=_blank>脚本</a></li></ul><p style=margin-bottom:2em></p></p></footer></div><script src=/jscss/ajax/libs/jquery/3.3.1/jquery.slim.min.js></script><script src=/jscss/ajax/libs/twitter-bootstrap/3.1.1/js/bootstrap.min.js></script><script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-37ZP0S1L3D")</script><script src=/jscss/ajax/libs/medium-zoom/1.0.4/medium-zoom.min.js></script><script>const zoom=mediumZoom();zoom.attach("p img")</script></body></html>

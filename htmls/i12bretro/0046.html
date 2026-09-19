@@ -1,0 +1,102 @@
+    <!DOCTYPE html>
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+      <head>
+        <title>Web Based File Management with PHP and Tiny File Manager</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta charset="UTF-8">
+        <meta name="keywords" content="PHP Web Based File Browser,Web Server,Apache,Web Developer,System Administrator,PHP,File Manager,Web Based,Tiny File Manager,Browser Based,Home Lab,Install Guide,Self-Hosted,Web Based Tools,Active Directory,Windows,Microsoft,PHP LDAP Authentication,PHP Active Directory Authentication,TinyFileManager,PHP Application,Web Based Utility,Apache HTTPD,Apache HTTPD Configuration,Web Server Administration,How To,Tutorial,i12bretro">
+        <meta name="author" content="i12bretro">
+        <meta name="description" content="Web Based File Management with PHP and Tiny File Manager">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="revised" content="03/26/2022 09:58:47 AM" />
+				          <link rel="icon" type="image/x-icon" href="includes/favicon.ico">
+				  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+				        <script type="text/javascript" src="includes/js/steps.js"></script>
+        <link href="css/steps.css" rel="stylesheet" type="text/css" />
+      <script>
+       window.onload = function() {
+        setTimeout(function() {
+                let script = document.createElement("script");
+                script.setAttribute("crossorigin", "anonymous");
+                script.setAttribute("async", "");
+                script.src = "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8922574795542092";
+                document.body.appendChild(script);
+        }, 2e3);
+       }
+      </script>
+      </head>
+      <body>
+        <div id="gridContainer">
+          <div class="topMargin"></div>
+          <div id="listName" class="topMargin">
+            <h1>Web Based File Management with PHP and Tiny File Manager <span style="float:right; margin:.1em .5em; font-size:.7em;"><a href="/tutorials/i12bretro/" title="Back to Topics · 回主题页" style="text-decoration: none;">&#127793;</a></span></h1>
+          </div>
+          <div></div>
+          <div id="content"><div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8922574795542092" data-ad-slot="2817006856" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+          <h2>Download and Setup Tiny File Manager</h2>
+
+<ol>
+	<li>Download Tiny File Manager <a href="https://github.com/prasathmani/tinyfilemanager/releases" target="_blank">Download</a></li>
+	<li>Extract the Tiny File Manager files</li>
+	<li>Copy TinyFileManager.php to Apache install directory/htdocs/filemanager</li>
+	<li>Rename TinyFileManager.php to index.php</li>
+	<li>Edit index.php in a text editor</li>
+	<li>Find $use_auth and set the value to false</li>
+	<li>Save</li>
+	<li>Open a web browser and navigate to https://DNSorIP/filemanager</li>
+</ol>
+
+<h2>Customizing Root Location and Authentication</h2>
+
+<ol>
+	<li>Optionally, Edit Apache install directory/htdocs/filemanager/index.php</li>
+	<li>Find $root_path and edit the value to limit the scope of the file manager</li>
+	<li>Save index.php</li>
+	<li>Navigate to the Apache install directory/conf in Explorer</li>
+	<li>Edit httpd.conf in a text editor</li>
+	<li>Find the authnz_ldap_module and make sure it is enabled by removing the # at the start of the line
+	<p>LoadModule authnz_ldap_module modules/mod_authnz_ldap.so</p>
+	</li>
+	<li>Find the ldap_module and make sure it is enabled by removing the # at the start of the line
+	<p>LoadModule ldap_module modules/mod_ldap.so</p>
+	</li>
+	<li>Create a Location block to enable LDAP authentication for the specified directory
+	<p>&lt;location /filemanager&gt;<br />
+	    # Basic authentication with LDAP against MS AD<br />
+	    AuthType Basic<br />
+	    AuthBasicProvider ldap<br />
+	<br />
+	    # AuthLDAPURL specifies the LDAP server IP, port, base DN, scope and filter<br />
+	    # using this format: ldap://host:port/basedn?attribute?scope?filter<br />
+	    AuthLDAPURL &quot;ldap://i12bretro.local:389/DC=i12bretro,DC=local?sAMAccountName?sub?(objectClass=user)&quot; NONE</p>
+
+	<p>    # The LDAP bind username and password<br />
+	    AuthLDAPBindDN &quot;readonly_svc@i12bretro.local&quot;<br />
+	    AuthLDAPBindPassword &quot;Read0nly!!&quot;<br />
+	    LDAPReferrals Off<br />
+	    AuthUserFile /dev/null<br />
+	<br />
+	    AuthName &quot;Restricted Area [i12bretro.local]&quot;<br />
+	    # to authenticate a domain group, specify the full DN<br />
+	    AuthLDAPGroupAttributeIsDN on<br />
+	    require ldap-group CN=WebAuthAccess,CN=Users,DC=i12bretro,DC=local<br />
+	&lt;/location&gt;</p>
+	</li>
+	<li>Save httpd.conf</li>
+	<li>Restart the Apache service</li>
+	<li>Refresh https://DNSorIP/filemanager</li>
+</ol>
+          </div>
+        </div>
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-37ZP0S1L3D"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'G-37ZP0S1L3D');
+</script>
+<div><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8922574795542092" data-ad-slot="2802455178" data-ad-format="auto" data-full-width-responsive="true"></ins><script> (adsbygoogle = window.adsbygoogle || []).push({}); </script></div>
+      </body>
+    </html>
+  
